@@ -400,11 +400,67 @@
         </div>
     </div>
 
+    <!-- Lead Capture Form Modal -->
+    <div class="modal" id="leadCaptureModal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 data-translate="leadCapture.title">Start Your Free Trial</h2>
+            <form id="leadCaptureForm">
+                <div class="form-group">
+                    <input type="text" id="fullName" name="fullName" required 
+                           data-translate="leadCapture.fullName" placeholder="Full Name">
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" name="email" required 
+                           data-translate="leadCapture.email" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <select id="trade" name="trade" required>
+                        <option value="" data-translate="leadCapture.trade">Select Your Trade</option>
+                        <option value="plumbing" data-translate="leadCapture.trades.plumbing">Plumbing</option>
+                        <option value="electrical" data-translate="leadCapture.trades.electrical">Electrical</option>
+                        <option value="hvac" data-translate="leadCapture.trades.hvac">HVAC</option>
+                        <option value="carpentry" data-translate="leadCapture.trades.carpentry">Carpentry</option>
+                        <option value="painting" data-translate="leadCapture.trades.painting">Painting</option>
+                        <option value="other" data-translate="leadCapture.trades.other">Other</option>
+                    </select>
+                    <small class="helper-text" data-translate="leadCapture.tradeHelper">We'll customize HandyBot for your specific trade</small>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="companyName" name="companyName" 
+                           data-translate="leadCapture.companyName" placeholder="Company Name (Optional)">
+                </div>
+                <div class="form-group">
+                    <select id="jobsPerWeek" name="jobsPerWeek">
+                        <option value="" data-translate="leadCapture.jobsPerWeek">How many jobs per week? (Optional)</option>
+                        <option value="1-5" data-translate="leadCapture.jobRanges.range1">1-5 jobs</option>
+                        <option value="6-10" data-translate="leadCapture.jobRanges.range2">6-10 jobs</option>
+                        <option value="11-20" data-translate="leadCapture.jobRanges.range3">11-20 jobs</option>
+                        <option value="20+" data-translate="leadCapture.jobRanges.range4">20+ jobs</option>
+                    </select>
+                </div>
+                <button type="submit" class="modal-next-button" data-translate="leadCapture.submit">Start My Free Trial</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Message Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content success-modal">
+            <span class="close-button">&times;</span>
+            <h2 data-translate="success.title">You're in! 🎉</h2>
+            <p data-translate="success.message">Check your email for next steps. We'll help you get set up right away.</p>
+        </div>
+    </div>
+
     <!-- Scripts -->
-    <script src="https://apis.google.com/js/api.js"></script>
     <script src="translations.js" type="module"></script>
-    <script src="calendar.js" type="module"></script>
     <script src="firebase-config.js" type="module"></script>
     <script src="script.js" type="module"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
 </body>
 </html> 

@@ -1,10 +1,8 @@
 // Base JavaScript functionality will be added here
 console.log('Script loaded'); // Debug log
 
-// Import translations, Calendar and Firebase functions
-import { translations } from './translations.js';
-import { Calendar } from './calendar.js';
-import { submitFormData } from './firebase-config.js';
+// Remove imports and use global objects
+const { translations } = window;
 
 // Add error handler
 window.onerror = function(msg, url, lineNo, columnNo, error) {
@@ -14,7 +12,7 @@ window.onerror = function(msg, url, lineNo, columnNo, error) {
 
 // Declare all variables at the top
 let jobValueInput, missedCallsInput, calculateButton, weeklyLossElement, monthlyLossElement;
-let calendarApiInitialized = false;
+let phoneInput;
 
 // Language switching functionality
 let currentLanguage = 'en';
@@ -160,53 +158,51 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, initializing...'); // Debug log
     
     // Initialize modals
-    const ctaModal = document.getElementById('ctaModal');
     const demoModal = document.getElementById('demoModal');
+    const leadCaptureModal = document.getElementById('leadCaptureModal');
+    const successModal = document.getElementById('successModal');
     
-    console.log('Modals found:', { ctaModal: !!ctaModal, demoModal: !!demoModal }); // Debug log
-    
-    // Initially hide modals
-    if (ctaModal) ctaModal.style.display = 'none';
-    if (demoModal) demoModal.style.display = 'none';
-    
-    // Get buttons that open the modals
-    const ctaButtons = document.querySelectorAll('.cta-button');
-    const secondaryButtons = document.querySelectorAll('.secondary-button');
-    
-    console.log('Buttons found:', { 
-        ctaButtons: ctaButtons.length, 
-        secondaryButtons: secondaryButtons.length 
+    console.log('Modals found:', { 
+        demoModal: !!demoModal,
+        leadCaptureModal: !!leadCaptureModal,
+        successModal: !!successModal
     }); // Debug log
     
-    // Add click handlers for CTA buttons (signup modal)
-    ctaButtons.forEach(button => {
-        console.log('Adding click handler to CTA button:', button); // Debug log
-        button.addEventListener('click', (e) => {
-            e.preventDefault();
-            console.log('CTA button clicked');
-            if (ctaModal) {
-                console.log('Showing CTA modal');
-                // Show first step, hide second step
-                document.getElementById('ctaStep1').style.display = 'block';
-                document.getElementById('ctaStep2').style.display = 'none';
-                ctaModal.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
-            } else {
-                console.error('CTA modal not found!');
-            }
-        });
-    });
+    // Initially hide modals
+    if (demoModal) demoModal.style.display = 'none';
+    if (leadCaptureModal) leadCaptureModal.style.display = 'none';
+    if (successModal) successModal.style.display = 'none';
     
-    // Add click handlers for secondary buttons (demo modal)
-    secondaryButtons.forEach(button => {
+    // Get buttons that open the modals
+    const demoButtons = document.querySelectorAll('.secondary-button');
+    const ctaButtons = document.querySelectorAll('.cta-button');
+    
+    console.log('Buttons found:', { 
+        demoButtons: demoButtons.length,
+        ctaButtons: ctaButtons.length
+    }); // Debug log
+    
+    // Add click handlers for demo buttons
+    demoButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
-            console.log('Secondary button clicked');
+            console.log('Demo button clicked');
             if (demoModal) {
-                // Show first step, hide second step
                 document.getElementById('demoStep1').style.display = 'block';
                 document.getElementById('demoStep2').style.display = 'none';
                 demoModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    });
+
+    // Add click handlers for CTA buttons
+    ctaButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log('CTA button clicked');
+            if (leadCaptureModal) {
+                leadCaptureModal.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
             }
         });
@@ -221,45 +217,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 modal.style.display = 'none';
                 document.body.style.overflow = '';
                 // Reset steps to initial state
-                if (modal.id === 'ctaModal') {
-                    document.getElementById('ctaStep1').style.display = 'block';
-                    document.getElementById('ctaStep2').style.display = 'none';
-                } else if (modal.id === 'demoModal') {
+                if (modal.id === 'demoModal') {
                     document.getElementById('demoStep1').style.display = 'block';
                     document.getElementById('demoStep2').style.display = 'none';
                 }
             }
         });
     });
-    
-    // Handle CTA form submission
-    const ctaForm = document.getElementById('ctaForm');
-    if (ctaForm) {
-        ctaForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            console.log('CTA form submitted');
-            
-            // Get form data
-            const formData = {
-                name: ctaForm.querySelector('input[name="name"]').value,
-                email: ctaForm.querySelector('input[name="email"]').value,
-                phone: ctaForm.querySelector('input[name="phone"]').value
-            };
-            
-            // Validate form data
-            if (formData.name && formData.email && formData.phone) {
-                // Hide step 1, show step 2 (calendar)
-                document.getElementById('ctaStep1').style.display = 'none';
-                document.getElementById('ctaStep2').style.display = 'block';
-                
-                // Initialize calendar if not already initialized
-                if (!calendarApiInitialized) {
-                    const calendar = new Calendar();
-                    calendarApiInitialized = true;
-                }
-            }
-        });
-    }
     
     // Handle demo form submission
     const demoForm = document.getElementById('demoForm');
@@ -284,23 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    
-    // Close modals when clicking outside
-    window.addEventListener('click', (e) => {
-        if (e.target.classList.contains('modal')) {
-            e.target.style.display = 'none';
-            document.body.style.overflow = '';
-            // Reset steps
-            if (e.target.id === 'ctaModal') {
-                document.getElementById('ctaStep1').style.display = 'block';
-                document.getElementById('ctaStep2').style.display = 'none';
-            } else if (e.target.id === 'demoModal') {
-                document.getElementById('demoStep1').style.display = 'block';
-                document.getElementById('demoStep2').style.display = 'none';
-            }
-        }
-    });
-    
+
     // Initialize calculator elements
     jobValueInput = document.getElementById('jobValue');
     missedCallsInput = document.getElementById('missedCalls');
@@ -353,5 +301,51 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateLanguage(lang);
             }
         });
+    });
+
+    // Initialize phone input with US formatting
+    phoneInput = window.intlTelInput(document.querySelector("#phone"), {
+        preferredCountries: ['us'],
+        separateDialCode: true,
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+    });
+
+    // Handle lead capture form submission
+    const leadCaptureForm = document.getElementById('leadCaptureForm');
+    if (leadCaptureForm) {
+        leadCaptureForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate phone number
+            if (!phoneInput.isValidNumber()) {
+                alert('Please enter a valid phone number');
+                return;
+            }
+
+            // Get form data
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: phoneInput.getNumber(),
+                trade: document.getElementById('trade').value,
+                companyName: document.getElementById('companyName').value,
+                jobsPerWeek: document.getElementById('jobsPerWeek').value
+            };
+
+            // TODO: Send form data to your backend
+            console.log('Form data:', formData);
+
+            // Hide lead capture modal and show success modal
+            leadCaptureModal.style.display = 'none';
+            successModal.style.display = 'flex';
+        });
+    }
+
+    // Close modals when clicking outside
+    window.addEventListener('click', function(e) {
+        if (e.target.classList.contains('modal')) {
+            e.target.style.display = 'none';
+            document.body.style.overflow = '';
+        }
     });
 });
