@@ -190,6 +190,26 @@ document.addEventListener('DOMContentLoaded', () => {
         monthlyLossElement: !!monthlyLossElement
     });
 
+    // Calculator functionality
+    if (calculateButton) {
+        calculateButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            calculateLosses();
+        });
+    }
+    
+    // Calculate on Enter key
+    if (jobValueInput && missedCallsInput) {
+        [jobValueInput, missedCallsInput].forEach(input => {
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    calculateLosses();
+                }
+            });
+        });
+    }
+
     // Initialize modals
     const signupModal = document.getElementById('signupModal');
     const demoModal = document.getElementById('demoModal');
@@ -204,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (demoModal) demoModal.style.display = 'none';
     
     // Get buttons that open the modals
-    const ctaButtons = document.querySelectorAll('.cta-button:not([type="submit"])');
+    const ctaButtons = document.querySelectorAll('.cta-button:not([type="submit"]):not(.dashboard-button)');
     const secondaryButtons = document.querySelectorAll('.secondary-button');
     
     console.log('Modal buttons found:', {
@@ -324,15 +344,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const registrationForm = document.getElementById('registrationForm');
     const demoForm = document.getElementById('demoForm');
     const nextButton = document.querySelector('.next-button');
-    const demoSubmitButton = document.querySelector('#demoForm button[type="submit"]');
+    const confirmBookingButton = document.querySelector('.confirm-booking');
+    const watchDemoButton = document.querySelector('.watch-demo');
+    const demoSubmitButton = document.querySelector('.demo-submit');
 
     console.log('Form elements:', {
         registrationForm: !!registrationForm,
         demoForm: !!demoForm,
         nextButton: !!nextButton,
+        confirmBookingButton: !!confirmBookingButton,
+        watchDemoButton: !!watchDemoButton,
         demoSubmitButton: !!demoSubmitButton
     });
 
+    // Handle next button in registration form
     if (nextButton) {
         nextButton.addEventListener('click', function(e) {
             e.preventDefault();
@@ -362,15 +387,53 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Handle confirm booking button
+    if (confirmBookingButton) {
+        confirmBookingButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Confirm booking clicked');
+            
+            // Move to confirmation step
+            const step2 = document.querySelector('.step-content[data-step="2"]');
+            const step3 = document.querySelector('.step-content[data-step="3"]');
+            const stepIndicator2 = document.querySelector('.step-indicator[data-step="2"]');
+            const stepIndicator3 = document.querySelector('.step-indicator[data-step="3"]');
+
+            if (step2 && step3 && stepIndicator2 && stepIndicator3) {
+                step2.classList.remove('active');
+                step3.classList.add('active');
+                stepIndicator2.classList.remove('active');
+                stepIndicator3.classList.add('active');
+            }
+        });
+    }
+
+    // Handle watch demo button
+    if (watchDemoButton) {
+        watchDemoButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Watch demo clicked');
+            
+            // Close signup modal and open demo modal
+            if (signupModal) {
+                signupModal.style.display = 'none';
+            }
+            if (demoModal) {
+                demoModal.style.display = 'flex';
+            }
+        });
+    }
+
+    // Handle demo form submit
     if (demoSubmitButton) {
         demoSubmitButton.addEventListener('click', function(e) {
             e.preventDefault();
             console.log('Demo form submit clicked');
-            const firstName = document.getElementById('firstName').value;
-            const phone = document.getElementById('phone').value;
-            const tradeType = document.getElementById('tradeType').value;
+            const firstName = document.getElementById('demoFirstName').value;
+            const phone = document.getElementById('demoPhone').value;
+            const trade = document.getElementById('demoTrade').value;
 
-            if (!firstName || !phone || !tradeType) {
+            if (!firstName || !phone || !trade) {
                 alert('Please fill in all required fields');
                 return;
             }

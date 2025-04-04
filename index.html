@@ -363,7 +363,7 @@
                         </select>
                         <input type="text" id="otherBookingSystem" name="otherBookingSystem" class="other-input" placeholder="Please specify" style="display: none;">
                     </div>
-                    <button type="button" class="cta-button" data-translate="modal.next">Next: Book My Call →</button>
+                    <button type="button" class="next-button cta-button" data-translate="modal.next">Next: Book My Call →</button>
                     <p class="form-note">Takes 15 minutes. No payment needed.</p>
                 </div>
 
@@ -400,7 +400,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="button" class="cta-button confirm-booking" style="display: none;">Confirm Booking</button>
+                    <button type="button" class="confirm-booking cta-button" style="display: none;">Confirm Booking</button>
                 </div>
 
                 <div class="step-content" data-step="3">
@@ -418,7 +418,7 @@
             </form>
 
             <div class="modal-footer">
-                <button class="watch-demo">← Watch Demo Again</button>
+                <button type="button" class="watch-demo secondary-button">← Watch Demo Again</button>
             </div>
         </div>
     </div>
@@ -450,23 +450,12 @@
                             <option value="handyman" data-translate="demo.trades.handyman">Handyman</option>
                             <option value="plumber" data-translate="demo.trades.plumber">Plumber</option>
                             <option value="electrician" data-translate="demo.trades.electrician">Electrician</option>
-                            <option value="roofer" data-translate="demo.trades.roofer">Roofer</option>
                             <option value="hvac" data-translate="demo.trades.hvac">HVAC</option>
-                            <option value="painter" data-translate="demo.trades.painter">Painter</option>
-                            <option value="general-contractor" data-translate="demo.trades.generalContractor">General Contractor</option>
-                            <option value="flooring" data-translate="demo.trades.flooring">Flooring</option>
-                            <option value="drywall" data-translate="demo.trades.drywall">Drywall</option>
-                            <option value="landscaper" data-translate="demo.trades.landscaper">Landscaper</option>
                             <option value="other" data-translate="demo.trades.other">Other</option>
                         </select>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="demoCompany" data-translate="demo.company">Company Name (optional)</label>
-                        <input type="text" id="demoCompany" name="company">
-                    </div>
-                    
-                    <button type="submit" class="cta-button" data-translate="demo.submitButton">Give Me the Demo Number →</button>
+                    <button type="button" class="demo-submit cta-button" data-translate="demo.submit">Call Demo Line</button>
                 </form>
             </div>
             
