@@ -363,7 +363,18 @@
                         </select>
                         <input type="text" id="otherBookingSystem" name="otherBookingSystem" class="other-input" placeholder="Please specify" style="display: none;">
                     </div>
-                    <button type="button" class="next-button cta-button" data-translate="modal.next">Next: Book My Call →</button>
+                    <div class="form-group">
+                        <label for="trade" data-translate="modal.trade">What's your trade?</label>
+                        <select id="trade" name="trade" required>
+                            <option value="">Select your trade</option>
+                            <option value="plumber">Plumber</option>
+                            <option value="electrician">Electrician</option>
+                            <option value="hvac">HVAC Tech</option>
+                            <option value="handyman">Handyman</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <button type="button" class="next-button modal-next-button" data-translate="modal.next">Next: Book My Call →</button>
                     <p class="form-note">Takes 15 minutes. No payment needed.</p>
                 </div>
 
@@ -418,7 +429,7 @@
             </form>
 
             <div class="modal-footer">
-                <button type="button" class="watch-demo secondary-button">← Watch Demo Again</button>
+                <button type="button" class="watch-demo modal-watch-demo">← Watch Demo Again</button>
             </div>
         </div>
     </div>
@@ -449,18 +460,18 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="demoTrade" data-translate="demo.trade">What type of work do you do? (Pick one)</label>
+                        <label for="demoTrade" data-translate="demo.trade">What's your trade?</label>
                         <select id="demoTrade" name="trade" required>
-                            <option value="" data-translate="demo.selectTrade">Select your trade</option>
-                            <option value="handyman" data-translate="demo.trades.handyman">Handyman</option>
-                            <option value="plumber" data-translate="demo.trades.plumber">Plumber</option>
-                            <option value="electrician" data-translate="demo.trades.electrician">Electrician</option>
-                            <option value="hvac" data-translate="demo.trades.hvac">HVAC</option>
-                            <option value="other" data-translate="demo.trades.other">Other</option>
+                            <option value="">Select your trade</option>
+                            <option value="plumber">Plumber</option>
+                            <option value="electrician">Electrician</option>
+                            <option value="hvac">HVAC Tech</option>
+                            <option value="handyman">Handyman</option>
+                            <option value="other">Other</option>
                         </select>
                     </div>
                     
-                    <button type="button" class="demo-submit cta-button" data-translate="demo.submit">Call Demo Line</button>
+                    <button type="button" class="demo-submit modal-demo-submit" data-translate="demo.submit">Call Demo Line</button>
                 </form>
             </div>
             

@@ -236,8 +236,8 @@ document.addEventListener('DOMContentLoaded', () => {
     ctaButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
-            // Only open modal if it's not a next button
-            if (!button.classList.contains('next-button')) {
+            // Only handle non-modal CTA buttons
+            if (!button.closest('.modal-content')) {
                 console.log('CTA button clicked');
                 if (signupModal) {
                     signupModal.style.display = 'flex';
@@ -251,10 +251,13 @@ document.addEventListener('DOMContentLoaded', () => {
     secondaryButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
-            console.log('Secondary button clicked');
-            if (demoModal) {
-                demoModal.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
+            // Only handle non-modal secondary buttons
+            if (!button.closest('.modal-content')) {
+                console.log('Secondary button clicked');
+                if (demoModal) {
+                    demoModal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                }
             }
         });
     });
@@ -346,10 +349,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Form submission handlers
     const registrationForm = document.getElementById('registrationForm');
     const demoForm = document.getElementById('demoForm');
-    const nextButton = document.querySelector('.next-button');
+    const nextButton = document.querySelector('.modal-next-button');
     const confirmBookingButton = document.querySelector('.confirm-booking');
-    const watchDemoButton = document.querySelector('.watch-demo');
-    const demoSubmitButton = document.querySelector('.demo-submit');
+    const watchDemoButton = document.querySelector('.modal-watch-demo');
+    const demoSubmitButton = document.querySelector('.modal-demo-submit');
 
     console.log('Form elements:', {
         registrationForm: !!registrationForm,
@@ -360,27 +363,18 @@ document.addEventListener('DOMContentLoaded', () => {
         demoSubmitButton: !!demoSubmitButton
     });
 
-    // Handle next button in registration form
+    // Handle next button in signup modal
     if (nextButton) {
         nextButton.addEventListener('click', function(e) {
             e.preventDefault();
             console.log('Next button clicked');
-            const fullName = document.getElementById('fullName').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const bookingSystem = document.getElementById('bookingSystem').value;
-
-            if (!fullName || !email || !phone || !bookingSystem) {
-                alert('Please fill in all required fields');
-                return;
-            }
-
+            
             // Move to next step
             const step1 = document.querySelector('.step-content[data-step="1"]');
             const step2 = document.querySelector('.step-content[data-step="2"]');
-            const stepIndicator1 = document.querySelector('.step-indicator[data-step="1"]');
-            const stepIndicator2 = document.querySelector('.step-indicator[data-step="2"]');
-
+            const stepIndicator1 = document.querySelector('.step[data-step="1"]');
+            const stepIndicator2 = document.querySelector('.step[data-step="2"]');
+            
             if (step1 && step2 && stepIndicator1 && stepIndicator2) {
                 step1.classList.remove('active');
                 step2.classList.add('active');

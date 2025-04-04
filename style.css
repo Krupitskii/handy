@@ -2508,4 +2508,39 @@ body {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* Modal Button Styles */
+.modal-next-button,
+.modal-demo-submit {
+    background: #f97316;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 6px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    width: 100%;
+    margin-top: 1.5rem;
+}
+
+.modal-next-button:hover,
+.modal-demo-submit:hover {
+    background: #ea580c;
+}
+
+.modal-watch-demo {
+    background: none;
+    border: none;
+    color: #6B7280;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.modal-watch-demo:hover {
+    color: #f97316;
 } 
