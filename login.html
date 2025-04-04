@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HandyBot Admin Login</title>
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -92,6 +102,12 @@
             e.preventDefault();
             const password = document.getElementById('password').value;
             
+            // Track login attempt
+            gtag('event', 'login_attempt', {
+                event_category: 'Authentication',
+                event_label: 'login_form'
+            });
+            
             // Check password
             if (password === 'ghjnbhfnm') {
                 // Set authentication token
@@ -100,9 +116,25 @@
                 // Redirect to admin page
                 const redirectPath = new URLSearchParams(window.location.search).get('redirect') || 'admin';
                 window.location.href = `/${redirectPath}.html`;
+                
+                // Track successful login
+                gtag('event', 'login_success', {
+                    event_category: 'Authentication',
+                    event_label: 'login_form'
+                });
             } else {
                 document.getElementById('error').style.display = 'block';
             }
+        });
+        
+        // Track button clicks
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', () => {
+                gtag('event', 'button_click', {
+                    event_category: 'Buttons',
+                    event_label: button.id || button.className
+                });
+            });
         });
     </script>
 </body>

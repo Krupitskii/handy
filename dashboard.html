@@ -6,6 +6,16 @@
     <title>HandyBot Dashboard</title>
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: 'unsafe-inline' 'unsafe-eval';">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    
     <style>
         :root {
             --primary-color: #F97316;
@@ -970,6 +980,10 @@
         // Logout functionality
         document.querySelector('.nav-link.logout').addEventListener('click', function(e) {
             e.preventDefault();
+            gtag('event', 'logout', {
+                event_category: 'Authentication',
+                event_label: 'dashboard'
+            });
             localStorage.removeItem('adminAuth');
             window.location.href = 'login.html';
         });
@@ -985,6 +999,12 @@
                 this.updateCalendarView();
                 this.loadEvents();
                 this.setupMobileView();
+                
+                // Track calendar view change
+                gtag('event', 'calendar_view_change', {
+                    event_category: 'Calendar',
+                    event_label: this.view
+                });
             },
 
             setupEventListeners() {
@@ -998,6 +1018,12 @@
                             });
                             btn.classList.add('active');
                             this.updateCalendarView();
+                            
+                            // Track view toggle
+                            gtag('event', 'calendar_view_toggle', {
+                                event_category: 'Calendar',
+                                event_label: btn.textContent.toLowerCase()
+                            });
                         });
                     });
                 }
@@ -1005,10 +1031,22 @@
                 // Navigation
                 document.querySelector('.calendar-nav .calendar-btn:first-child').addEventListener('click', () => {
                     this.navigateDate(-1);
+                    
+                    // Track navigation
+                    gtag('event', 'calendar_navigate', {
+                        event_category: 'Calendar',
+                        event_label: 'previous'
+                    });
                 });
 
                 document.querySelector('.calendar-nav .calendar-btn:last-child').addEventListener('click', () => {
                     this.navigateDate(1);
+                    
+                    // Track navigation
+                    gtag('event', 'calendar_navigate', {
+                        event_category: 'Calendar',
+                        event_label: 'next'
+                    });
                 });
 
                 document.querySelector('.calendar-nav .calendar-btn:nth-child(2)').addEventListener('click', () => {
@@ -1249,13 +1287,35 @@
                         modal.style.display = 'none';
                     }
                 });
+                
+                // Track event view
+                gtag('event', 'event_details_view', {
+                    event_category: 'Calendar',
+                    event_label: event.service
+                });
             },
 
             showAddJobModal() {
                 // Implement add job modal functionality
                 console.log('Show add job modal');
+                
+                // Track add job modal open
+                gtag('event', 'add_job_modal_open', {
+                    event_category: 'Calendar',
+                    event_label: 'modal'
+                });
             }
         };
+
+        // Track button clicks
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', () => {
+                gtag('event', 'button_click', {
+                    event_category: 'Buttons',
+                    event_label: button.id || button.className
+                });
+            });
+        });
 
         // Initialize calendar
         calendar.init();
