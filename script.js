@@ -228,23 +228,47 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle demo form submission
     const demoForm = document.getElementById('demoForm');
     if (demoForm) {
-        demoForm.addEventListener('submit', (e) => {
+        let submitButtonText = '';
+        
+        demoForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             console.log('Demo form submitted');
             
             // Get form data
             const formData = {
-                name: demoForm.querySelector('input[name="name"]').value,
+                fullName: demoForm.querySelector('input[name="name"]').value,
                 email: demoForm.querySelector('input[name="email"]').value,
                 phone: demoForm.querySelector('input[name="phone"]').value,
-                company: demoForm.querySelector('input[name="company"]').value
+                companyName: demoForm.querySelector('input[name="company"]').value,
+                language: currentLanguage,
+                formId: 'demo-form'
             };
             
-            // Validate form data
-            if (formData.name && formData.email && formData.phone && formData.company) {
-                // Hide step 1, show step 2 (phone number)
-                document.getElementById('demoStep1').style.display = 'none';
-                document.getElementById('demoStep2').style.display = 'block';
+            try {
+                // Show loading state
+                const submitButton = demoForm.querySelector('button[type="submit"]');
+                submitButtonText = submitButton.textContent;
+                submitButton.textContent = 'Sending...';
+                submitButton.disabled = true;
+
+                // Send form data to Firebase
+                const success = await window.submitFormData(formData);
+                
+                if (success) {
+                    // Hide step 1, show step 2 (phone number)
+                    document.getElementById('demoStep1').style.display = 'none';
+                    document.getElementById('demoStep2').style.display = 'block';
+                } else {
+                    throw new Error('Failed to submit form');
+                }
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                alert('Sorry, there was an error submitting your form. Please try again.');
+            } finally {
+                // Reset button state
+                const submitButton = demoForm.querySelector('button[type="submit"]');
+                submitButton.textContent = submitButtonText;
+                submitButton.disabled = false;
             }
         });
     }
@@ -359,6 +383,61 @@ document.addEventListener('DOMContentLoaded', () => {
             } finally {
                 // Reset button state
                 const submitButton = leadCaptureForm.querySelector('button[type="submit"]');
+                submitButton.textContent = submitButtonText;
+                submitButton.disabled = false;
+            }
+        });
+    }
+
+    // Handle secondary form submission
+    const secondaryForm = document.getElementById('secondaryForm');
+    if (secondaryForm) {
+        let submitButtonText = '';
+        
+        secondaryForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Validate phone number
+            if (!phoneInput.isValidNumber()) {
+                alert('Please enter a valid phone number');
+                return;
+            }
+
+            // Get form data
+            const formData = {
+                fullName: document.getElementById('secondaryFullName').value,
+                email: document.getElementById('secondaryEmail').value,
+                phone: phoneInput.getNumber(),
+                trade: document.getElementById('secondaryTrade').value,
+                companyName: document.getElementById('secondaryCompanyName').value,
+                jobsPerWeek: document.getElementById('secondaryJobsPerWeek').value,
+                language: currentLanguage,
+                formId: 'secondary-form'
+            };
+
+            try {
+                // Show loading state
+                const submitButton = secondaryForm.querySelector('button[type="submit"]');
+                submitButtonText = submitButton.textContent;
+                submitButton.textContent = 'Sending...';
+                submitButton.disabled = true;
+
+                // Send form data to Firebase
+                const success = await window.submitFormData(formData);
+                
+                if (success) {
+                    // Hide secondary modal and show success modal
+                    secondaryModal.style.display = 'none';
+                    successModal.style.display = 'flex';
+                } else {
+                    throw new Error('Failed to submit form');
+                }
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                alert('Sorry, there was an error submitting your form. Please try again.');
+            } finally {
+                // Reset button state
+                const submitButton = secondaryForm.querySelector('button[type="submit"]');
                 submitButton.textContent = submitButtonText;
                 submitButton.disabled = false;
             }
