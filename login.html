@@ -99,7 +99,7 @@
                 
                 // Redirect to admin page
                 const redirectPath = new URLSearchParams(window.location.search).get('redirect') || 'admin';
-                window.location.href = `/${redirectPath}`;
+                window.location.href = `/${redirectPath}.html`;
             } else {
                 document.getElementById('error').style.display = 'block';
             }

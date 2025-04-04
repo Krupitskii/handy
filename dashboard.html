@@ -106,7 +106,7 @@
         <div class="header">
             <h1>HandyBot Dashboard</h1>
             <div class="nav-buttons">
-                <button class="admin-btn" onclick="window.location.href='/admin'">View Submissions</button>
+                <button class="admin-btn" onclick="window.location.href='admin.html'">View Submissions</button>
                 <button class="logout-btn" onclick="logout()">Logout</button>
             </div>
         </div>
@@ -136,13 +136,13 @@
     <script type="module">
         // Check authentication
         if (!localStorage.getItem('adminAuth')) {
-            window.location.href = '/login.html?redirect=dashboard';
+            window.location.href = 'login.html?redirect=dashboard';
         }
 
         // Logout function
         window.logout = function() {
             localStorage.removeItem('adminAuth');
-            window.location.href = '/login.html';
+            window.location.href = 'login.html';
         };
 
         import { getSubmissions } from './firebase-config.js';

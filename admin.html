@@ -182,13 +182,13 @@
     <script type="module">
         // Check authentication
         if (!localStorage.getItem('adminAuth')) {
-            window.location.href = '/login.html?redirect=admin';
+            window.location.href = 'login.html?redirect=admin';
         }
 
         // Logout function
         window.logout = function() {
             localStorage.removeItem('adminAuth');
-            window.location.href = '/login.html';
+            window.location.href = 'login.html';
         };
 
         import { getSubmissions } from './firebase-config.js';
