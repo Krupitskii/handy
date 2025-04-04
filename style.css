@@ -1566,77 +1566,103 @@ body {
 
 /* Lead Capture Form Styles */
 #leadCaptureModal .modal-content {
-    max-width: 500px;
-    padding: 30px;
+    max-width: 400px;
+    padding: 24px;
+    margin: 40px auto;
 }
 
 #leadCaptureModal h2 {
-    font-size: 24px;
+    font-size: 22px;
     color: #1F2937;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     text-align: center;
+    font-weight: 600;
 }
 
 #leadCaptureForm .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
 #leadCaptureForm input,
 #leadCaptureForm select {
     width: 100%;
-    padding: 12px;
+    padding: 14px 16px;
     border: 1px solid #E5E7EB;
-    border-radius: 6px;
-    font-size: 16px;
-    transition: border-color 0.2s ease;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.2s ease;
+    height: 48px;
+    background-color: #fff;
 }
 
 #leadCaptureForm input:focus,
 #leadCaptureForm select:focus {
     border-color: #f97316;
     outline: none;
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
 }
 
 #leadCaptureForm .helper-text {
     display: block;
-    font-size: 14px;
-    color: #6B7280;
-    margin-top: 5px;
+    font-size: 13px;
+    color: #9CA3AF;
+    margin-top: 4px;
+    font-weight: 400;
 }
 
 #leadCaptureForm button[type="submit"] {
     width: 100%;
-    padding: 14px;
+    padding: 16px;
     background: #f97316;
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: all 0.2s ease;
+    margin-top: 8px;
+    height: 52px;
 }
 
 #leadCaptureForm button[type="submit"]:hover {
     background: #ea580c;
+    transform: translateY(-1px);
 }
 
-/* Success Modal Styles */
-.success-modal {
-    text-align: center;
-    padding: 40px 30px;
+#leadCaptureForm button[type="submit"]:active {
+    transform: translateY(0);
 }
 
-.success-modal h2 {
-    font-size: 28px;
+/* Dropdown specific styles */
+#leadCaptureForm select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2.5 4.5L6 8L9.5 4.5' stroke='%236B7280' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+}
+
+/* Close button adjustments */
+#leadCaptureModal .close-button {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 20px;
+    color: #6B7280;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+#leadCaptureModal .close-button:hover {
     color: #1F2937;
-    margin-bottom: 15px;
-}
-
-.success-modal p {
-    font-size: 16px;
-    color: #4B5563;
-    line-height: 1.5;
+    background-color: #F3F4F6;
 }
 
 /* Phone Input Styles */
@@ -1650,6 +1676,30 @@ body {
 
 .iti__selected-flag {
     background-color: transparent !important;
+    padding: 0 12px;
+}
+
+.iti__country-list {
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Success Modal Styles */
+.success-modal {
+    text-align: center;
+    padding: 32px 24px;
+}
+
+.success-modal h2 {
+    font-size: 24px;
+    color: #1F2937;
+    margin-bottom: 12px;
+}
+
+.success-modal p {
+    font-size: 15px;
+    color: #4B5563;
+    line-height: 1.5;
 }
 
 /* Responsive Styles */
@@ -1657,6 +1707,7 @@ body {
     #leadCaptureModal .modal-content {
         padding: 20px;
         margin: 20px;
+        max-width: calc(100% - 40px);
     }
 
     #leadCaptureModal h2 {
@@ -1666,14 +1717,20 @@ body {
     #leadCaptureForm input,
     #leadCaptureForm select {
         font-size: 14px;
-        padding: 10px;
+        padding: 12px 14px;
+        height: 44px;
+    }
+
+    #leadCaptureForm button[type="submit"] {
+        height: 48px;
+        padding: 14px;
     }
 
     .success-modal {
-        padding: 30px 20px;
+        padding: 24px 20px;
     }
 
     .success-modal h2 {
-        font-size: 24px;
+        font-size: 22px;
     }
 } 
