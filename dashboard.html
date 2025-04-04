@@ -22,7 +22,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        h1 {
+        h1, h2 {
             color: #333;
             margin-bottom: 20px;
         }
@@ -84,14 +84,6 @@
             font-size: 24px;
             font-weight: bold;
             color: #333;
-        }
-
-        .chart-container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
         }
 
         .calendar-container {
@@ -164,8 +156,110 @@
             font-weight: 500;
         }
 
+        .crm-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .crm-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .crm-card {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+        }
+
+        .crm-card h3 {
+            margin: 0 0 10px 0;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .crm-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .crm-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .crm-item:last-child {
+            border-bottom: none;
+        }
+
+        .recent-operations {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .operations-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .operation-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .operation-item:last-child {
+            border-bottom: none;
+        }
+
+        .operation-time {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .operation-details {
+            flex: 1;
+            margin: 0 20px;
+        }
+
+        .operation-type {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .operation-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-success {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .status-pending {
+            background-color: #fef9c3;
+            color: #854d0e;
+        }
+
         @media (max-width: 768px) {
             .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .crm-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -187,22 +281,17 @@
                 <div class="value" id="totalCalls">Loading...</div>
             </div>
             <div class="stat-card">
-                <h3>Missed Calls</h3>
-                <div class="value" id="missedCalls">Loading...</div>
-            </div>
-            <div class="stat-card">
                 <h3>Booked Jobs</h3>
                 <div class="value" id="bookedJobs">Loading...</div>
             </div>
             <div class="stat-card">
-                <h3>Revenue</h3>
-                <div class="value" id="revenue">Loading...</div>
+                <h3>Total Revenue</h3>
+                <div class="value" id="totalRevenue">Loading...</div>
             </div>
-        </div>
-
-        <div class="chart-container">
-            <h2>Call Volume</h2>
-            <canvas id="callVolumeChart"></canvas>
+            <div class="stat-card">
+                <h3>HandyBot Revenue</h3>
+                <div class="value" id="handybotRevenue">Loading...</div>
+            </div>
         </div>
 
         <div class="calendar-container">
@@ -220,6 +309,31 @@
             <div class="events-list" id="eventsList">
                 <!-- Events will be inserted here -->
             </div>
+        </div>
+
+        <div class="crm-section">
+            <h2>Client CRM</h2>
+            <div class="crm-grid">
+                <div class="crm-card">
+                    <h3>Recent Clients</h3>
+                    <ul class="crm-list" id="recentClients">
+                        <!-- Recent clients will be inserted here -->
+                    </ul>
+                </div>
+                <div class="crm-card">
+                    <h3>Upcoming Jobs</h3>
+                    <ul class="crm-list" id="upcomingJobs">
+                        <!-- Upcoming jobs will be inserted here -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="recent-operations">
+            <h2>Recent Operations</h2>
+            <ul class="operations-list" id="operationsList">
+                <!-- Operations will be inserted here -->
+            </ul>
         </div>
     </div>
 
@@ -241,26 +355,38 @@
         // Mock data for demonstration
         const mockData = {
             totalCalls: 25,
-            missedCalls: 3,
             bookedJobs: 8,
-            revenue: 2400,
-            callVolume: {
-                labels: ['9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm'],
-                data: [3, 5, 4, 2, 3, 4, 3, 1]
-            },
+            totalRevenue: 2400,
+            handybotRevenue: 800,
             events: [
                 { time: '9:00 AM', title: 'Plumbing Repair - John Smith' },
                 { time: '11:30 AM', title: 'HVAC Installation - Sarah Johnson' },
                 { time: '2:00 PM', title: 'Electrical Work - Mike Brown' }
+            ],
+            recentClients: [
+                { name: 'John Smith', phone: '(555) 123-4567', lastContact: '2 hours ago' },
+                { name: 'Sarah Johnson', phone: '(555) 234-5678', lastContact: '3 hours ago' },
+                { name: 'Mike Brown', phone: '(555) 345-6789', lastContact: '5 hours ago' }
+            ],
+            upcomingJobs: [
+                { client: 'John Smith', service: 'Plumbing Repair', date: 'Today, 9:00 AM' },
+                { client: 'Sarah Johnson', service: 'HVAC Installation', date: 'Today, 11:30 AM' },
+                { client: 'Mike Brown', service: 'Electrical Work', date: 'Today, 2:00 PM' }
+            ],
+            operations: [
+                { time: '2 hours ago', type: 'New Booking', details: 'Plumbing Repair - John Smith', status: 'success' },
+                { time: '3 hours ago', type: 'Call Answered', details: 'HVAC Inquiry - Sarah Johnson', status: 'success' },
+                { time: '5 hours ago', type: 'Job Completed', details: 'Electrical Work - Mike Brown', status: 'success' }
             ]
         };
 
         // Update dashboard data
         function updateDashboard() {
+            // Update statistics
             document.getElementById('totalCalls').textContent = mockData.totalCalls;
-            document.getElementById('missedCalls').textContent = mockData.missedCalls;
             document.getElementById('bookedJobs').textContent = mockData.bookedJobs;
-            document.getElementById('revenue').textContent = `$${mockData.revenue}`;
+            document.getElementById('totalRevenue').textContent = `$${mockData.totalRevenue}`;
+            document.getElementById('handybotRevenue').textContent = `$${mockData.handybotRevenue}`;
             
             // Update current date
             const today = new Date();
@@ -271,37 +397,6 @@
                 day: 'numeric'
             });
 
-            // Create call volume chart
-            const ctx = document.getElementById('callVolumeChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: mockData.callVolume.labels,
-                    datasets: [{
-                        label: 'Calls',
-                        data: mockData.callVolume.data,
-                        borderColor: '#f97316',
-                        tension: 0.1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 1
-                            }
-                        }
-                    }
-                }
-            });
-
             // Update events list
             const eventsList = document.getElementById('eventsList');
             eventsList.innerHTML = mockData.events.map(event => `
@@ -309,6 +404,39 @@
                     <span class="event-time">${event.time}</span>
                     <span class="event-title">${event.title}</span>
                 </div>
+            `).join('');
+
+            // Update recent clients
+            const recentClients = document.getElementById('recentClients');
+            recentClients.innerHTML = mockData.recentClients.map(client => `
+                <li class="crm-item">
+                    <div>${client.name}</div>
+                    <div style="color: #666; font-size: 14px;">${client.phone}</div>
+                    <div style="color: #666; font-size: 12px;">Last contact: ${client.lastContact}</div>
+                </li>
+            `).join('');
+
+            // Update upcoming jobs
+            const upcomingJobs = document.getElementById('upcomingJobs');
+            upcomingJobs.innerHTML = mockData.upcomingJobs.map(job => `
+                <li class="crm-item">
+                    <div>${job.client}</div>
+                    <div style="color: #666; font-size: 14px;">${job.service}</div>
+                    <div style="color: #666; font-size: 12px;">${job.date}</div>
+                </li>
+            `).join('');
+
+            // Update operations list
+            const operationsList = document.getElementById('operationsList');
+            operationsList.innerHTML = mockData.operations.map(op => `
+                <li class="operation-item">
+                    <span class="operation-time">${op.time}</span>
+                    <div class="operation-details">
+                        <div class="operation-type">${op.type}</div>
+                        <div style="color: #666; font-size: 14px;">${op.details}</div>
+                    </div>
+                    <span class="operation-status status-${op.status}">${op.status}</span>
+                </li>
             `).join('');
         }
 
