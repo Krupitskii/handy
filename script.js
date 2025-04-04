@@ -313,6 +313,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle lead capture form submission
     const leadCaptureForm = document.getElementById('leadCaptureForm');
     if (leadCaptureForm) {
+        let submitButtonText = '';
+        
         leadCaptureForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -337,7 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 // Show loading state
                 const submitButton = leadCaptureForm.querySelector('button[type="submit"]');
-                const originalButtonText = submitButton.textContent;
+                submitButtonText = submitButton.textContent;
                 submitButton.textContent = 'Sending...';
                 submitButton.disabled = true;
 
@@ -357,7 +359,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } finally {
                 // Reset button state
                 const submitButton = leadCaptureForm.querySelector('button[type="submit"]');
-                submitButton.textContent = originalButtonText;
+                submitButton.textContent = submitButtonText;
                 submitButton.disabled = false;
             }
         });

@@ -109,6 +109,12 @@
             font-style: italic;
         }
 
+        .error {
+            color: #dc2626;
+            text-align: center;
+            padding: 20px;
+        }
+
         @media (max-width: 768px) {
             .filters {
                 flex-direction: column;
@@ -186,6 +192,18 @@
                 console.log('Loading submissions...');
                 allSubmissions = await getSubmissions();
                 console.log('Loaded submissions:', allSubmissions);
+                
+                if (!allSubmissions || allSubmissions.length === 0) {
+                    document.getElementById('submissionsBody').innerHTML = `
+                        <tr>
+                            <td colspan="8" style="text-align: center;">
+                                No submissions found.
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
                 filteredSubmissions = [...allSubmissions];
                 updateFormFilter();
                 displaySubmissions();
@@ -193,8 +211,8 @@
                 console.error('Error loading submissions:', error);
                 document.getElementById('submissionsBody').innerHTML = `
                     <tr>
-                        <td colspan="8" style="color: red; text-align: center;">
-                            Error loading submissions. Please try again later.
+                        <td colspan="8" class="error">
+                            Error loading submissions: ${error.message}
                         </td>
                     </tr>
                 `;
@@ -204,7 +222,7 @@
         // Update form filter options
         function updateFormFilter() {
             const formFilter = document.getElementById('formFilter');
-            const forms = new Set(allSubmissions.map(sub => sub.formId));
+            const forms = new Set(allSubmissions.map(sub => sub.formId || 'Unknown'));
             
             // Clear existing options except the first one
             while (formFilter.options.length > 1) {
@@ -231,7 +249,7 @@
                     Object.values(sub).some(value => 
                         String(value).toLowerCase().includes(searchTerm)
                     );
-                const matchesForm = !formFilter || sub.formId === formFilter;
+                const matchesForm = !formFilter || (sub.formId || 'Unknown') === formFilter;
                 const matchesLanguage = !languageFilter || sub.language === languageFilter;
                 
                 return matchesSearch && matchesForm && matchesLanguage;
@@ -259,22 +277,25 @@
                 return;
             }
 
-            tbody.innerHTML = pageSubmissions.map(sub => `
-                <tr>
-                    <td>${sub.timestamp.toDate().toLocaleString()}</td>
-                    <td>${sub.formId || '-'}</td>
-                    <td>${sub.language || '-'}</td>
-                    <td>${sub.fullName || '-'}</td>
-                    <td>${sub.email || '-'}</td>
-                    <td>${sub.phone || '-'}</td>
-                    <td>${sub.companyName || '-'}</td>
-                    <td>
-                        <button onclick='showDetails(${JSON.stringify(sub)})'>
-                            View Details
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
+            tbody.innerHTML = pageSubmissions.map(sub => {
+                const timestamp = sub.timestamp ? new Date(sub.timestamp.seconds * 1000).toLocaleString() : 'N/A';
+                return `
+                    <tr>
+                        <td>${timestamp}</td>
+                        <td>${sub.formId || '-'}</td>
+                        <td>${sub.language || '-'}</td>
+                        <td>${sub.fullName || '-'}</td>
+                        <td>${sub.email || '-'}</td>
+                        <td>${sub.phone || '-'}</td>
+                        <td>${sub.companyName || '-'}</td>
+                        <td>
+                            <button onclick='showDetails(${JSON.stringify(sub)})'>
+                                View Details
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
 
             // Update pagination
             document.getElementById('prevPage').disabled = currentPage === 1;
@@ -303,17 +324,20 @@
             const headers = ['Timestamp', 'Form', 'Language', 'Name', 'Email', 'Phone', 'Company', 'Trade', 'Jobs Per Week'];
             const csvContent = [
                 headers.join(','),
-                ...filteredSubmissions.map(sub => [
-                    sub.timestamp.toDate().toLocaleString(),
-                    sub.formId || '',
-                    sub.language || '',
-                    sub.fullName || '',
-                    sub.email || '',
-                    sub.phone || '',
-                    sub.companyName || '',
-                    sub.trade || '',
-                    sub.jobsPerWeek || ''
-                ].join(','))
+                ...filteredSubmissions.map(sub => {
+                    const timestamp = sub.timestamp ? new Date(sub.timestamp.seconds * 1000).toLocaleString() : 'N/A';
+                    return [
+                        timestamp,
+                        sub.formId || '',
+                        sub.language || '',
+                        sub.fullName || '',
+                        sub.email || '',
+                        sub.phone || '',
+                        sub.companyName || '',
+                        sub.trade || '',
+                        sub.jobsPerWeek || ''
+                    ].join(',');
+                })
             ].join('\n');
 
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
