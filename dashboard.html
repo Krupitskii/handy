@@ -94,6 +94,76 @@
             margin-bottom: 20px;
         }
 
+        .calendar-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .calendar-day:hover {
+            background-color: #e9ecef;
+        }
+
+        .calendar-day.today {
+            background-color: #f97316;
+            color: white;
+        }
+
+        .calendar-day.has-events {
+            border: 2px solid #f97316;
+        }
+
+        .events-list {
+            margin-top: 20px;
+        }
+
+        .event-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .event-item:last-child {
+            border-bottom: none;
+        }
+
+        .event-time {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .event-title {
+            font-weight: 500;
+        }
+
         @media (max-width: 768px) {
             .stats-grid {
                 grid-template-columns: 1fr;
@@ -113,22 +183,43 @@
 
         <div class="stats-grid">
             <div class="stat-card">
-                <h3>Total Submissions</h3>
-                <div class="value" id="totalSubmissions">Loading...</div>
+                <h3>Total Calls Today</h3>
+                <div class="value" id="totalCalls">Loading...</div>
             </div>
             <div class="stat-card">
-                <h3>Lead Capture Forms</h3>
-                <div class="value" id="leadCaptureCount">Loading...</div>
+                <h3>Missed Calls</h3>
+                <div class="value" id="missedCalls">Loading...</div>
             </div>
             <div class="stat-card">
-                <h3>Secondary Forms</h3>
-                <div class="value" id="secondaryFormCount">Loading...</div>
+                <h3>Booked Jobs</h3>
+                <div class="value" id="bookedJobs">Loading...</div>
+            </div>
+            <div class="stat-card">
+                <h3>Revenue</h3>
+                <div class="value" id="revenue">Loading...</div>
             </div>
         </div>
 
         <div class="chart-container">
-            <h2>Submissions by Language</h2>
-            <canvas id="languageChart"></canvas>
+            <h2>Call Volume</h2>
+            <canvas id="callVolumeChart"></canvas>
+        </div>
+
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <h2>Today's Schedule</h2>
+                <div class="calendar-nav">
+                    <button onclick="previousDay()">&lt;</button>
+                    <span id="currentDate">Loading...</span>
+                    <button onclick="nextDay()">&gt;</button>
+                </div>
+            </div>
+            <div class="calendar-grid" id="calendarGrid">
+                <!-- Calendar days will be inserted here -->
+            </div>
+            <div class="events-list" id="eventsList">
+                <!-- Events will be inserted here -->
+            </div>
         </div>
     </div>
 
@@ -147,61 +238,91 @@
 
         import { getSubmissions } from './firebase-config.js';
 
-        async function loadDashboardData() {
-            try {
-                const submissions = await getSubmissions();
-                
-                // Update total submissions
-                document.getElementById('totalSubmissions').textContent = submissions.length;
-                
-                // Count form types
-                const leadCaptureCount = submissions.filter(sub => sub.formId === 'lead-capture').length;
-                const secondaryFormCount = submissions.filter(sub => sub.formId === 'secondary-form').length;
-                
-                document.getElementById('leadCaptureCount').textContent = leadCaptureCount;
-                document.getElementById('secondaryFormCount').textContent = secondaryFormCount;
-                
-                // Count submissions by language
-                const languageCounts = submissions.reduce((acc, sub) => {
-                    const lang = sub.language || 'unknown';
-                    acc[lang] = (acc[lang] || 0) + 1;
-                    return acc;
-                }, {});
-                
-                // Create language chart
-                const ctx = document.getElementById('languageChart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'pie',
-                    data: {
-                        labels: Object.keys(languageCounts).map(lang => lang.toUpperCase()),
-                        datasets: [{
-                            data: Object.values(languageCounts),
-                            backgroundColor: [
-                                '#f97316',
-                                '#3b82f6',
-                                '#10b981'
-                            ]
-                        }]
+        // Mock data for demonstration
+        const mockData = {
+            totalCalls: 25,
+            missedCalls: 3,
+            bookedJobs: 8,
+            revenue: 2400,
+            callVolume: {
+                labels: ['9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm'],
+                data: [3, 5, 4, 2, 3, 4, 3, 1]
+            },
+            events: [
+                { time: '9:00 AM', title: 'Plumbing Repair - John Smith' },
+                { time: '11:30 AM', title: 'HVAC Installation - Sarah Johnson' },
+                { time: '2:00 PM', title: 'Electrical Work - Mike Brown' }
+            ]
+        };
+
+        // Update dashboard data
+        function updateDashboard() {
+            document.getElementById('totalCalls').textContent = mockData.totalCalls;
+            document.getElementById('missedCalls').textContent = mockData.missedCalls;
+            document.getElementById('bookedJobs').textContent = mockData.bookedJobs;
+            document.getElementById('revenue').textContent = `$${mockData.revenue}`;
+            
+            // Update current date
+            const today = new Date();
+            document.getElementById('currentDate').textContent = today.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            // Create call volume chart
+            const ctx = document.getElementById('callVolumeChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: mockData.callVolume.labels,
+                    datasets: [{
+                        label: 'Calls',
+                        data: mockData.callVolume.data,
+                        borderColor: '#f97316',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
                     },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                position: 'bottom'
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
                             }
                         }
                     }
-                });
-            } catch (error) {
-                console.error('Error loading dashboard data:', error);
-                document.querySelectorAll('.value').forEach(el => {
-                    el.textContent = 'Error loading data';
-                });
-            }
+                }
+            });
+
+            // Update events list
+            const eventsList = document.getElementById('eventsList');
+            eventsList.innerHTML = mockData.events.map(event => `
+                <div class="event-item">
+                    <span class="event-time">${event.time}</span>
+                    <span class="event-title">${event.title}</span>
+                </div>
+            `).join('');
         }
 
-        // Load dashboard data
-        loadDashboardData();
+        // Navigation functions
+        window.previousDay = function() {
+            // Implement previous day navigation
+        };
+
+        window.nextDay = function() {
+            // Implement next day navigation
+        };
+
+        // Initialize dashboard
+        updateDashboard();
     </script>
 </body>
 </html> 
