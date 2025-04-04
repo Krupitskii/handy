@@ -337,7 +337,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 // Show loading state
                 const submitButton = leadCaptureForm.querySelector('button[type="submit"]');
-                const originalText = submitButton.textContent;
+                const originalButtonText = submitButton.textContent;
                 submitButton.textContent = 'Sending...';
                 submitButton.disabled = true;
 
@@ -357,7 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } finally {
                 // Reset button state
                 const submitButton = leadCaptureForm.querySelector('button[type="submit"]');
-                submitButton.textContent = originalText;
+                submitButton.textContent = originalButtonText;
                 submitButton.disabled = false;
             }
         });

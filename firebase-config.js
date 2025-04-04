@@ -48,6 +48,9 @@ async function getSubmissions() {
   }
 }
 
-// Export functions to window object for global access
+// Export functions
+export { submitFormData, getSubmissions };
+
+// Also export to window for global access
 window.submitFormData = submitFormData;
 window.getSubmissions = getSubmissions; 
