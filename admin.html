@@ -149,6 +149,7 @@
                 <option value="ru">Russian</option>
             </select>
             <button onclick="exportData()">Export to CSV</button>
+            <button onclick="logout()" style="background-color: #dc2626;">Logout</button>
         </div>
         
         <table id="submissionsTable">
@@ -179,6 +180,17 @@
     </div>
 
     <script type="module">
+        // Check authentication
+        if (!localStorage.getItem('adminAuth')) {
+            window.location.href = '/login.html?redirect=admin';
+        }
+
+        // Logout function
+        window.logout = function() {
+            localStorage.removeItem('adminAuth');
+            window.location.href = '/login.html';
+        };
+
         import { getSubmissions } from './firebase-config.js';
 
         let allSubmissions = [];

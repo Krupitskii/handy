@@ -4,371 +4,204 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HandyBot Dashboard</title>
-    <link rel="stylesheet" href="style.css">
-    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: 'unsafe-inline' 'unsafe-eval';">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-buttons button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            color: white;
+        }
+
+        .nav-buttons .admin-btn {
+            background-color: #f97316;
+        }
+
+        .nav-buttons .logout-btn {
+            background-color: #dc2626;
+        }
+
+        .nav-buttons button:hover {
+            opacity: 0.9;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .stat-card h3 {
+            margin: 0 0 10px 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .stat-card .value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .chart-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <nav class="dashboard-nav">
-        <div class="nav-container">
-            <a href="#" class="nav-logo">HandyBot</a>
-            <div class="nav-links">
-                <a href="#" class="nav-link active">Dashboard</a>
-                <a href="#" class="nav-link">Calendar</a>
-                <a href="#" class="nav-link">Clients</a>
-                <a href="#" class="nav-link">Settings</a>
-                <a href="#" class="nav-link logout">Logout</a>
+    <div class="container">
+        <div class="header">
+            <h1>HandyBot Dashboard</h1>
+            <div class="nav-buttons">
+                <button class="admin-btn" onclick="window.location.href='/admin'">View Submissions</button>
+                <button class="logout-btn" onclick="logout()">Logout</button>
             </div>
         </div>
-    </nav>
 
-    <div class="dashboard-container">
-        <header class="dashboard-header">
-            <h1>Welcome back, <span class="user-name">Mike</span></h1>
-            <p class="dashboard-subtitle">Here's what HandyBot did for you this week</p>
-        </header>
-
-        <section class="metrics-grid">
-            <div class="metric-card">
-                <div class="metric-icon">📞</div>
-                <div class="metric-content">
-                    <h3>Calls Answered</h3>
-                    <p class="metric-value">24</p>
-                    <p class="metric-period">this week</p>
-                </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Submissions</h3>
+                <div class="value" id="totalSubmissions">Loading...</div>
             </div>
-
-            <div class="metric-card">
-                <div class="metric-icon">📅</div>
-                <div class="metric-content">
-                    <h3>Jobs Booked</h3>
-                    <p class="metric-value">18</p>
-                    <p class="metric-period">this week</p>
-                </div>
+            <div class="stat-card">
+                <h3>Lead Capture Forms</h3>
+                <div class="value" id="leadCaptureCount">Loading...</div>
             </div>
-
-            <div class="metric-card">
-                <div class="metric-icon">💰</div>
-                <div class="metric-content">
-                    <h3>Revenue From HandyBot</h3>
-                    <p class="metric-value">$6,400</p>
-                    <p class="metric-period">this month</p>
-                </div>
+            <div class="stat-card">
+                <h3>Secondary Forms</h3>
+                <div class="value" id="secondaryFormCount">Loading...</div>
             </div>
+        </div>
 
-            <div class="metric-card">
-                <div class="metric-icon">⏱</div>
-                <div class="metric-content">
-                    <h3>Admin Time Saved</h3>
-                    <p class="metric-value">7.5 hrs</p>
-                    <p class="metric-period">this week</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="calendar-section">
-            <div class="section-header">
-                <h2>Your Schedule</h2>
-                <button class="secondary-button" disabled>Add New Job</button>
-            </div>
-            <div id="calendar"></div>
-        </section>
-
-        <section class="crm-section">
-            <div class="section-header">
-                <h2>Client CRM</h2>
-                <button class="secondary-button">Add New Client</button>
-            </div>
-            <div class="crm-grid">
-                <div class="crm-card">
-                    <div class="crm-header">
-                        <h3>John D.</h3>
-                        <span class="crm-status active">Active</span>
-                    </div>
-                    <div class="crm-details">
-                        <p class="crm-revenue">Total Revenue: $2,400</p>
-                        <p class="crm-services">Services: Plumbing, Electrical</p>
-                        <p class="crm-notes">Notes: Regular maintenance client</p>
-                    </div>
-                    <button class="view-button">View Details</button>
-                </div>
-
-                <div class="crm-card">
-                    <div class="crm-header">
-                        <h3>Sarah M.</h3>
-                        <span class="crm-status active">Active</span>
-                    </div>
-                    <div class="crm-details">
-                        <p class="crm-revenue">Total Revenue: $1,800</p>
-                        <p class="crm-services">Services: Drywall, Painting</p>
-                        <p class="crm-notes">Notes: New construction project</p>
-                    </div>
-                    <button class="view-button">View Details</button>
-                </div>
-
-                <div class="crm-card">
-                    <div class="crm-header">
-                        <h3>Mike R.</h3>
-                        <span class="crm-status pending">Pending</span>
-                    </div>
-                    <div class="crm-details">
-                        <p class="crm-revenue">Total Revenue: $800</p>
-                        <p class="crm-services">Services: Electrical</p>
-                        <p class="crm-notes">Notes: One-time service</p>
-                    </div>
-                    <button class="view-button">View Details</button>
-                </div>
-            </div>
-        </section>
-
-        <section class="activity-section">
-            <div class="section-header">
-                <h2>Recent Activity</h2>
-            </div>
-            <div class="activity-timeline">
-                <div class="activity-item">
-                    <div class="activity-icon">📞</div>
-                    <div class="activity-content">
-                        <p>Answered call from John D.</p>
-                        <span class="activity-date">Booked for Apr 5</span>
-                    </div>
-                    <span class="activity-time">10:30 AM</span>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-icon">📩</div>
-                    <div class="activity-content">
-                        <p>Sent follow-up to Sarah M.</p>
-                        <span class="activity-date">Appointment reminder</span>
-                    </div>
-                    <span class="activity-time">9:15 AM</span>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-icon">✅</div>
-                    <div class="activity-content">
-                        <p>Confirmed appointment with Mike R.</p>
-                        <span class="activity-date">Electrical inspection</span>
-                    </div>
-                    <span class="activity-time">Yesterday</span>
-                </div>
-            </div>
-        </section>
+        <div class="chart-container">
+            <h2>Submissions by Language</h2>
+            <canvas id="languageChart"></canvas>
+        </div>
     </div>
 
-    <script>
-        // Initialize Calendar
-        document.addEventListener('DOMContentLoaded', function() {
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'timeGridWeek',
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'timeGridWeek,timeGridDay'
-                },
-                slotMinTime: '08:00:00',
-                slotMaxTime: '20:00:00',
-                allDaySlot: false,
-                height: 'auto',
-                contentHeight: 'auto',
-                expandRows: true,
-                nowIndicator: true,
-                slotEventOverlap: false,
-                events: [
-                    // Sunday
-                    {
-                        title: 'Plumbing - John D.',
-                        start: '2025-03-30T09:00:00',
-                        end: '2025-03-30T11:00:00',
-                        backgroundColor: '#f97316',
-                        borderColor: '#f97316',
-                        textColor: '#ffffff'
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module">
+        // Check authentication
+        if (!localStorage.getItem('adminAuth')) {
+            window.location.href = '/login.html?redirect=dashboard';
+        }
+
+        // Logout function
+        window.logout = function() {
+            localStorage.removeItem('adminAuth');
+            window.location.href = '/login.html';
+        };
+
+        import { getSubmissions } from './firebase-config.js';
+
+        async function loadDashboardData() {
+            try {
+                const submissions = await getSubmissions();
+                
+                // Update total submissions
+                document.getElementById('totalSubmissions').textContent = submissions.length;
+                
+                // Count form types
+                const leadCaptureCount = submissions.filter(sub => sub.formId === 'lead-capture').length;
+                const secondaryFormCount = submissions.filter(sub => sub.formId === 'secondary-form').length;
+                
+                document.getElementById('leadCaptureCount').textContent = leadCaptureCount;
+                document.getElementById('secondaryFormCount').textContent = secondaryFormCount;
+                
+                // Count submissions by language
+                const languageCounts = submissions.reduce((acc, sub) => {
+                    const lang = sub.language || 'unknown';
+                    acc[lang] = (acc[lang] || 0) + 1;
+                    return acc;
+                }, {});
+                
+                // Create language chart
+                const ctx = document.getElementById('languageChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: Object.keys(languageCounts).map(lang => lang.toUpperCase()),
+                        datasets: [{
+                            data: Object.values(languageCounts),
+                            backgroundColor: [
+                                '#f97316',
+                                '#3b82f6',
+                                '#10b981'
+                            ]
+                        }]
                     },
-                    {
-                        title: 'Electrical - Sarah M.',
-                        start: '2025-03-30T13:00:00',
-                        end: '2025-03-30T15:00:00',
-                        backgroundColor: '#f97316',
-                        borderColor: '#f97316',
-                        textColor: '#ffffff'
-                    },
-                    {
-                        title: 'Drywall - Mike R.',
-                        start: '2025-03-30T16:00:00',
-                        end: '2025-03-30T18:00:00',
-                        backgroundColor: '#f97316',
-                        borderColor: '#f97316',
-                        textColor: '#ffffff'
-                    },
-                    // Monday
-                    {
-                        title: 'Painting - Emily W.',
-                        start: '2025-03-31T08:00:00',
-                        end: '2025-03-31T10:00:00',
-                        backgroundColor: '#f97316',
-                        borderColor: '#f97316',
-                        textColor: '#ffffff'
-                    },
-                    {
-                        title: 'Plumbing - David K.',
-                        start: '2025-03-31T11:00:00',
-                        end: '2025-03-31T13:00:00',
-                        backgroundColor: '#f97316',
-                        borderColor: '#f97316',
-                        textColor: '#ffffff'
-                    },
-                    {
-                        title: 'Electrical - Lisa P.',
-                        start: '2025-03-31T14:00:00',
-                        end: '2025-03-31T16:00:00',
-                        backgroundColor: '#f97316',
-                        borderColor: '#f97316',
-                        textColor: '#ffffff'
-                    },
-                    // Tuesday
-                    {
-                        title: 'Drywall - Tom B.',
-                        start: '2025-04-01T09:00:00',
-                        end: '2025-04-01T11:00:00',
-                        backgroundColor: '#f97316',
-                        borderColor: '#f97316',
-                        textColor: '#ffffff'
-                    },
-                    {
-                        title: 'Plumbing - Anna L.',
-                        start: '2025-04-01T12:00:00',
-                        end: '2025-04-01T14:00:00',
-                        backgroundColor: '#f97316',
-                        borderColor: '#f97316',
-                        textColor: '#ffffff'
-                    },
-                    {
-                        title: 'Painting - Robert M.',
-                        start: '2025-04-01T15:00:00',
-                        end: '2025-04-01T17:00:00',
-                        backgroundColor: '#f97316',
-                        borderColor: '#f97316',
-                        textColor: '#ffffff'
-                    },
-                    // Wednesday
-                    {
-                        title: 'Electrical - Sophia C.',
-                        start: '2025-04-02T08:30:00',
-                        end: '2025-04-02T10:30:00',
-                        backgroundColor: '#f97316',
-                        borderColor: '#f97316',
-                        textColor: '#ffffff'
-                    },
-                    {
-                        title: 'Drywall - James W.',
-                        start: '2025-04-02T11:30:00',
-                        end: '2025-04-02T13:30:00',
-                        backgroundColor: '#f97316',
-                        borderColor: '#f97316',
-                        textColor: '#ffffff'
-                    },
-                    {
-                        title: 'Plumbing - Maria S.',
-                        start: '2025-04-02T14:30:00',
-                        end: '2025-04-02T16:30:00',
-                        backgroundColor: '#f97316',
-                        borderColor: '#f97316',
-                        textColor: '#ffffff'
-                    },
-                    // Thursday
-                    {
-                        title: 'Painting - Daniel K.',
-                        start: '2025-04-03T09:00:00',
-                        end: '2025-04-03T11:00:00',
-                        backgroundColor: '#f97316',
-                        borderColor: '#f97316',
-                        textColor: '#ffffff'
-                    },
-                    {
-                        title: 'Electrical - Olivia P.',
-                        start: '2025-04-03T12:00:00',
-                        end: '2025-04-03T14:00:00',
-                        backgroundColor: '#f97316',
-                        borderColor: '#f97316',
-                        textColor: '#ffffff'
-                    },
-                    {
-                        title: 'Drywall - William T.',
-                        start: '2025-04-03T15:00:00',
-                        end: '2025-04-03T17:00:00',
-                        backgroundColor: '#f97316',
-                        borderColor: '#f97316',
-                        textColor: '#ffffff'
-                    },
-                    // Friday
-                    {
-                        title: 'Plumbing - John D.',
-                        start: '2025-04-04T08:00:00',
-                        end: '2025-04-04T10:00:00',
-                        backgroundColor: '#f97316',
-                        borderColor: '#f97316',
-                        textColor: '#ffffff'
-                    },
-                    {
-                        title: 'Electrical - Sarah M.',
-                        start: '2025-04-04T11:00:00',
-                        end: '2025-04-04T13:00:00',
-                        backgroundColor: '#f97316',
-                        borderColor: '#f97316',
-                        textColor: '#ffffff'
-                    },
-                    {
-                        title: 'Drywall - Mike R.',
-                        start: '2025-04-04T14:00:00',
-                        end: '2025-04-04T16:00:00',
-                        backgroundColor: '#f97316',
-                        borderColor: '#f97316',
-                        textColor: '#ffffff'
-                    },
-                    // Saturday
-                    {
-                        title: 'Painting - Emily W.',
-                        start: '2025-04-05T09:00:00',
-                        end: '2025-04-05T11:00:00',
-                        backgroundColor: '#f97316',
-                        borderColor: '#f97316',
-                        textColor: '#ffffff'
-                    },
-                    {
-                        title: 'Plumbing - David K.',
-                        start: '2025-04-05T12:00:00',
-                        end: '2025-04-05T14:00:00',
-                        backgroundColor: '#f97316',
-                        borderColor: '#f97316',
-                        textColor: '#ffffff'
-                    },
-                    {
-                        title: 'Electrical - Lisa P.',
-                        start: '2025-04-05T15:00:00',
-                        end: '2025-04-05T17:00:00',
-                        backgroundColor: '#f97316',
-                        borderColor: '#f97316',
-                        textColor: '#ffffff'
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
                     }
-                ],
-                eventTimeFormat: {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: true
-                },
-                slotLabelFormat: {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: true
-                },
-                eventDisplay: 'block',
-                eventMinHeight: 30,
-                slotDuration: '01:00:00',
-                slotLabelInterval: '01:00'
-            });
-            calendar.render();
-        });
+                });
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+                document.querySelectorAll('.value').forEach(el => {
+                    el.textContent = 'Error loading data';
+                });
+            }
+        }
+
+        // Load dashboard data
+        loadDashboardData();
     </script>
 </body>
 </html> 
