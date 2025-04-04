@@ -149,9 +149,12 @@
         .calendar-title {
             font-size: 1.5rem;
             margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
-        .calendar-controls {
+        .calendar-nav {
             display: flex;
             gap: 0.5rem;
         }
@@ -170,37 +173,144 @@
             color: white;
         }
 
-        .calendar-events {
+        .calendar-view-toggle {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .calendar-grid {
             display: grid;
-            gap: 1rem;
+            grid-template-columns: 60px repeat(7, 1fr);
+            gap: 1px;
+            background: var(--light-gray);
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .time-column {
+            background: white;
+            padding: 0.5rem;
+            text-align: right;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .day-header {
+            background: white;
+            padding: 0.5rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .day-date {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .calendar-cell {
+            background: white;
+            min-height: 60px;
+            position: relative;
         }
 
         .calendar-event {
+            position: absolute;
+            left: 2px;
+            right: 2px;
             background: var(--primary-color);
             color: white;
-            padding: 1rem;
+            padding: 0.5rem;
             border-radius: var(--border-radius);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .calendar-event:hover {
+            transform: scale(1.02);
         }
 
         .event-time {
             font-weight: bold;
-        }
-
-        .event-details {
-            flex: 1;
-            margin: 0 1rem;
+            margin-bottom: 0.25rem;
         }
 
         .event-service {
-            font-weight: 500;
+            font-size: 0.8rem;
+            margin-bottom: 0.25rem;
         }
 
         .event-client {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             opacity: 0.9;
+        }
+
+        .add-job-btn {
+            padding: 0.5rem 1rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+            margin-left: 1rem;
+        }
+
+        /* Event Modal */
+        .event-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .event-modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .event-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .event-modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .event-modal-details {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .event-modal-field {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .event-modal-label {
+            font-weight: 500;
+            color: #666;
+        }
+
+        .event-modal-value {
+            font-size: 1.1rem;
         }
 
         /* Recent Activity */
@@ -380,6 +490,25 @@
             .client-grid {
                 grid-template-columns: 1fr;
             }
+
+            .calendar-grid {
+                grid-template-columns: 50px 1fr;
+            }
+
+            .day-header {
+                display: none;
+            }
+
+            .day-header.mobile {
+                display: block;
+                grid-column: 2;
+                border-bottom: 1px solid var(--light-gray);
+            }
+
+            .calendar-event {
+                position: relative;
+                margin-bottom: 0.5rem;
+            }
         }
     </style>
 </head>
@@ -429,39 +558,119 @@
 
         <section class="calendar-section">
             <div class="calendar-header">
-                <h2 class="calendar-title">Your Schedule</h2>
+                <div class="calendar-title">
+                    <div class="calendar-nav">
+                        <button class="calendar-btn">&lt;</button>
+                        <button class="calendar-btn">Today</button>
+                        <button class="calendar-btn">&gt;</button>
+                    </div>
+                    <span>Mar 30 – Apr 5, 2024</span>
+                </div>
                 <div class="calendar-controls">
-                    <button class="calendar-btn">Today</button>
-                    <button class="calendar-btn">&lt;</button>
-                    <button class="calendar-btn">&gt;</button>
-                    <button class="calendar-btn active">Week</button>
-                    <button class="calendar-btn">Day</button>
+                    <div class="calendar-view-toggle">
+                        <button class="calendar-btn active">Week</button>
+                        <button class="calendar-btn">Day</button>
+                    </div>
+                    <button class="add-job-btn">Add New Job</button>
                 </div>
             </div>
-            <div class="calendar-events">
-                <div class="calendar-event">
-                    <div class="event-time">9:00 AM</div>
-                    <div class="event-details">
+            <div class="calendar-grid">
+                <div class="time-column"></div>
+                <div class="day-header">
+                    <div>Sun</div>
+                    <div class="day-date">Mar 30</div>
+                </div>
+                <div class="day-header">
+                    <div>Mon</div>
+                    <div class="day-date">Mar 31</div>
+                </div>
+                <div class="day-header">
+                    <div>Tue</div>
+                    <div class="day-date">Apr 1</div>
+                </div>
+                <div class="day-header">
+                    <div>Wed</div>
+                    <div class="day-date">Apr 2</div>
+                </div>
+                <div class="day-header">
+                    <div>Thu</div>
+                    <div class="day-date">Apr 3</div>
+                </div>
+                <div class="day-header">
+                    <div>Fri</div>
+                    <div class="day-date">Apr 4</div>
+                </div>
+                <div class="day-header">
+                    <div>Sat</div>
+                    <div class="day-date">Apr 5</div>
+                </div>
+                <!-- Time slots -->
+                <div class="time-column">8:00 AM</div>
+                <div class="calendar-cell"></div>
+                <div class="calendar-cell"></div>
+                <div class="calendar-cell"></div>
+                <div class="calendar-cell"></div>
+                <div class="calendar-cell"></div>
+                <div class="calendar-cell"></div>
+                <div class="calendar-cell"></div>
+                <div class="time-column">9:00 AM</div>
+                <div class="calendar-cell">
+                    <div class="calendar-event" style="top: 0; height: 120px;">
+                        <div class="event-time">9:00 AM</div>
                         <div class="event-service">Plumbing Repair</div>
                         <div class="event-client">John Smith</div>
                     </div>
                 </div>
-                <div class="calendar-event">
-                    <div class="event-time">11:30 AM</div>
-                    <div class="event-details">
-                        <div class="event-service">HVAC Installation</div>
-                        <div class="event-client">Sarah Johnson</div>
-                    </div>
+                <div class="calendar-cell"></div>
+                <div class="calendar-cell"></div>
+                <div class="calendar-cell"></div>
+                <div class="calendar-cell"></div>
+                <div class="calendar-cell"></div>
+                <div class="calendar-cell"></div>
+                <!-- Continue time slots until 7:00 PM -->
+                <div class="time-column">10:00 AM</div>
+                <div class="calendar-cell"></div>
+                <div class="calendar-cell"></div>
+                <div class="calendar-cell"></div>
+                <div class="calendar-cell"></div>
+                <div class="calendar-cell"></div>
+                <div class="calendar-cell"></div>
+                <div class="calendar-cell"></div>
+                <!-- Add more time slots... -->
+            </div>
+        </section>
+
+        <!-- Event Modal -->
+        <div class="event-modal">
+            <div class="event-modal-content">
+                <div class="event-modal-header">
+                    <h3>Appointment Details</h3>
+                    <button class="event-modal-close">&times;</button>
                 </div>
-                <div class="calendar-event">
-                    <div class="event-time">2:00 PM</div>
-                    <div class="event-details">
-                        <div class="event-service">Electrical Work</div>
-                        <div class="event-client">Mike Brown</div>
+                <div class="event-modal-details">
+                    <div class="event-modal-field">
+                        <div class="event-modal-label">Time</div>
+                        <div class="event-modal-value">9:00 AM - 11:00 AM</div>
+                    </div>
+                    <div class="event-modal-field">
+                        <div class="event-modal-label">Service</div>
+                        <div class="event-modal-value">Plumbing Repair</div>
+                    </div>
+                    <div class="event-modal-field">
+                        <div class="event-modal-label">Client</div>
+                        <div class="event-modal-value">John Smith</div>
+                    </div>
+                    <div class="event-modal-field">
+                        <div class="event-modal-label">Phone</div>
+                        <div class="event-modal-value">+1 (555) 123-4567</div>
+                    </div>
+                    <div class="event-modal-field">
+                        <div class="event-modal-label">Notes</div>
+                        <div class="event-modal-value">Emergency repair - leaking pipe under kitchen sink</div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
         <section class="activity-section">
             <div class="activity-header">
@@ -567,6 +776,35 @@
             localStorage.removeItem('adminAuth');
             window.location.href = 'login.html';
         });
+
+        // Calendar functionality
+        document.querySelectorAll('.calendar-event').forEach(event => {
+            event.addEventListener('click', function() {
+                document.querySelector('.event-modal').style.display = 'flex';
+            });
+        });
+
+        document.querySelector('.event-modal-close').addEventListener('click', function() {
+            document.querySelector('.event-modal').style.display = 'none';
+        });
+
+        document.querySelector('.event-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+
+        // Mobile view toggle
+        function updateCalendarView() {
+            const isMobile = window.innerWidth <= 768;
+            const dayViewBtn = document.querySelector('.calendar-view-toggle .calendar-btn:last-child');
+            if (isMobile && !dayViewBtn.classList.contains('active')) {
+                dayViewBtn.click();
+            }
+        }
+
+        window.addEventListener('resize', updateCalendarView);
+        updateCalendarView();
     </script>
 </body>
 </html> 
