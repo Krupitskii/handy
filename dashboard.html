@@ -5,452 +5,568 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HandyBot Dashboard</title>
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: 'unsafe-inline' 'unsafe-eval';">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #F97316;
+            --danger-color: #dc2626;
+            --success-color: #22c55e;
+            --pending-color: #eab308;
+            --text-color: #333;
+            --light-gray: #f3f4f6;
+            --border-radius: 8px;
+            --shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
+            padding: 0;
+            background-color: #fff;
+            color: var(--text-color);
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        h1, h2 {
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        .header {
+        /* Navigation */
+        .nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            padding: 1rem 2rem;
+            background: white;
+            box-shadow: var(--shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
         }
 
-        .nav-buttons {
+        .nav-logo {
+            height: 40px;
+        }
+
+        .nav-links {
             display: flex;
-            gap: 10px;
+            gap: 2rem;
+            align-items: center;
         }
 
-        .nav-buttons button {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            transition: all 0.2s;
+        }
+
+        .nav-link.active {
+            background: var(--primary-color);
             color: white;
         }
 
-        .nav-buttons .admin-btn {
-            background-color: #f97316;
+        .nav-link.logout {
+            color: var(--danger-color);
         }
 
-        .nav-buttons .logout-btn {
-            background-color: #dc2626;
+        .burger-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
         }
 
-        .nav-buttons button:hover {
-            opacity: 0.9;
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            padding: 2rem;
         }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+        .welcome-section {
+            text-align: center;
+            margin: 2rem 0 3rem;
         }
 
-        .stat-card {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        .welcome-section h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            color: var(--text-color);
         }
 
-        .stat-card h3 {
-            margin: 0 0 10px 0;
+        .welcome-section p {
+            margin: 0.5rem 0 0;
             color: #666;
-            font-size: 14px;
+            font-size: 1.2rem;
         }
 
-        .stat-card .value {
-            font-size: 24px;
+        /* Metrics Cards */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .metric-card .icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .metric-card .value {
+            font-size: 2rem;
             font-weight: bold;
-            color: #333;
+            margin: 0.5rem 0;
         }
 
-        .calendar-container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+        .metric-card .label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Calendar Section */
+        .calendar-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
         }
 
         .calendar-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 1.5rem;
         }
 
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
+        .calendar-title {
+            font-size: 1.5rem;
+            margin: 0;
         }
 
-        .calendar-day {
-            aspect-ratio: 1;
+        .calendar-controls {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #f8f9fa;
-            border-radius: 4px;
+            gap: 0.5rem;
+        }
+
+        .calendar-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: var(--border-radius);
+            background: var(--light-gray);
             cursor: pointer;
-            transition: all 0.2s ease;
+            font-weight: 500;
         }
 
-        .calendar-day:hover {
-            background-color: #e9ecef;
-        }
-
-        .calendar-day.today {
-            background-color: #f97316;
+        .calendar-btn.active {
+            background: var(--primary-color);
             color: white;
         }
 
-        .calendar-day.has-events {
-            border: 2px solid #f97316;
+        .calendar-events {
+            display: grid;
+            gap: 1rem;
         }
 
-        .events-list {
-            margin-top: 20px;
-        }
-
-        .event-item {
+        .calendar-event {
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            border-radius: var(--border-radius);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .event-item:last-child {
-            border-bottom: none;
         }
 
         .event-time {
-            color: #666;
-            font-size: 14px;
+            font-weight: bold;
         }
 
-        .event-title {
+        .event-details {
+            flex: 1;
+            margin: 0 1rem;
+        }
+
+        .event-service {
             font-weight: 500;
         }
 
-        .crm-section {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+        .event-client {
+            font-size: 0.9rem;
+            opacity: 0.9;
         }
 
-        .crm-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+        /* Recent Activity */
+        .activity-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
         }
 
-        .crm-card {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 6px;
-        }
-
-        .crm-card h3 {
-            margin: 0 0 10px 0;
-            color: #333;
-            font-size: 16px;
-        }
-
-        .crm-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .crm-item {
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .crm-item:last-child {
-            border-bottom: none;
-        }
-
-        .recent-operations {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .operations-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .operation-item {
+        .activity-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #eee;
+            margin-bottom: 1.5rem;
         }
 
-        .operation-item:last-child {
-            border-bottom: none;
+        .activity-list {
+            display: grid;
+            gap: 1rem;
         }
 
-        .operation-time {
-            color: #666;
-            font-size: 14px;
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: var(--light-gray);
+            border-radius: var(--border-radius);
         }
 
-        .operation-details {
+        .activity-icon {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-right: 1rem;
+        }
+
+        .activity-details {
             flex: 1;
-            margin: 0 20px;
         }
 
-        .operation-type {
+        .activity-time {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Client CRM */
+        .crm-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .crm-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .add-client-btn {
+            padding: 0.5rem 1rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
             font-weight: 500;
-            color: #333;
         }
 
-        .operation-status {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
+        .client-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .client-card {
+            background: var(--light-gray);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+        }
+
+        .client-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .client-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .client-status {
+            padding: 0.25rem 0.5rem;
+            border-radius: 1rem;
+            font-size: 0.8rem;
             font-weight: 500;
         }
 
-        .status-success {
-            background-color: #dcfce7;
-            color: #166534;
+        .status-active {
+            background: var(--success-color);
+            color: white;
         }
 
         .status-pending {
-            background-color: #fef9c3;
-            color: #854d0e;
+            background: var(--pending-color);
+            color: white;
+        }
+
+        .client-info {
+            margin-bottom: 1rem;
+        }
+
+        .client-info-item {
+            margin: 0.5rem 0;
+            color: #666;
+        }
+
+        .client-info-label {
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .view-details-btn {
+            width: 100%;
+            padding: 0.5rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (max-width: 768px) {
-            .stats-grid {
+            .nav-links {
+                display: none;
+            }
+
+            .burger-menu {
+                display: block;
+            }
+
+            .metrics-grid {
                 grid-template-columns: 1fr;
             }
-            
-            .crm-grid {
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .welcome-section h1 {
+                font-size: 2rem;
+            }
+
+            .calendar-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .calendar-controls {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .client-grid {
                 grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>HandyBot Dashboard</h1>
-            <div class="nav-buttons">
-                <button class="admin-btn" onclick="window.location.href='admin.html'">View Submissions</button>
-                <button class="logout-btn" onclick="logout()">Logout</button>
-            </div>
+    <nav class="nav">
+        <img src="logo.png" alt="HandyBot" class="nav-logo">
+        <div class="nav-links">
+            <a href="#" class="nav-link active">Dashboard</a>
+            <a href="#" class="nav-link">Calendar</a>
+            <a href="#" class="nav-link">Clients</a>
+            <a href="#" class="nav-link">Settings</a>
+            <a href="#" class="nav-link logout">Logout</a>
         </div>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>Total Calls Today</h3>
-                <div class="value" id="totalCalls">Loading...</div>
-            </div>
-            <div class="stat-card">
-                <h3>Booked Jobs</h3>
-                <div class="value" id="bookedJobs">Loading...</div>
-            </div>
-            <div class="stat-card">
-                <h3>Total Revenue</h3>
-                <div class="value" id="totalRevenue">Loading...</div>
-            </div>
-            <div class="stat-card">
-                <h3>HandyBot Revenue</h3>
-                <div class="value" id="handybotRevenue">Loading...</div>
-            </div>
+        <div class="burger-menu">
+            <i class="fas fa-bars"></i>
         </div>
+    </nav>
 
-        <div class="calendar-container">
+    <main class="main-content">
+        <section class="welcome-section">
+            <h1>Welcome back, John</h1>
+            <p>Here's what HandyBot did for you this week</p>
+        </section>
+
+        <section class="metrics-grid">
+            <div class="metric-card">
+                <i class="fas fa-phone icon"></i>
+                <div class="value">24</div>
+                <div class="label">Calls Answered this week</div>
+            </div>
+            <div class="metric-card">
+                <i class="fas fa-calendar icon"></i>
+                <div class="value">18</div>
+                <div class="label">Jobs Booked this week</div>
+            </div>
+            <div class="metric-card">
+                <i class="fas fa-dollar-sign icon"></i>
+                <div class="value">$3,240</div>
+                <div class="label">Revenue From HandyBot this month</div>
+            </div>
+            <div class="metric-card">
+                <i class="fas fa-clock icon"></i>
+                <div class="value">12h</div>
+                <div class="label">Admin Time Saved this week</div>
+            </div>
+        </section>
+
+        <section class="calendar-section">
             <div class="calendar-header">
-                <h2>Today's Schedule</h2>
-                <div class="calendar-nav">
-                    <button onclick="previousDay()">&lt;</button>
-                    <span id="currentDate">Loading...</span>
-                    <button onclick="nextDay()">&gt;</button>
+                <h2 class="calendar-title">Your Schedule</h2>
+                <div class="calendar-controls">
+                    <button class="calendar-btn">Today</button>
+                    <button class="calendar-btn">&lt;</button>
+                    <button class="calendar-btn">&gt;</button>
+                    <button class="calendar-btn active">Week</button>
+                    <button class="calendar-btn">Day</button>
                 </div>
             </div>
-            <div class="calendar-grid" id="calendarGrid">
-                <!-- Calendar days will be inserted here -->
-            </div>
-            <div class="events-list" id="eventsList">
-                <!-- Events will be inserted here -->
-            </div>
-        </div>
-
-        <div class="crm-section">
-            <h2>Client CRM</h2>
-            <div class="crm-grid">
-                <div class="crm-card">
-                    <h3>Recent Clients</h3>
-                    <ul class="crm-list" id="recentClients">
-                        <!-- Recent clients will be inserted here -->
-                    </ul>
+            <div class="calendar-events">
+                <div class="calendar-event">
+                    <div class="event-time">9:00 AM</div>
+                    <div class="event-details">
+                        <div class="event-service">Plumbing Repair</div>
+                        <div class="event-client">John Smith</div>
+                    </div>
                 </div>
-                <div class="crm-card">
-                    <h3>Upcoming Jobs</h3>
-                    <ul class="crm-list" id="upcomingJobs">
-                        <!-- Upcoming jobs will be inserted here -->
-                    </ul>
+                <div class="calendar-event">
+                    <div class="event-time">11:30 AM</div>
+                    <div class="event-details">
+                        <div class="event-service">HVAC Installation</div>
+                        <div class="event-client">Sarah Johnson</div>
+                    </div>
+                </div>
+                <div class="calendar-event">
+                    <div class="event-time">2:00 PM</div>
+                    <div class="event-details">
+                        <div class="event-service">Electrical Work</div>
+                        <div class="event-client">Mike Brown</div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="recent-operations">
-            <h2>Recent Operations</h2>
-            <ul class="operations-list" id="operationsList">
-                <!-- Operations will be inserted here -->
-            </ul>
-        </div>
-    </div>
+        <section class="activity-section">
+            <div class="activity-header">
+                <h2>Recent Activity</h2>
+            </div>
+            <div class="activity-list">
+                <div class="activity-item">
+                    <i class="fas fa-phone activity-icon"></i>
+                    <div class="activity-details">Call answered for plumbing service</div>
+                    <div class="activity-time">2 hours ago</div>
+                </div>
+                <div class="activity-item">
+                    <i class="fas fa-envelope activity-icon"></i>
+                    <div class="activity-details">Follow-up sent to Sarah Johnson</div>
+                    <div class="activity-time">3 hours ago</div>
+                </div>
+                <div class="activity-item">
+                    <i class="fas fa-check activity-icon"></i>
+                    <div class="activity-details">Appointment confirmed with Mike Brown</div>
+                    <div class="activity-time">5 hours ago</div>
+                </div>
+            </div>
+        </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script type="module">
-        // Check authentication
-        if (!localStorage.getItem('adminAuth')) {
-            window.location.href = 'login.html?redirect=dashboard';
-        }
+        <section class="crm-section">
+            <div class="crm-header">
+                <h2>Client CRM</h2>
+                <button class="add-client-btn">Add New Client</button>
+            </div>
+            <div class="client-grid">
+                <div class="client-card">
+                    <div class="client-header">
+                        <h3 class="client-name">John Smith</h3>
+                        <span class="client-status status-active">Active</span>
+                    </div>
+                    <div class="client-info">
+                        <div class="client-info-item">
+                            <span class="client-info-label">Total Revenue:</span> $1,200
+                        </div>
+                        <div class="client-info-item">
+                            <span class="client-info-label">Services:</span> Plumbing, HVAC
+                        </div>
+                        <div class="client-info-item">
+                            <span class="client-info-label">Notes:</span> Regular maintenance customer
+                        </div>
+                    </div>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+                <div class="client-card">
+                    <div class="client-header">
+                        <h3 class="client-name">Sarah Johnson</h3>
+                        <span class="client-status status-pending">Pending</span>
+                    </div>
+                    <div class="client-info">
+                        <div class="client-info-item">
+                            <span class="client-info-label">Total Revenue:</span> $850
+                        </div>
+                        <div class="client-info-item">
+                            <span class="client-info-label">Services:</span> Electrical
+                        </div>
+                        <div class="client-info-item">
+                            <span class="client-info-label">Notes:</span> New customer, first appointment scheduled
+                        </div>
+                    </div>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+                <div class="client-card">
+                    <div class="client-header">
+                        <h3 class="client-name">Mike Brown</h3>
+                        <span class="client-status status-active">Active</span>
+                    </div>
+                    <div class="client-info">
+                        <div class="client-info-item">
+                            <span class="client-info-label">Total Revenue:</span> $2,400
+                        </div>
+                        <div class="client-info-item">
+                            <span class="client-info-label">Services:</span> HVAC, Electrical
+                        </div>
+                        <div class="client-info-item">
+                            <span class="client-info-label">Notes:</span> Premium service package
+                        </div>
+                    </div>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+            </div>
+        </section>
+    </main>
 
-        // Logout function
-        window.logout = function() {
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.burger-menu').addEventListener('click', function() {
+            document.querySelector('.nav-links').style.display = 
+                document.querySelector('.nav-links').style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        // Get user name from localStorage or API
+        const userName = localStorage.getItem('userName') || 'John';
+        document.querySelector('.welcome-section h1').textContent = `Welcome back, ${userName}`;
+
+        // Logout functionality
+        document.querySelector('.nav-link.logout').addEventListener('click', function(e) {
+            e.preventDefault();
             localStorage.removeItem('adminAuth');
             window.location.href = 'login.html';
-        };
-
-        import { getSubmissions } from './firebase-config.js';
-
-        // Mock data for demonstration
-        const mockData = {
-            totalCalls: 25,
-            bookedJobs: 8,
-            totalRevenue: 2400,
-            handybotRevenue: 800,
-            events: [
-                { time: '9:00 AM', title: 'Plumbing Repair - John Smith' },
-                { time: '11:30 AM', title: 'HVAC Installation - Sarah Johnson' },
-                { time: '2:00 PM', title: 'Electrical Work - Mike Brown' }
-            ],
-            recentClients: [
-                { name: 'John Smith', phone: '(555) 123-4567', lastContact: '2 hours ago' },
-                { name: 'Sarah Johnson', phone: '(555) 234-5678', lastContact: '3 hours ago' },
-                { name: 'Mike Brown', phone: '(555) 345-6789', lastContact: '5 hours ago' }
-            ],
-            upcomingJobs: [
-                { client: 'John Smith', service: 'Plumbing Repair', date: 'Today, 9:00 AM' },
-                { client: 'Sarah Johnson', service: 'HVAC Installation', date: 'Today, 11:30 AM' },
-                { client: 'Mike Brown', service: 'Electrical Work', date: 'Today, 2:00 PM' }
-            ],
-            operations: [
-                { time: '2 hours ago', type: 'New Booking', details: 'Plumbing Repair - John Smith', status: 'success' },
-                { time: '3 hours ago', type: 'Call Answered', details: 'HVAC Inquiry - Sarah Johnson', status: 'success' },
-                { time: '5 hours ago', type: 'Job Completed', details: 'Electrical Work - Mike Brown', status: 'success' }
-            ]
-        };
-
-        // Update dashboard data
-        function updateDashboard() {
-            // Update statistics
-            document.getElementById('totalCalls').textContent = mockData.totalCalls;
-            document.getElementById('bookedJobs').textContent = mockData.bookedJobs;
-            document.getElementById('totalRevenue').textContent = `$${mockData.totalRevenue}`;
-            document.getElementById('handybotRevenue').textContent = `$${mockData.handybotRevenue}`;
-            
-            // Update current date
-            const today = new Date();
-            document.getElementById('currentDate').textContent = today.toLocaleDateString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-
-            // Update events list
-            const eventsList = document.getElementById('eventsList');
-            eventsList.innerHTML = mockData.events.map(event => `
-                <div class="event-item">
-                    <span class="event-time">${event.time}</span>
-                    <span class="event-title">${event.title}</span>
-                </div>
-            `).join('');
-
-            // Update recent clients
-            const recentClients = document.getElementById('recentClients');
-            recentClients.innerHTML = mockData.recentClients.map(client => `
-                <li class="crm-item">
-                    <div>${client.name}</div>
-                    <div style="color: #666; font-size: 14px;">${client.phone}</div>
-                    <div style="color: #666; font-size: 12px;">Last contact: ${client.lastContact}</div>
-                </li>
-            `).join('');
-
-            // Update upcoming jobs
-            const upcomingJobs = document.getElementById('upcomingJobs');
-            upcomingJobs.innerHTML = mockData.upcomingJobs.map(job => `
-                <li class="crm-item">
-                    <div>${job.client}</div>
-                    <div style="color: #666; font-size: 14px;">${job.service}</div>
-                    <div style="color: #666; font-size: 12px;">${job.date}</div>
-                </li>
-            `).join('');
-
-            // Update operations list
-            const operationsList = document.getElementById('operationsList');
-            operationsList.innerHTML = mockData.operations.map(op => `
-                <li class="operation-item">
-                    <span class="operation-time">${op.time}</span>
-                    <div class="operation-details">
-                        <div class="operation-type">${op.type}</div>
-                        <div style="color: #666; font-size: 14px;">${op.details}</div>
-                    </div>
-                    <span class="operation-status status-${op.status}">${op.status}</span>
-                </li>
-            `).join('');
-        }
-
-        // Navigation functions
-        window.previousDay = function() {
-            // Implement previous day navigation
-        };
-
-        window.nextDay = function() {
-            // Implement next day navigation
-        };
-
-        // Initialize dashboard
-        updateDashboard();
+        });
     </script>
 </body>
 </html> 
