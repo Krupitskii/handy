@@ -184,50 +184,60 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Add click handlers for demo buttons
     demoButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            e.preventDefault();
-            console.log('Demo button clicked');
-            if (demoModal) {
-                document.getElementById('demoStep1').style.display = 'block';
-                document.getElementById('demoStep2').style.display = 'none';
-                demoModal.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
-            }
-        });
+        if (!button.hasAttribute('data-click-handler')) {
+            button.setAttribute('data-click-handler', 'true');
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('Demo button clicked');
+                if (demoModal) {
+                    document.getElementById('demoStep1').style.display = 'block';
+                    document.getElementById('demoStep2').style.display = 'none';
+                    demoModal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+        }
     });
 
     // Add click handlers for CTA buttons
     ctaButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            e.preventDefault();
-            console.log('CTA button clicked');
-            if (leadCaptureModal) {
-                leadCaptureModal.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
-            }
-        });
+        if (!button.hasAttribute('data-click-handler')) {
+            button.setAttribute('data-click-handler', 'true');
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('CTA button clicked');
+                if (leadCaptureModal) {
+                    leadCaptureModal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+        }
     });
     
     // Close button handlers
     document.querySelectorAll('.close-button').forEach(button => {
-        button.addEventListener('click', () => {
-            console.log('Close button clicked');
-            const modal = button.closest('.modal');
-            if (modal) {
-                modal.style.display = 'none';
-                document.body.style.overflow = '';
-                // Reset steps to initial state
-                if (modal.id === 'demoModal') {
-                    document.getElementById('demoStep1').style.display = 'block';
-                    document.getElementById('demoStep2').style.display = 'none';
+        if (!button.hasAttribute('data-click-handler')) {
+            button.setAttribute('data-click-handler', 'true');
+            button.addEventListener('click', () => {
+                console.log('Close button clicked');
+                const modal = button.closest('.modal');
+                if (modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = '';
+                    // Reset steps to initial state
+                    if (modal.id === 'demoModal') {
+                        document.getElementById('demoStep1').style.display = 'block';
+                        document.getElementById('demoStep2').style.display = 'none';
+                    }
                 }
-            }
-        });
+            });
+        }
     });
     
     // Handle demo form submission
     const demoForm = document.getElementById('demoForm');
-    if (demoForm) {
+    if (demoForm && !demoForm.hasAttribute('data-submit-handler')) {
+        demoForm.setAttribute('data-submit-handler', 'true');
         let submitButtonText = '';
         
         demoForm.addEventListener('submit', async function(e) {
@@ -336,7 +346,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Handle lead capture form submission
     const leadCaptureForm = document.getElementById('leadCaptureForm');
-    if (leadCaptureForm) {
+    if (leadCaptureForm && !leadCaptureForm.hasAttribute('data-submit-handler')) {
+        leadCaptureForm.setAttribute('data-submit-handler', 'true');
         let submitButtonText = '';
         
         leadCaptureForm.addEventListener('submit', async function(e) {
@@ -391,7 +402,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Handle secondary form submission
     const secondaryForm = document.getElementById('secondaryForm');
-    if (secondaryForm) {
+    if (secondaryForm && !secondaryForm.hasAttribute('data-submit-handler')) {
+        secondaryForm.setAttribute('data-submit-handler', 'true');
         let submitButtonText = '';
         
         secondaryForm.addEventListener('submit', async function(e) {
