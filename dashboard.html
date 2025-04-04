@@ -31,7 +31,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.75rem 1.5rem;
+            padding: 0.5rem 1rem;
             background: white;
             box-shadow: var(--shadow);
             position: fixed;
@@ -84,38 +84,41 @@
 
         /* Main Content */
         .main-content {
-            margin-top: 80px;
-            padding: 2rem;
+            margin-top: 60px;
+            padding: 1rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .welcome-section {
             text-align: center;
-            margin: 2rem 0 3rem;
+            margin: 1rem 0 1.5rem;
         }
 
         .welcome-section h1 {
             margin: 0;
-            font-size: 2.5rem;
+            font-size: 2rem;
             color: var(--text-color);
         }
 
         .welcome-section p {
-            margin: 0.5rem 0 0;
+            margin: 0.25rem 0 0;
             color: #666;
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
 
         /* Metrics Cards */
         .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0.75rem;
+            display: flex;
+            gap: 0.5rem;
             margin-bottom: 1rem;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             scroll-snap-type: x mandatory;
             scrollbar-width: none;
             -ms-overflow-style: none;
+            padding-bottom: 0.5rem;
         }
 
         .metrics-grid::-webkit-scrollbar {
@@ -124,39 +127,40 @@
 
         .metric-card {
             background: white;
-            padding: 0.75rem;
+            padding: 0.5rem 0.75rem;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
             scroll-snap-align: start;
-            min-width: 200px;
+            min-width: 180px;
+            flex: 0 0 auto;
         }
 
         .metric-card .icon {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             color: var(--primary-color);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
         }
 
         .metric-card .value {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: bold;
             margin: 0.25rem 0;
         }
 
         .metric-card .label {
             color: #666;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
         }
 
         /* Calendar Section */
         .calendar-section {
             background: white;
-            padding: 0.75rem;
+            padding: 0.5rem;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
             margin-bottom: 1rem;
-            height: calc(100vh - 300px);
-            min-height: 400px;
+            height: calc(100vh - 250px);
+            min-height: 350px;
             display: flex;
             flex-direction: column;
         }
@@ -165,29 +169,31 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.75rem;
+            padding: 0 0.5rem;
         }
 
         .calendar-title {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             margin: 0;
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.5rem;
         }
 
         .calendar-nav {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.25rem;
         }
 
         .calendar-btn {
-            padding: 0.5rem 1rem;
+            padding: 0.25rem 0.5rem;
             border: none;
             border-radius: var(--border-radius);
             background: var(--light-gray);
             cursor: pointer;
             font-weight: 500;
+            font-size: 0.875rem;
         }
 
         .calendar-btn.active {
@@ -202,7 +208,7 @@
 
         .calendar-grid {
             display: grid;
-            grid-template-columns: 50px repeat(7, 1fr);
+            grid-template-columns: 40px repeat(7, 1fr);
             gap: 1px;
             background: var(--light-gray);
             border: 1px solid var(--light-gray);
@@ -214,28 +220,30 @@
 
         .time-column {
             background: white;
-            padding: 0.5rem;
+            padding: 0.25rem;
             text-align: right;
-            font-size: 0.9rem;
+            font-size: 0.75rem;
             color: #666;
         }
 
         .day-header {
             background: white;
-            padding: 0.5rem;
+            padding: 0.25rem;
             text-align: center;
             font-weight: 500;
+            font-size: 0.75rem;
         }
 
         .day-date {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: #666;
         }
 
         .calendar-cell {
             background: white;
-            min-height: 30px;
+            min-height: 25px;
             position: relative;
+            border-bottom: 1px solid var(--light-gray);
         }
 
         .calendar-event {
@@ -246,7 +254,7 @@
             color: white;
             padding: 0.25rem;
             border-radius: var(--border-radius);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             cursor: pointer;
             transition: transform 0.2s;
         }
@@ -476,12 +484,20 @@
 
         /* Responsive Design */
         @media (max-width: 1024px) {
+            .main-content {
+                padding: 0.75rem;
+            }
+            
             .metrics-grid {
-                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+            
+            .metric-card {
+                min-width: 160px;
             }
             
             .calendar-grid {
-                grid-template-columns: 40px repeat(7, 1fr);
+                grid-template-columns: 35px repeat(7, 1fr);
             }
         }
 
@@ -494,29 +510,29 @@
                 display: block;
             }
 
-            .metrics-grid {
-                grid-template-columns: none;
-                display: flex;
-                overflow-x: auto;
-                padding-bottom: 0.5rem;
-            }
-
-            .metric-card {
-                flex: 0 0 auto;
-                width: 200px;
-            }
-
             .main-content {
-                padding: 0.75rem;
+                padding: 0.5rem;
+            }
+
+            .welcome-section {
+                margin: 0.5rem 0 1rem;
             }
 
             .welcome-section h1 {
-                font-size: 1.5rem;
+                font-size: 1.25rem;
             }
 
-            .calendar-section {
-                height: calc(100vh - 250px);
-                min-height: 350px;
+            .welcome-section p {
+                font-size: 0.875rem;
+            }
+
+            .metrics-grid {
+                gap: 0.5rem;
+                padding-bottom: 0.25rem;
+            }
+
+            .metric-card {
+                min-width: 140px;
             }
 
             .calendar-grid {
@@ -817,23 +833,26 @@
         // Calendar functionality
         const calendar = {
             currentDate: new Date(),
-            view: 'week',
+            view: window.innerWidth <= 768 ? 'day' : 'week',
             events: [],
 
             init() {
                 this.setupEventListeners();
                 this.updateCalendarView();
                 this.loadEvents();
+                this.setupMobileView();
             },
 
             setupEventListeners() {
-                // View toggle
-                document.querySelectorAll('.calendar-view-toggle .calendar-btn').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        this.view = btn.textContent.toLowerCase();
-                        this.updateCalendarView();
+                // View toggle (desktop only)
+                if (window.innerWidth > 768) {
+                    document.querySelectorAll('.calendar-view-toggle .calendar-btn').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            this.view = btn.textContent.toLowerCase();
+                            this.updateCalendarView();
+                        });
                     });
-                });
+                }
 
                 // Navigation
                 document.querySelector('.calendar-nav .calendar-btn:first-child').addEventListener('click', () => {
@@ -855,9 +874,39 @@
                 });
 
                 // Window resize
+                let resizeTimeout;
                 window.addEventListener('resize', () => {
-                    this.updateCalendarView();
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(() => {
+                        this.setupMobileView();
+                        this.updateCalendarView();
+                    }, 250);
                 });
+            },
+
+            setupMobileView() {
+                const isMobile = window.innerWidth <= 768;
+                const viewToggle = document.querySelector('.calendar-view-toggle');
+                const addJobBtn = document.querySelector('.add-job-btn');
+                
+                if (isMobile) {
+                    this.view = 'day';
+                    if (viewToggle) viewToggle.style.display = 'none';
+                    if (addJobBtn) {
+                        addJobBtn.style.position = 'fixed';
+                        addJobBtn.style.bottom = '1rem';
+                        addJobBtn.style.right = '1rem';
+                        addJobBtn.style.zIndex = '1000';
+                    }
+                } else {
+                    if (viewToggle) viewToggle.style.display = 'flex';
+                    if (addJobBtn) {
+                        addJobBtn.style.position = 'static';
+                        addJobBtn.style.bottom = 'auto';
+                        addJobBtn.style.right = 'auto';
+                        addJobBtn.style.zIndex = 'auto';
+                    }
+                }
             },
 
             updateCalendarView() {
@@ -866,7 +915,7 @@
                 const dateRange = document.querySelector('.date-range');
                 
                 // Update date range display
-                if (this.view === 'week' || isMobile) {
+                if (this.view === 'week' && !isMobile) {
                     const startDate = this.getWeekStart(this.currentDate);
                     const endDate = new Date(startDate);
                     endDate.setDate(endDate.getDate() + 6);
@@ -877,12 +926,12 @@
 
                 // Update grid layout
                 if (isMobile || this.view === 'day') {
-                    calendarGrid.style.gridTemplateColumns = '40px 1fr';
+                    calendarGrid.style.gridTemplateColumns = '35px 1fr';
                     document.querySelectorAll('.day-header:not(:first-child)').forEach(header => {
                         header.style.display = 'none';
                     });
                 } else {
-                    calendarGrid.style.gridTemplateColumns = '50px repeat(7, 1fr)';
+                    calendarGrid.style.gridTemplateColumns = '40px repeat(7, 1fr)';
                     document.querySelectorAll('.day-header').forEach(header => {
                         header.style.display = 'block';
                     });
@@ -911,7 +960,7 @@
             },
 
             navigateDate(days) {
-                if (this.view === 'week') {
+                if (this.view === 'week' && window.innerWidth > 768) {
                     this.currentDate.setDate(this.currentDate.getDate() + (days * 7));
                 } else {
                     this.currentDate.setDate(this.currentDate.getDate() + days);
@@ -926,7 +975,9 @@
                         start: new Date(2024, 2, 30, 9, 0),
                         end: new Date(2024, 2, 30, 11, 0),
                         service: 'Plumbing Repair',
-                        client: 'John Smith'
+                        client: 'John Smith',
+                        phone: '+1 (555) 123-4567',
+                        notes: 'Emergency repair - leaking pipe under kitchen sink'
                     }
                     // Add more events as needed
                 ];
@@ -1007,6 +1058,14 @@
                         <div class="event-modal-field">
                             <div class="event-modal-label">Client</div>
                             <div class="event-modal-value">${event.client}</div>
+                        </div>
+                        <div class="event-modal-field">
+                            <div class="event-modal-label">Phone</div>
+                            <div class="event-modal-value">${event.phone}</div>
+                        </div>
+                        <div class="event-modal-field">
+                            <div class="event-modal-label">Notes</div>
+                            <div class="event-modal-value">${event.notes}</div>
                         </div>
                     </div>
                 `;
