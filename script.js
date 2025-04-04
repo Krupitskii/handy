@@ -236,10 +236,13 @@ document.addEventListener('DOMContentLoaded', () => {
     ctaButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
-            console.log('CTA button clicked');
-            if (signupModal) {
-                signupModal.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
+            // Only open modal if it's not a next button
+            if (!button.classList.contains('next-button')) {
+                console.log('CTA button clicked');
+                if (signupModal) {
+                    signupModal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                }
             }
         });
     });
@@ -414,12 +417,15 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             console.log('Watch demo clicked');
             
-            // Close signup modal and open demo modal
+            // Close signup modal
             if (signupModal) {
                 signupModal.style.display = 'none';
             }
-            if (demoModal) {
-                demoModal.style.display = 'flex';
+            
+            // Scroll to hero section
+            const heroSection = document.querySelector('.hero');
+            if (heroSection) {
+                heroSection.scrollIntoView({ behavior: 'smooth' });
             }
         });
     }
@@ -430,10 +436,11 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             console.log('Demo form submit clicked');
             const firstName = document.getElementById('demoFirstName').value;
+            const company = document.getElementById('demoCompany').value;
             const phone = document.getElementById('demoPhone').value;
             const trade = document.getElementById('demoTrade').value;
 
-            if (!firstName || !phone || !trade) {
+            if (!firstName || !company || !phone || !trade) {
                 alert('Please fill in all required fields');
                 return;
             }
