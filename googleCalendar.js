@@ -1,25 +1,11 @@
 // Google Calendar API Configuration
 const config = {
-    CLIENT_ID: '',  // Will be set from .env file
-    API_KEY: ''     // Will be set from .env file
+    CLIENT_ID: 'YOUR_GOOGLE_CLIENT_ID',  // Replace with your actual Google Client ID
+    API_KEY: 'YOUR_GOOGLE_API_KEY'       // Replace with your actual Google API Key
 };
 
-// Load configuration from .env file
-fetch('/.env')
-    .then(response => response.text())
-    .then(data => {
-        const envVars = data.split('\n').reduce((acc, line) => {
-            const [key, value] = line.split('=');
-            if (key && value) {
-                acc[key.trim()] = value.trim();
-            }
-            return acc;
-        }, {});
-        
-        config.CLIENT_ID = envVars.GOOGLE_CLIENT_ID;
-        config.API_KEY = envVars.GOOGLE_CLIENT_SECRET;
-    })
-    .catch(error => console.error('Error loading .env file:', error));
+// Initialize Google Calendar Manager
+const calendarManager = new GoogleCalendarManager();
 
 const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
 const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly';
