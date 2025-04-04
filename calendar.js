@@ -10,7 +10,7 @@ const START_HOUR = 10; // 10 AM
 const END_HOUR = 19.5; // 7:30 PM
 const SLOT_DURATION = 30; // 30 minutes
 
-class Calendar {
+export class Calendar {
     constructor() {
         this.date = new Date();
         this.selectedDate = null;

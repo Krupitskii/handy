@@ -3,7 +3,7 @@ console.log('Script loaded'); // Debug log
 
 // Remove imports and use global objects
 const { translations } = window;
-const { Calendar } = window;
+import { Calendar } from './calendar.js';
 
 // Add error handler
 window.onerror = function(msg, url, lineNo, columnNo, error) {
@@ -253,8 +253,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Initialize calendar if not already initialized
                 if (!calendarApiInitialized) {
-                    const calendar = new Calendar();
-                    calendarApiInitialized = true;
+                    try {
+                        const calendar = new Calendar();
+                        calendarApiInitialized = true;
+                    } catch (error) {
+                        console.error('Failed to initialize calendar:', error);
+                    }
                 }
             }
         });
