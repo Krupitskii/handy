@@ -1548,23 +1548,132 @@ body {
 }
 
 .modal-next-button {
-    margin-top: 10px;
+    width: 100%;
+    padding: 12px;
+    background: #f97316;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    margin-top: 20px;
 }
 
-.demo-phone {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #f97316;
-    margin: 20px 0;
+.modal-next-button:hover {
+    background: #ea580c;
+}
+
+/* Lead Capture Form Styles */
+#leadCaptureModal .modal-content {
+    max-width: 500px;
+    padding: 30px;
+}
+
+#leadCaptureModal h2 {
+    font-size: 24px;
+    color: #1F2937;
+    margin-bottom: 20px;
     text-align: center;
 }
 
-.pro-tip {
-    font-size: 0.9rem;
-    color: #6B7280;
-    font-style: italic;
-    margin-top: 20px;
-    padding: 15px;
-    background: #F3F4F6;
+#leadCaptureForm .form-group {
+    margin-bottom: 20px;
+}
+
+#leadCaptureForm input,
+#leadCaptureForm select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #E5E7EB;
     border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.2s ease;
+}
+
+#leadCaptureForm input:focus,
+#leadCaptureForm select:focus {
+    border-color: #f97316;
+    outline: none;
+}
+
+#leadCaptureForm .helper-text {
+    display: block;
+    font-size: 14px;
+    color: #6B7280;
+    margin-top: 5px;
+}
+
+#leadCaptureForm button[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    background: #f97316;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+#leadCaptureForm button[type="submit"]:hover {
+    background: #ea580c;
+}
+
+/* Success Modal Styles */
+.success-modal {
+    text-align: center;
+    padding: 40px 30px;
+}
+
+.success-modal h2 {
+    font-size: 28px;
+    color: #1F2937;
+    margin-bottom: 15px;
+}
+
+.success-modal p {
+    font-size: 16px;
+    color: #4B5563;
+    line-height: 1.5;
+}
+
+/* Phone Input Styles */
+.iti {
+    width: 100%;
+}
+
+.iti__flag-container {
+    z-index: 2;
+}
+
+.iti__selected-flag {
+    background-color: transparent !important;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    #leadCaptureModal .modal-content {
+        padding: 20px;
+        margin: 20px;
+    }
+
+    #leadCaptureModal h2 {
+        font-size: 20px;
+    }
+
+    #leadCaptureForm input,
+    #leadCaptureForm select {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .success-modal {
+        padding: 30px 20px;
+    }
+
+    .success-modal h2 {
+        font-size: 24px;
+    }
 } 
