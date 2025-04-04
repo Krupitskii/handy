@@ -141,7 +141,7 @@ const translations = {
             questions: {
                 tech: {
                     question: "Do I need tech skills?",
-                    answer: "Nope. We set it up for you. Just answer calls like normal — HandyBot does the rest."
+                    answer: "Nope. We set everything up for you. You just do your job, HandyBot handles the calls and books jobs straight into your calendar."
                 },
                 how: {
                     question: "How does it work?",
