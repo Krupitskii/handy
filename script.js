@@ -175,49 +175,9 @@ function updateLanguage(lang) {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, initializing...'); // Debug log
     
-    // Initialize calculator elements
-    jobValueInput = document.getElementById('jobValue');
-    missedCallsInput = document.getElementById('missedCalls');
-    calculateButton = document.querySelector('.calculate-button');
-    weeklyLossElement = document.getElementById('weeklyLoss');
-    monthlyLossElement = document.getElementById('monthlyLoss');
-
-    console.log('Calculator elements initialized:', {
-        jobValueInput: !!jobValueInput,
-        missedCallsInput: !!missedCallsInput,
-        calculateButton: !!calculateButton,
-        weeklyLossElement: !!weeklyLossElement,
-        monthlyLossElement: !!monthlyLossElement
-    });
-
-    // Calculator functionality
-    if (calculateButton) {
-        calculateButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            calculateLosses();
-        });
-    }
-    
-    // Calculate on Enter key
-    if (jobValueInput && missedCallsInput) {
-        [jobValueInput, missedCallsInput].forEach(input => {
-            input.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    calculateLosses();
-                }
-            });
-        });
-    }
-
     // Initialize modals
     const ctaModal = document.getElementById('ctaModal');
     const demoModal = document.getElementById('demoModal');
-    
-    console.log('Modals initialized:', {
-        ctaModal: !!ctaModal,
-        demoModal: !!demoModal
-    });
     
     // Initially hide modals
     if (ctaModal) ctaModal.style.display = 'none';
@@ -226,11 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Get buttons that open the modals
     const ctaButtons = document.querySelectorAll('.cta-button:not([type="submit"]):not(.dashboard-button)');
     const secondaryButtons = document.querySelectorAll('.secondary-button');
-    
-    console.log('Modal buttons found:', {
-        ctaButtons: ctaButtons.length,
-        secondaryButtons: secondaryButtons.length
-    });
     
     // Add click handlers for CTA buttons (signup modal)
     ctaButtons.forEach(button => {
@@ -333,6 +288,41 @@ document.addEventListener('DOMContentLoaded', () => {
                     demoStep3.style.display = 'block';
                 }
             }
+        });
+    }
+    
+    // Initialize calculator elements
+    jobValueInput = document.getElementById('jobValue');
+    missedCallsInput = document.getElementById('missedCalls');
+    calculateButton = document.querySelector('.calculate-button');
+    weeklyLossElement = document.getElementById('weeklyLoss');
+    monthlyLossElement = document.getElementById('monthlyLoss');
+
+    console.log('Calculator elements initialized:', {
+        jobValueInput: !!jobValueInput,
+        missedCallsInput: !!missedCallsInput,
+        calculateButton: !!calculateButton,
+        weeklyLossElement: !!weeklyLossElement,
+        monthlyLossElement: !!monthlyLossElement
+    });
+
+    // Calculator functionality
+    if (calculateButton) {
+        calculateButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            calculateLosses();
+        });
+    }
+    
+    // Calculate on Enter key
+    if (jobValueInput && missedCallsInput) {
+        [jobValueInput, missedCallsInput].forEach(input => {
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    calculateLosses();
+                }
+            });
         });
     }
 

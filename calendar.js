@@ -7,7 +7,7 @@ class Calendar {
         // Find calendar elements in step 2
         const step2 = document.getElementById('demoStep2');
         if (!step2) {
-            console.error('Step 2 not found');
+            console.log('Step 2 not found - calendar will not be initialized');
             return;
         }
         
@@ -20,18 +20,12 @@ class Calendar {
         this.slotsGrid = step2.querySelector('.slots-grid');
         this.confirmButton = step2.querySelector('.confirm-booking');
         
-        console.log('Calendar elements:', {
-            calendarContainer: this.calendarContainer,
-            daysGrid: this.daysGrid,
-            timeSlots: this.timeSlots,
-            currentMonthEl: this.currentMonthEl,
-            prevMonthBtn: this.prevMonthBtn,
-            nextMonthBtn: this.nextMonthBtn,
-            slotsGrid: this.slotsGrid,
-            confirmButton: this.confirmButton
-        });
-        
-        this.init();
+        // Only initialize if all required elements are found
+        if (this.daysGrid && this.timeSlots) {
+            this.init();
+        } else {
+            console.log('Some calendar elements not found - calendar will not be initialized');
+        }
     }
 
     init() {
