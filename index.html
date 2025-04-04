@@ -102,6 +102,74 @@
         </div>
     </section>
 
+    <!-- Lead Capture Form Modal -->
+    <div id="leadCaptureModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 data-translate="leadCapture.title">Start Your Free Trial</h2>
+            <form id="leadCaptureForm">
+                <div class="form-group">
+                    <label for="fullName" data-translate="leadCapture.fullName">Full Name *</label>
+                    <input type="text" id="fullName" name="fullName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email" data-translate="leadCapture.email">Email *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone" data-translate="leadCapture.phone">Phone Number *</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="trade" data-translate="leadCapture.trade">Trade *</label>
+                    <select id="trade" name="trade" required>
+                        <option value="" data-translate="leadCapture.selectTrade">Select your trade</option>
+                        <option value="plumber" data-translate="leadCapture.trades.plumber">Plumber</option>
+                        <option value="electrician" data-translate="leadCapture.trades.electrician">Electrician</option>
+                        <option value="roofer" data-translate="leadCapture.trades.roofer">Roofer</option>
+                        <option value="handyman" data-translate="leadCapture.trades.handyman">Handyman</option>
+                        <option value="hvac" data-translate="leadCapture.trades.hvac">HVAC</option>
+                        <option value="painter" data-translate="leadCapture.trades.painter">Painter</option>
+                        <option value="contractor" data-translate="leadCapture.trades.contractor">General Contractor</option>
+                        <option value="landscaper" data-translate="leadCapture.trades.landscaper">Landscaper</option>
+                        <option value="other" data-translate="leadCapture.trades.other">Other</option>
+                    </select>
+                    <small class="helper-text" data-translate="leadCapture.tradeHelper">Pick one, even if more apply</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="companyName" data-translate="leadCapture.companyName">Company Name (Optional)</label>
+                    <input type="text" id="companyName" name="companyName">
+                </div>
+                
+                <div class="form-group">
+                    <label for="jobsPerWeek" data-translate="leadCapture.jobsPerWeek">How many jobs per week? (Optional)</label>
+                    <select id="jobsPerWeek" name="jobsPerWeek">
+                        <option value="" data-translate="leadCapture.selectJobs">Select range</option>
+                        <option value="1-5" data-translate="leadCapture.jobs.1-5">1-5</option>
+                        <option value="5-10" data-translate="leadCapture.jobs.5-10">5-10</option>
+                        <option value="10+" data-translate="leadCapture.jobs.10+">10+</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="cta-button" data-translate="leadCapture.submit">Start My Free Trial</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Message Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <h2 data-translate="success.title">You're in! 🎉</h2>
+            <p data-translate="success.message">Check your email for next steps. We'll guide you through setup and get HandyBot working for your business.</p>
+            <p data-translate="success.submessage">We'll set everything up for you — no tech skills needed. Watch your inbox!</p>
+            <button class="cta-button close-modal" data-translate="success.close">Got it!</button>
+        </div>
+    </div>
+
     <section class="features">
         <div class="container features-content">
             <h2 data-translate="features.title">HandyBot Handles It All. So You Can Just Work.</h2>
@@ -406,5 +474,7 @@
     <script src="calendar.js" type="module"></script>
     <script src="firebase-config.js" type="module"></script>
     <script src="script.js" type="module"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
 </body>
 </html> 

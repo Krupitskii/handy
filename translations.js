@@ -186,6 +186,41 @@ const translations = {
             successTitle: "You're in.",
             successMessage: "Call this number right now to hear HandyBot answer like it's already working for you:",
             proTip: "Pro tip: Put yourself in your customer's shoes and imagine this is your business line. This is what HandyBot will sound like when your phone rings."
+        },
+        leadCapture: {
+            title: "Start Your Free Trial",
+            fullName: "Full Name *",
+            email: "Email *",
+            phone: "Phone Number *",
+            trade: "Trade *",
+            selectTrade: "Select your trade",
+            trades: {
+                plumber: "Plumber",
+                electrician: "Electrician",
+                roofer: "Roofer",
+                handyman: "Handyman",
+                hvac: "HVAC",
+                painter: "Painter",
+                contractor: "General Contractor",
+                landscaper: "Landscaper",
+                other: "Other"
+            },
+            tradeHelper: "Pick one, even if more apply",
+            companyName: "Company Name (Optional)",
+            jobsPerWeek: "How many jobs per week? (Optional)",
+            selectJobs: "Select range",
+            jobs: {
+                "1-5": "1-5",
+                "5-10": "5-10",
+                "10+": "10+"
+            },
+            submit: "Start My Free Trial"
+        },
+        success: {
+            title: "You're in! 🎉",
+            message: "Check your email for next steps. We'll guide you through setup and get HandyBot working for your business.",
+            submessage: "We'll set everything up for you — no tech skills needed. Watch your inbox!",
+            close: "Got it!"
         }
     },
     es: {
@@ -379,6 +414,41 @@ const translations = {
             successTitle: "Estás dentro.",
             successMessage: "Llama a este número ahora para escuchar a HandyBot responder como si ya estuviera trabajando para ti:",
             proTip: "Consejo profesional: Ponte en el lugar de tu cliente e imagina que esta es tu línea de negocio. Así es como sonará HandyBot cuando suene tu teléfono."
+        },
+        leadCapture: {
+            title: "Comienza tu Prueba Gratuita",
+            fullName: "Nombre Completo *",
+            email: "Correo Electrónico *",
+            phone: "Número de Teléfono *",
+            trade: "Oficio *",
+            selectTrade: "Selecciona tu oficio",
+            trades: {
+                plumber: "Plomero",
+                electrician: "Electricista",
+                roofer: "Techador",
+                handyman: "Manitas",
+                hvac: "HVAC",
+                painter: "Pintor",
+                contractor: "Contratista General",
+                landscaper: "Paisajista",
+                other: "Otro"
+            },
+            tradeHelper: "Elige uno, aunque apliquen más",
+            companyName: "Nombre de la Empresa (Opcional)",
+            jobsPerWeek: "¿Cuántos trabajos por semana? (Opcional)",
+            selectJobs: "Selecciona rango",
+            jobs: {
+                "1-5": "1-5",
+                "5-10": "5-10",
+                "10+": "10+"
+            },
+            submit: "Comenzar Mi Prueba Gratuita"
+        },
+        success: {
+            title: "¡Estás dentro! 🎉",
+            message: "Revisa tu correo electrónico para los siguientes pasos. Te guiaremos en la configuración y pondremos HandyBot a trabajar para tu negocio.",
+            submessage: "Nosotros configuraremos todo por ti — no se necesitan habilidades técnicas. ¡Mantente atento a tu bandeja de entrada!",
+            close: "¡Entendido!"
         }
     },
     ru: {
@@ -572,6 +642,41 @@ const translations = {
             successTitle: "Вы в системе.",
             successMessage: "Позвоните на этот номер прямо сейчас, чтобы услышать, как HandyBot отвечает, будто уже работает на вас:",
             proTip: "Совет от профессионала: Поставьте себя на место вашего клиента и представьте, что это ваша бизнес-линия. Так будет звучать HandyBot, когда зазвонит ваш телефон."
+        },
+        leadCapture: {
+            title: "Начните Бесплатный Пробный Период",
+            fullName: "Полное Имя *",
+            email: "Email *",
+            phone: "Номер Телефона *",
+            trade: "Профессия *",
+            selectTrade: "Выберите вашу профессию",
+            trades: {
+                plumber: "Сантехник",
+                electrician: "Электрик",
+                roofer: "Кровельщик",
+                handyman: "Разнорабочий",
+                hvac: "HVAC",
+                painter: "Маляр",
+                contractor: "Генеральный Подрядчик",
+                landscaper: "Ландшафтный Дизайнер",
+                other: "Другое"
+            },
+            tradeHelper: "Выберите одну, даже если подходит несколько",
+            companyName: "Название Компании (Необязательно)",
+            jobsPerWeek: "Сколько заказов в неделю? (Необязательно)",
+            selectJobs: "Выберите диапазон",
+            jobs: {
+                "1-5": "1-5",
+                "5-10": "5-10",
+                "10+": "10+"
+            },
+            submit: "Начать Бесплатный Пробный Период"
+        },
+        success: {
+            title: "Вы в деле! 🎉",
+            message: "Проверьте вашу почту для дальнейших инструкций. Мы проведем вас через настройку и запустим HandyBot для вашего бизнеса.",
+            submessage: "Мы настроим всё за вас — никаких технических навыков не требуется. Следите за почтой!",
+            close: "Понятно!"
         }
     }
 };

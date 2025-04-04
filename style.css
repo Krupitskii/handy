@@ -1192,33 +1192,99 @@ body {
 }
 
 .modal-content {
-    background-color: white;
-    padding: 2rem;
-    border-radius: 10px;
-    max-width: 500px;
-    width: 90%;
     position: relative;
-    max-height: 90vh;
-    overflow-y: auto;
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 2rem;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.close-button {
+.close-modal {
     position: absolute;
     right: 1rem;
     top: 1rem;
     font-size: 1.5rem;
     cursor: pointer;
-    background: none;
-    border: none;
-    padding: 0.5rem;
-}
-
-.close-button:hover {
     color: #666;
 }
 
-.modal.show {
+/* Lead Capture Form Styles */
+#leadCaptureForm {
     display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 500;
+    color: #333;
+}
+
+.form-group input,
+.form-group select {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.helper-text {
+    font-size: 0.875rem;
+    color: #666;
+    margin-top: 0.25rem;
+}
+
+/* Success Modal Styles */
+#successModal .modal-content {
+    text-align: center;
+}
+
+#successModal h2 {
+    color: #28a745;
+    margin-bottom: 1rem;
+}
+
+#successModal p {
+    margin-bottom: 1rem;
+    color: #666;
+}
+
+/* Phone Input Styles */
+.iti {
+    width: 100%;
+}
+
+.iti__flag-container {
+    z-index: 2;
+}
+
+.iti__selected-flag {
+    background-color: transparent !important;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .modal-content {
+        margin: 10% auto;
+        width: 95%;
+        padding: 1.5rem;
+    }
 }
 
 /* Demo steps */
