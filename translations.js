@@ -186,6 +186,35 @@ const translations = {
             successTitle: "You're in.",
             successMessage: "Call this number right now to hear HandyBot answer like it's already working for you:",
             proTip: "Pro tip: Put yourself in your customer's shoes and imagine this is your business line. This is what HandyBot will sound like when your phone rings."
+        },
+        leadCapture: {
+            title: "Start Your Free Trial",
+            fullName: "Full Name",
+            email: "Email",
+            phone: "Phone Number",
+            trade: "Select Your Trade",
+            trades: {
+                plumbing: "Plumbing",
+                electrical: "Electrical",
+                hvac: "HVAC",
+                carpentry: "Carpentry",
+                painting: "Painting",
+                other: "Other"
+            },
+            tradeHelper: "We'll customize HandyBot for your specific trade",
+            companyName: "Company Name (Optional)",
+            jobsPerWeek: "How many jobs per week? (Optional)",
+            jobRanges: {
+                range1: "1-5 jobs",
+                range2: "6-10 jobs",
+                range3: "11-20 jobs",
+                range4: "20+ jobs"
+            },
+            submit: "Start My Free Trial"
+        },
+        success: {
+            title: "You're in! 🎉",
+            message: "Check your email for next steps. We'll help you get set up right away."
         }
     },
     es: {
@@ -379,6 +408,35 @@ const translations = {
             successTitle: "Estás dentro.",
             successMessage: "Llama a este número ahora para escuchar a HandyBot responder como si ya estuviera trabajando para ti:",
             proTip: "Consejo profesional: Ponte en el lugar de tu cliente e imagina que esta es tu línea de negocio. Así es como sonará HandyBot cuando suene tu teléfono."
+        },
+        leadCapture: {
+            title: "Comienza tu Prueba Gratuita",
+            fullName: "Nombre Completo",
+            email: "Correo Electrónico",
+            phone: "Número de Teléfono",
+            trade: "Selecciona tu Oficio",
+            trades: {
+                plumbing: "Plomería",
+                electrical: "Electricidad",
+                hvac: "HVAC",
+                carpentry: "Carpintería",
+                painting: "Pintura",
+                other: "Otro"
+            },
+            tradeHelper: "Personalizaremos HandyBot para tu oficio específico",
+            companyName: "Nombre de la Empresa (Opcional)",
+            jobsPerWeek: "¿Cuántos trabajos por semana? (Opcional)",
+            jobRanges: {
+                range1: "1-5 trabajos",
+                range2: "6-10 trabajos",
+                range3: "11-20 trabajos",
+                range4: "20+ trabajos"
+            },
+            submit: "Comenzar mi Prueba Gratuita"
+        },
+        success: {
+            title: "¡Estás dentro! 🎉",
+            message: "Revisa tu correo para los siguientes pasos. Te ayudaremos a configurar todo."
         }
     },
     ru: {
@@ -572,6 +630,35 @@ const translations = {
             successTitle: "Вы в системе.",
             successMessage: "Позвоните на этот номер прямо сейчас, чтобы услышать, как HandyBot отвечает, будто уже работает на вас:",
             proTip: "Совет от профессионала: Поставьте себя на место вашего клиента и представьте, что это ваша бизнес-линия. Так будет звучать HandyBot, когда зазвонит ваш телефон."
+        },
+        leadCapture: {
+            title: "Начните Бесплатный Пробный Период",
+            fullName: "Полное Имя",
+            email: "Email",
+            phone: "Номер Телефона",
+            trade: "Выберите Ваш Вид Работ",
+            trades: {
+                plumbing: "Сантехника",
+                electrical: "Электрика",
+                hvac: "Вентиляция и кондиционирование",
+                carpentry: "Столярные работы",
+                painting: "Малярные работы",
+                other: "Другое"
+            },
+            tradeHelper: "Мы настроим HandyBot под ваш конкретный вид работ",
+            companyName: "Название Компании (Необязательно)",
+            jobsPerWeek: "Сколько заказов в неделю? (Необязательно)",
+            jobRanges: {
+                range1: "1-5 заказов",
+                range2: "6-10 заказов",
+                range3: "11-20 заказов",
+                range4: "20+ заказов"
+            },
+            submit: "Начать Бесплатный Пробный Период"
+        },
+        success: {
+            title: "Вы в системе! 🎉",
+            message: "Проверьте email для дальнейших шагов. Мы поможем вам настроить всё необходимое."
         }
     }
 };
