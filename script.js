@@ -212,15 +212,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize modals
     const signupModal = document.getElementById('signupModal');
+    const ctaModal = document.getElementById('ctaModal');
     const demoModal = document.getElementById('demoModal');
     
     console.log('Modals initialized:', {
         signupModal: !!signupModal,
+        ctaModal: !!ctaModal,
         demoModal: !!demoModal
     });
     
     // Initially hide modals
     if (signupModal) signupModal.style.display = 'none';
+    if (ctaModal) ctaModal.style.display = 'none';
     if (demoModal) demoModal.style.display = 'none';
     
     // Get buttons that open the modals
@@ -239,8 +242,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // Only handle non-modal CTA buttons
             if (!button.closest('.modal-content')) {
                 console.log('CTA button clicked');
-                if (signupModal) {
-                    signupModal.style.display = 'flex';
+                if (ctaModal) {
+                    ctaModal.style.display = 'flex';
                     document.body.style.overflow = 'hidden';
                 }
             }
@@ -261,46 +264,78 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-    
-    // Add close handlers for signup modal
-    if (signupModal) {
-        const closeBtn = signupModal.querySelector('.close-modal');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => {
-                console.log('Signup modal close button clicked');
-                signupModal.style.display = 'none';
-                document.body.style.overflow = '';
-            });
-        }
-        
-        // Close on click outside
-        signupModal.addEventListener('click', (e) => {
-            if (e.target === signupModal) {
-                console.log('Signup modal outside click');
-                signupModal.style.display = 'none';
-                document.body.style.overflow = '';
+
+    // CTA Modal handlers
+    const ctaForm = document.getElementById('ctaForm');
+    const watchDemoLink = document.querySelector('.modal-watch-demo');
+    const closeButtons = document.querySelectorAll('.close');
+
+    // Close button handlers
+    closeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const modal = button.closest('.modal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
             }
         });
+    });
+
+    // CTA Form Submit
+    if (ctaForm) {
+        ctaForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            console.log('CTA Form Submitted');
+            ctaModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            // Here you would typically send the form data to your server
+        });
     }
-    
-    // Add close handlers for demo modal
-    if (demoModal) {
-        const closeBtn = demoModal.querySelector('.close-modal');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => {
-                console.log('Demo modal close button clicked');
-                demoModal.style.display = 'none';
-                document.body.style.overflow = '';
-            });
-        }
-        
-        // Close on click outside
-        demoModal.addEventListener('click', (e) => {
-            if (e.target === demoModal) {
-                console.log('Demo modal outside click');
-                demoModal.style.display = 'none';
-                document.body.style.overflow = '';
+
+    // Watch Demo Link Click
+    if (watchDemoLink) {
+        watchDemoLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            ctaModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            window.location.href = '#hero';
+        });
+    }
+
+    // Demo Modal handlers
+    const demoForm = document.getElementById('demoForm');
+    const demoStep1 = document.getElementById('demoStep1');
+    const demoStep2 = document.getElementById('demoStep2');
+    const demoNextButton = document.getElementById('demoNextButton');
+
+    // Demo Next Button Click
+    if (demoNextButton) {
+        demoNextButton.addEventListener('click', function() {
+            demoStep1.style.display = 'none';
+            demoStep2.style.display = 'block';
+        });
+    }
+
+    // Demo Form Submit
+    if (demoForm) {
+        demoForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(demoForm);
+            const data = Object.fromEntries(formData.entries());
+            
+            // Validate all required fields
+            const requiredFields = ['name', 'email', 'phone', 'company'];
+            const missingFields = requiredFields.filter(field => !data[field]);
+            
+            if (missingFields.length > 0) {
+                alert('Please fill in all required fields');
+                return;
             }
+
+            console.log('Demo Form Submitted:', data);
+            demoModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            // Here you would typically send the form data to your server
         });
     }
 
@@ -345,104 +380,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-    
-    // Form submission handlers
-    const registrationForm = document.getElementById('registrationForm');
-    const demoForm = document.getElementById('demoForm');
-    const nextButton = document.querySelector('.modal-next-button');
-    const confirmBookingButton = document.querySelector('.confirm-booking');
-    const watchDemoButton = document.querySelector('.modal-watch-demo');
-    const demoSubmitButton = document.querySelector('.modal-demo-submit');
-
-    console.log('Form elements:', {
-        registrationForm: !!registrationForm,
-        demoForm: !!demoForm,
-        nextButton: !!nextButton,
-        confirmBookingButton: !!confirmBookingButton,
-        watchDemoButton: !!watchDemoButton,
-        demoSubmitButton: !!demoSubmitButton
-    });
-
-    // Handle next button in signup modal
-    if (nextButton) {
-        nextButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            console.log('Next button clicked');
-            
-            // Move to next step
-            const step1 = document.querySelector('.step-content[data-step="1"]');
-            const step2 = document.querySelector('.step-content[data-step="2"]');
-            const stepIndicator1 = document.querySelector('.step[data-step="1"]');
-            const stepIndicator2 = document.querySelector('.step[data-step="2"]');
-            
-            if (step1 && step2 && stepIndicator1 && stepIndicator2) {
-                step1.classList.remove('active');
-                step2.classList.add('active');
-                stepIndicator1.classList.remove('active');
-                stepIndicator2.classList.add('active');
-            }
-        });
-    }
-
-    // Handle confirm booking button
-    if (confirmBookingButton) {
-        confirmBookingButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            console.log('Confirm booking clicked');
-            
-            // Move to confirmation step
-            const step2 = document.querySelector('.step-content[data-step="2"]');
-            const step3 = document.querySelector('.step-content[data-step="3"]');
-            const stepIndicator2 = document.querySelector('.step-indicator[data-step="2"]');
-            const stepIndicator3 = document.querySelector('.step-indicator[data-step="3"]');
-
-            if (step2 && step3 && stepIndicator2 && stepIndicator3) {
-                step2.classList.remove('active');
-                step3.classList.add('active');
-                stepIndicator2.classList.remove('active');
-                stepIndicator3.classList.add('active');
-            }
-        });
-    }
-
-    // Handle watch demo button
-    if (watchDemoButton) {
-        watchDemoButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            console.log('Watch demo clicked');
-            
-            // Close signup modal
-            if (signupModal) {
-                signupModal.style.display = 'none';
-            }
-            
-            // Scroll to hero section
-            const heroSection = document.querySelector('.hero');
-            if (heroSection) {
-                heroSection.scrollIntoView({ behavior: 'smooth' });
-            }
-        });
-    }
-
-    // Handle demo form submit
-    if (demoSubmitButton) {
-        demoSubmitButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            console.log('Demo form submit clicked');
-            const firstName = document.getElementById('demoFirstName').value;
-            const company = document.getElementById('demoCompany').value;
-            const phone = document.getElementById('demoPhone').value;
-            const trade = document.getElementById('demoTrade').value;
-
-            if (!firstName || !company || !phone || !trade) {
-                alert('Please fill in all required fields');
-                return;
-            }
-
-            // Close demo modal
-            if (demoModal) {
-                demoModal.style.display = 'none';
-            }
-        });
-    }
 });

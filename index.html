@@ -434,52 +434,46 @@
         </div>
     </div>
 
+    <!-- CTA Modal -->
+    <div class="modal" id="ctaModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Book a Call</h2>
+            <p>Schedule a call with our team to discuss your needs</p>
+            <form id="ctaForm">
+                <input type="text" placeholder="Your Name" required>
+                <input type="email" placeholder="Your Email" required>
+                <input type="tel" placeholder="Your Phone" required>
+                <button type="submit" class="modal-next-button">Book My Call</button>
+            </form>
+            <p class="modal-footer">
+                Or <a href="#" class="modal-watch-demo">watch a demo</a> first
+            </p>
+        </div>
+    </div>
+
     <!-- Demo Modal -->
     <div class="modal" id="demoModal">
         <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            
+            <span class="close">&times;</span>
             <div class="demo-step" id="demoStep1">
-                <h2 data-translate="demo.title">Want to hear how HandyBot answers for real businesses?</h2>
-                <p class="subtitle" data-translate="demo.subtitle">Call our demo line — but first, just tell us who you are.</p>
-                
-                <form id="demoForm" onsubmit="return false;">
-                    <div class="form-group">
-                        <label for="demoFirstName" data-translate="demo.firstName">First Name</label>
-                        <input type="text" id="demoFirstName" name="firstName" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="demoCompany" data-translate="demo.company">Company Name</label>
-                        <input type="text" id="demoCompany" name="company" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="demoPhone" data-translate="demo.phone">Phone Number</label>
-                        <input type="tel" id="demoPhone" name="phone" placeholder="+1 (555) 123-4567" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="demoTrade" data-translate="demo.trade">What's your trade?</label>
-                        <select id="demoTrade" name="trade" required>
-                            <option value="">Select your trade</option>
-                            <option value="plumber">Plumber</option>
-                            <option value="electrician">Electrician</option>
-                            <option value="hvac">HVAC Tech</option>
-                            <option value="handyman">Handyman</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    
-                    <button type="button" class="demo-submit modal-demo-submit" data-translate="demo.submit">Call Demo Line</button>
-                </form>
+                <h2>Watch Our Demo</h2>
+                <p>See how HandyBot can transform your business</p>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/your-video-id" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <button class="modal-next-button" id="demoNextButton">Continue to Demo</button>
             </div>
-            
             <div class="demo-step" id="demoStep2" style="display: none;">
-                <h2 data-translate="demo.successTitle">You're in.</h2>
-                <p data-translate="demo.successMessage">Call this number right now to hear HandyBot answer like it's already working for you:</p>
-                <p class="demo-phone">📞 (747) 322-3142</p>
-                <p class="pro-tip" data-translate="demo.proTip">Pro tip: Put yourself in your customer's shoes and imagine this is your business line. This is what HandyBot will sound like when your phone rings.</p>
+                <h2>Ready to Get Started?</h2>
+                <p>Leave your contact details and we'll reach out to you</p>
+                <form id="demoForm">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <input type="tel" placeholder="Your Phone" required>
+                    <input type="text" placeholder="Company Name" required>
+                    <button type="submit" class="modal-demo-submit">Submit</button>
+                </form>
             </div>
         </div>
     </div>
