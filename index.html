@@ -381,21 +381,21 @@
         <div class="modal-content">
             <span class="close-button">&times;</span>
             <div class="step-content" id="demoStep1">
-                <h2>Want to hear how HandyBot answers for real businesses?</h2>
-                <p>Call our demo line — but first, just tell us who you are.</p>
+                <h2 data-translate="demo.title">Want to hear how HandyBot answers for real businesses?</h2>
+                <p data-translate="demo.subtitle">Call our demo line — but first, just tell us who you are.</p>
                 <form id="demoForm">
-                    <input type="text" name="name" placeholder="Your Name" required>
+                    <input type="text" name="name" placeholder="Your Name" required data-translate="demo.firstName">
                     <input type="email" name="email" placeholder="Your Email" required>
-                    <input type="tel" name="phone" placeholder="Your Phone" required>
-                    <input type="text" name="company" placeholder="Company Name" required>
-                    <button type="submit" class="modal-next-button">Give Me the Demo Number →</button>
+                    <input type="tel" name="phone" placeholder="Your Phone" required data-translate="demo.phone">
+                    <input type="text" name="company" placeholder="Company Name" required data-translate="demo.company">
+                    <button type="submit" class="modal-next-button" data-translate="demo.submitButton">Give Me the Demo Number →</button>
                 </form>
             </div>
             <div class="step-content" id="demoStep2" style="display: none;">
-                <h2>You're in.</h2>
-                <p>Call this number right now to hear HandyBot answer like it's already working for you:</p>
+                <h2 data-translate="demo.successTitle">You're in.</h2>
+                <p data-translate="demo.successMessage">Call this number right now to hear HandyBot answer like it's already working for you:</p>
                 <p class="demo-phone">📞 (747) 322-3142</p>
-                <p class="pro-tip">Pro tip: Put yourself in your customer's shoes and imagine this is your business line. This is what HandyBot will sound like when your phone rings.</p>
+                <p class="pro-tip" data-translate="demo.proTip">Pro tip: Put yourself in your customer's shoes and imagine this is your business line. This is what HandyBot will sound like when your phone rings.</p>
             </div>
         </div>
     </div>
@@ -420,11 +420,19 @@
                 <div class="form-group">
                     <select id="trade" name="trade" required>
                         <option value="" data-translate="leadCapture.trade">Select Your Trade</option>
-                        <option value="plumbing" data-translate="leadCapture.trades.plumbing">Plumbing</option>
-                        <option value="electrical" data-translate="leadCapture.trades.electrical">Electrical</option>
-                        <option value="hvac" data-translate="leadCapture.trades.hvac">HVAC</option>
-                        <option value="carpentry" data-translate="leadCapture.trades.carpentry">Carpentry</option>
-                        <option value="painting" data-translate="leadCapture.trades.painting">Painting</option>
+                        <option value="plumber" data-translate="leadCapture.trades.plumber">Plumber</option>
+                        <option value="electrician" data-translate="leadCapture.trades.electrician">Electrician</option>
+                        <option value="roofer" data-translate="leadCapture.trades.roofer">Roofer</option>
+                        <option value="handyman" data-translate="leadCapture.trades.handyman">Handyman</option>
+                        <option value="hvac" data-translate="leadCapture.trades.hvac">HVAC Specialist</option>
+                        <option value="landscaper" data-translate="leadCapture.trades.landscaper">Landscaper</option>
+                        <option value="pool" data-translate="leadCapture.trades.pool">Pool Service</option>
+                        <option value="locksmith" data-translate="leadCapture.trades.locksmith">Locksmith</option>
+                        <option value="appliance" data-translate="leadCapture.trades.appliance">Appliance Repair</option>
+                        <option value="painter" data-translate="leadCapture.trades.painter">Painter</option>
+                        <option value="carpenter" data-translate="leadCapture.trades.carpenter">Carpenter</option>
+                        <option value="cleaner" data-translate="leadCapture.trades.cleaner">Cleaner</option>
+                        <option value="pest" data-translate="leadCapture.trades.pest">Pest Control</option>
                         <option value="other" data-translate="leadCapture.trades.other">Other</option>
                     </select>
                     <small class="helper-text" data-translate="leadCapture.tradeHelper">We'll customize HandyBot for your specific trade</small>
