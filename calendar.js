@@ -4,10 +4,10 @@ class Calendar {
         this.selectedDate = null;
         this.selectedTime = null;
         
-        // Find calendar elements in step 2
-        const step2 = document.getElementById('demoStep2');
+        // Find calendar elements in CTA modal step 2
+        const step2 = document.getElementById('ctaStep2');
         if (!step2) {
-            console.log('Step 2 not found - calendar will not be initialized');
+            console.log('CTA Step 2 not found - calendar will not be initialized');
             return;
         }
         
@@ -103,17 +103,14 @@ class Calendar {
                         time: this.selectedTime
                     });
                     
-                    // Move to next step
-                    const step2 = document.querySelector('.step-content[data-step="2"]');
-                    const step3 = document.querySelector('.step-content[data-step="3"]');
-                    const step2Indicator = document.querySelector('.step[data-step="2"]');
-                    const step3Indicator = document.querySelector('.step[data-step="3"]');
-                    
-                    if (step2 && step3 && step2Indicator && step3Indicator) {
-                        step2.classList.remove('active');
-                        step3.classList.add('active');
-                        step2Indicator.classList.remove('active');
-                        step3Indicator.classList.add('active');
+                    // Close the modal
+                    const modal = document.getElementById('ctaModal');
+                    if (modal) {
+                        modal.style.display = 'none';
+                        document.body.style.overflow = '';
+                        // Reset steps
+                        document.getElementById('ctaStep1').style.display = 'block';
+                        document.getElementById('ctaStep2').style.display = 'none';
                     }
                 }
             });
@@ -202,22 +199,18 @@ class Calendar {
     }
 
     isSameDay(date1, date2) {
-        return date1.getDate() === date2.getDate() &&
+        return date1.getFullYear() === date2.getFullYear() &&
                date1.getMonth() === date2.getMonth() &&
-               date1.getFullYear() === date2.getFullYear();
+               date1.getDate() === date2.getDate();
     }
 
     selectDate(date, element) {
         // Remove selection from all days
         const dayElements = this.daysGrid.querySelectorAll('.day');
-        dayElements.forEach(day => {
-            day.classList.remove('selected');
-        });
+        dayElements.forEach(day => day.classList.remove('selected'));
         
-        // Highlight selected day
+        // Add selection to clicked day
         element.classList.add('selected');
-        
-        // Save selected date
         this.selectedDate = date;
         
         // Show time slots
@@ -225,44 +218,29 @@ class Calendar {
             this.timeSlots.style.display = 'block';
         }
         
-        // Hide confirm button until time is selected
+        // Enable confirm button if time is already selected
         if (this.confirmButton) {
-            this.confirmButton.style.display = 'none';
-        }
-        
-        // Reset selected time
-        this.selectedTime = null;
-        
-        // Remove selection from all time slots
-        if (this.slotsGrid) {
-            const timeSlotElements = this.slotsGrid.querySelectorAll('.time-slot');
-            timeSlotElements.forEach(slot => {
-                slot.classList.remove('selected');
-            });
+            this.confirmButton.disabled = !this.selectedTime;
         }
     }
 
     selectTime(time, element) {
-        if (!this.slotsGrid || !this.confirmButton) return;
-        
         // Remove selection from all time slots
-        const timeSlotElements = this.slotsGrid.querySelectorAll('.time-slot');
-        timeSlotElements.forEach(slot => {
-            slot.classList.remove('selected');
-        });
+        const timeElements = this.slotsGrid.querySelectorAll('.time-slot');
+        timeElements.forEach(slot => slot.classList.remove('selected'));
         
-        // Highlight selected time slot
+        // Add selection to clicked time slot
         element.classList.add('selected');
-        
-        // Save selected time
         this.selectedTime = time;
         
-        // Show confirm button
-        this.confirmButton.style.display = 'block';
+        // Enable confirm button
+        if (this.confirmButton) {
+            this.confirmButton.disabled = false;
+        }
     }
 }
 
-// Создаем экземпляр календаря после загрузки DOM
+// Initialize calendar when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     new Calendar();
 });

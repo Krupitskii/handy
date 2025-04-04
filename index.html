@@ -333,11 +333,27 @@
             </div>
             <div class="step-content" id="ctaStep2" style="display: none;">
                 <h2>Choose Your Call Time</h2>
-                <div id="calendar">
-                    <div id="daysGrid"></div>
-                    <div id="timeSlots"></div>
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button class="prev-month">&lt;</button>
+                        <div class="current-month"></div>
+                        <button class="next-month">&gt;</button>
+                    </div>
+                    <div class="days-grid"></div>
+                    <div class="time-slots">
+                        <h3>Available Times</h3>
+                        <div class="slots-grid">
+                            <div class="time-slot">9:00 AM</div>
+                            <div class="time-slot">10:00 AM</div>
+                            <div class="time-slot">11:00 AM</div>
+                            <div class="time-slot">1:00 PM</div>
+                            <div class="time-slot">2:00 PM</div>
+                            <div class="time-slot">3:00 PM</div>
+                            <div class="time-slot">4:00 PM</div>
+                        </div>
+                        <button class="confirm-booking">Book My Call</button>
+                    </div>
                 </div>
-                <button class="modal-submit-button">Book My Call</button>
             </div>
         </div>
     </div>
