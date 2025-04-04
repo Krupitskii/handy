@@ -45,36 +45,17 @@ function calculateLosses() {
         console.error('Result box not found!');
     }
     
-    // Animate the values
-    if (weeklyLossElement) {
-        console.log('Updating weekly loss element');
-        weeklyLossElement.classList.remove('visible');
-        // Trigger reflow
-        void weeklyLossElement.offsetWidth;
-        weeklyLossElement.textContent = `${formatCurrency(weeklyLoss)} lost`;
-        // Add animation class with a slight delay
-        setTimeout(() => {
-            weeklyLossElement.classList.add('visible');
-        }, 100);
+    // Update loss values with animation
+    if (weeklyLossElement && monthlyLossElement) {
+        weeklyLossElement.textContent = `$${weeklyLoss.toLocaleString()}`;
+        monthlyLossElement.textContent = `$${monthlyLoss.toLocaleString()}`;
+        
+        // Add visible class to trigger animation
+        weeklyLossElement.classList.add('visible');
+        monthlyLossElement.classList.add('visible');
     } else {
-        console.error('Weekly loss element not found!');
+        console.error('Loss elements not found!');
     }
-    
-    if (monthlyLossElement) {
-        console.log('Updating monthly loss element');
-        monthlyLossElement.classList.remove('visible');
-        // Trigger reflow
-        void monthlyLossElement.offsetWidth;
-        monthlyLossElement.textContent = `${formatCurrency(monthlyLoss)} per month`;
-        // Add animation class with a slight delay
-        setTimeout(() => {
-            monthlyLossElement.classList.add('visible');
-        }, 300);
-    } else {
-        console.error('Monthly loss element not found!');
-    }
-    
-    console.log('Results:', { weeklyLoss, monthlyLoss }); // Debug log
 }
 
 // Function to format currency
@@ -202,19 +183,16 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Adding click handler to CTA button:', button); // Debug log
         button.addEventListener('click', (e) => {
             e.preventDefault();
-            console.log('CTA button clicked, button location:', button.closest('.modal-content') ? 'inside modal' : 'outside modal');
-            // Only handle non-modal CTA buttons
-            if (!button.closest('.modal-content')) {
-                if (ctaModal) {
-                    console.log('Showing CTA modal');
-                    // Show first step, hide second step
-                    document.getElementById('ctaStep1').style.display = 'block';
-                    document.getElementById('ctaStep2').style.display = 'none';
-                    ctaModal.style.display = 'flex';
-                    document.body.style.overflow = 'hidden';
-                } else {
-                    console.error('CTA modal not found!');
-                }
+            console.log('CTA button clicked');
+            if (ctaModal) {
+                console.log('Showing CTA modal');
+                // Show first step, hide second step
+                document.getElementById('ctaStep1').style.display = 'block';
+                document.getElementById('ctaStep2').style.display = 'none';
+                ctaModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            } else {
+                console.error('CTA modal not found!');
             }
         });
     });
@@ -224,15 +202,12 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
             console.log('Secondary button clicked');
-            // Only handle non-modal secondary buttons
-            if (!button.closest('.modal-content')) {
-                if (demoModal) {
-                    // Show first step, hide second step
-                    document.getElementById('demoStep1').style.display = 'block';
-                    document.getElementById('demoStep2').style.display = 'none';
-                    demoModal.style.display = 'flex';
-                    document.body.style.overflow = 'hidden';
-                }
+            if (demoModal) {
+                // Show first step, hide second step
+                document.getElementById('demoStep1').style.display = 'block';
+                document.getElementById('demoStep2').style.display = 'none';
+                demoModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
             }
         });
     });
@@ -279,25 +254,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Initialize calendar if not already initialized
                 if (!calendarApiInitialized) {
-                    const calendar = new Calendar('calendar');
-                    calendar.init();
+                    const calendar = new Calendar();
                     calendarApiInitialized = true;
                 }
-            }
-        });
-    }
-    
-    // Handle final CTA submission (calendar booking)
-    const submitButton = document.querySelector('.modal-submit-button');
-    if (submitButton) {
-        submitButton.addEventListener('click', () => {
-            console.log('Calendar booking submitted');
-            if (ctaModal) {
-                ctaModal.style.display = 'none';
-                document.body.style.overflow = '';
-                // Reset steps
-                document.getElementById('ctaStep1').style.display = 'block';
-                document.getElementById('ctaStep2').style.display = 'none';
             }
         });
     }

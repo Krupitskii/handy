@@ -1,4 +1,16 @@
-class Calendar {
+// Google Calendar API configuration
+const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const API_KEY = process.env.GOOGLE_CLIENT_SECRET;
+const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
+const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly';
+
+// Time zone configuration
+const TIMEZONE = 'America/Los_Angeles'; // Pacific Time
+const START_HOUR = 10; // 10 AM
+const END_HOUR = 19.5; // 7:30 PM
+const SLOT_DURATION = 30; // 30 minutes
+
+export class Calendar {
     constructor() {
         this.date = new Date();
         this.selectedDate = null;
@@ -34,11 +46,50 @@ class Calendar {
 
     async initGoogleCalendar() {
         try {
-            await window.googleCalendarManager.init();
-            console.log('Google Calendar initialized');
+            // Load the Google API client library
+            await this.loadGoogleAPI();
+            
+            // Initialize the token client
+            this.tokenClient = google.accounts.oauth2.initTokenClient({
+                client_id: CLIENT_ID,
+                scope: SCOPES,
+                callback: (tokenResponse) => {
+                    this.accessToken = tokenResponse.access_token;
+                    this.initialized = true;
+                    console.log('Google Calendar API initialized successfully');
+                },
+            });
+
+            // Initialize the calendar service
+            this.calendar = google.calendar({ version: 'v3', auth: this.accessToken });
+            
+            return true;
         } catch (error) {
-            console.error('Failed to initialize Google Calendar:', error);
+            console.error('Error initializing Google Calendar:', error);
+            return false;
         }
+    }
+
+    loadGoogleAPI() {
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = 'https://apis.google.com/js/api.js';
+            script.onload = () => {
+                gapi.load('client', async () => {
+                    try {
+                        await gapi.client.init({
+                            apiKey: API_KEY,
+                            discoveryDocs: DISCOVERY_DOCS,
+                        });
+                        resolve();
+                    } catch (error) {
+                        reject(error);
+                    }
+                });
+            };
+            script.onerror = reject;
+            document.body.appendChild(script);
+        });
     }
 
     addEventListeners() {
@@ -47,11 +98,6 @@ class Calendar {
         this.daysGrid.addEventListener('click', (e) => this.handleDayClick(e));
         this.slotsGrid.addEventListener('click', (e) => this.handleTimeSlotClick(e));
         this.confirmButton.addEventListener('click', () => this.handleConfirm());
-    }
-
-    navigateMonth(delta) {
-        this.date.setMonth(this.date.getMonth() + delta);
-        this.render();
     }
 
     async handleDayClick(e) {
@@ -72,17 +118,6 @@ class Calendar {
         
         // Get available slots from Google Calendar
         await this.updateAvailableSlots();
-    }
-
-    async updateAvailableSlots() {
-        if (!this.selectedDate) return;
-
-        try {
-            this.availableSlots = await window.googleCalendarManager.getAvailableSlots(this.selectedDate);
-            this.renderTimeSlots();
-        } catch (error) {
-            console.error('Failed to get available slots:', error);
-        }
     }
 
     handleTimeSlotClick(e) {
@@ -108,11 +143,11 @@ class Calendar {
                 'summary': 'HandyBot Demo Call',
                 'start': {
                     'dateTime': this.selectedTime.toISOString(),
-                    'timeZone': 'America/Los_Angeles'
+                    'timeZone': TIMEZONE
                 },
                 'end': {
                     'dateTime': new Date(this.selectedTime.getTime() + 30 * 60000).toISOString(),
-                    'timeZone': 'America/Los_Angeles'
+                    'timeZone': TIMEZONE
                 }
             };
 
@@ -135,12 +170,18 @@ class Calendar {
         }
     }
 
+    navigateMonth(delta) {
+        this.date.setMonth(this.date.getMonth() + delta);
+        this.render();
+    }
+
     render() {
         const year = this.date.getFullYear();
         const month = this.date.getMonth();
+        const today = new Date();
         
         // Update month display
-        this.currentMonth.textContent = new Date(year, month).toLocaleDateString('en-US', { 
+        this.currentMonth.textContent = this.date.toLocaleString('default', { 
             month: 'long', 
             year: 'numeric' 
         });
@@ -158,18 +199,17 @@ class Calendar {
         });
         
         // Get first day of month and total days
-        const firstDay = new Date(year, month, 1).getDay();
+        const firstDay = new Date(year, month, 1);
         const totalDays = new Date(year, month + 1, 0).getDate();
         
         // Add empty cells for days before first day of month
-        for (let i = 0; i < firstDay; i++) {
+        for (let i = 0; i < firstDay.getDay(); i++) {
             const emptyDay = document.createElement('div');
             emptyDay.className = 'day empty';
             this.daysGrid.appendChild(emptyDay);
         }
         
         // Add days of the month
-        const today = new Date();
         for (let day = 1; day <= totalDays; day++) {
             const dayElement = document.createElement('div');
             dayElement.className = 'day';
@@ -193,6 +233,18 @@ class Calendar {
         // If we have a selected date, update available slots
         if (this.selectedDate) {
             this.updateAvailableSlots();
+        }
+    }
+
+    async updateAvailableSlots() {
+        if (!this.selectedDate) return;
+        
+        try {
+            const availableSlots = await window.googleCalendarManager.getAvailableSlots(this.selectedDate);
+            this.availableSlots = availableSlots;
+            this.renderTimeSlots();
+        } catch (error) {
+            console.error('Error updating available slots:', error);
         }
     }
 
