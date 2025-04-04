@@ -171,6 +171,7 @@
 
     <script type="module">
         import { getSubmissions } from './firebase-config.js';
+        window.getSubmissions = getSubmissions;
 
         let allSubmissions = [];
         let currentPage = 1;
@@ -180,7 +181,9 @@
         // Load and display submissions
         async function loadSubmissions() {
             try {
+                console.log('Loading submissions...');
                 allSubmissions = await getSubmissions();
+                console.log('Loaded submissions:', allSubmissions);
                 filteredSubmissions = [...allSubmissions];
                 updateFormFilter();
                 displaySubmissions();
@@ -259,10 +262,10 @@
                     <td>${sub.timestamp.toDate().toLocaleString()}</td>
                     <td>${sub.formId || '-'}</td>
                     <td>${sub.language || '-'}</td>
-                    <td>${sub.name || '-'}</td>
+                    <td>${sub.fullName || '-'}</td>
                     <td>${sub.email || '-'}</td>
                     <td>${sub.phone || '-'}</td>
-                    <td>${sub.company || '-'}</td>
+                    <td>${sub.companyName || '-'}</td>
                     <td>
                         <button onclick='showDetails(${JSON.stringify(sub)})'>
                             View Details
@@ -295,17 +298,19 @@
 
         // Export to CSV
         window.exportData = function() {
-            const headers = ['Timestamp', 'Form', 'Language', 'Name', 'Email', 'Phone', 'Company'];
+            const headers = ['Timestamp', 'Form', 'Language', 'Name', 'Email', 'Phone', 'Company', 'Trade', 'Jobs Per Week'];
             const csvContent = [
                 headers.join(','),
                 ...filteredSubmissions.map(sub => [
                     sub.timestamp.toDate().toLocaleString(),
                     sub.formId || '',
                     sub.language || '',
-                    sub.name || '',
+                    sub.fullName || '',
                     sub.email || '',
                     sub.phone || '',
-                    sub.company || ''
+                    sub.companyName || '',
+                    sub.trade || '',
+                    sub.jobsPerWeek || ''
                 ].join(','))
             ].join('\n');
 

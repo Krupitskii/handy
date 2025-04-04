@@ -313,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle lead capture form submission
     const leadCaptureForm = document.getElementById('leadCaptureForm');
     if (leadCaptureForm) {
-        leadCaptureForm.addEventListener('submit', function(e) {
+        leadCaptureForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
             // Validate phone number
@@ -329,15 +329,37 @@ document.addEventListener('DOMContentLoaded', () => {
                 phone: phoneInput.getNumber(),
                 trade: document.getElementById('trade').value,
                 companyName: document.getElementById('companyName').value,
-                jobsPerWeek: document.getElementById('jobsPerWeek').value
+                jobsPerWeek: document.getElementById('jobsPerWeek').value,
+                language: currentLanguage,
+                formId: 'lead-capture'
             };
 
-            // TODO: Send form data to your backend
-            console.log('Form data:', formData);
+            try {
+                // Show loading state
+                const submitButton = leadCaptureForm.querySelector('button[type="submit"]');
+                const originalText = submitButton.textContent;
+                submitButton.textContent = 'Sending...';
+                submitButton.disabled = true;
 
-            // Hide lead capture modal and show success modal
-            leadCaptureModal.style.display = 'none';
-            successModal.style.display = 'flex';
+                // Send form data to Firebase
+                const success = await window.submitFormData(formData);
+                
+                if (success) {
+                    // Hide lead capture modal and show success modal
+                    leadCaptureModal.style.display = 'none';
+                    successModal.style.display = 'flex';
+                } else {
+                    throw new Error('Failed to submit form');
+                }
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                alert('Sorry, there was an error submitting your form. Please try again.');
+            } finally {
+                // Reset button state
+                const submitButton = leadCaptureForm.querySelector('button[type="submit"]');
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
+            }
         });
     }
 

@@ -19,6 +19,7 @@ const db = getFirestore(app);
 // Function to submit form data
 async function submitFormData(formData) {
   try {
+    console.log('Submitting form data to Firebase:', formData);
     const docRef = await addDoc(collection(db, "form-submissions"), {
       ...formData,
       timestamp: new Date(),
@@ -47,4 +48,6 @@ async function getSubmissions() {
   }
 }
 
-export { db, submitFormData, getSubmissions }; 
+// Export functions to window object for global access
+window.submitFormData = submitFormData;
+window.getSubmissions = getSubmissions; 
