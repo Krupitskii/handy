@@ -1,6 +1,26 @@
-// Google Calendar API configuration
-const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-const API_KEY = process.env.GOOGLE_CLIENT_SECRET;
+// Google Calendar API Configuration
+const config = {
+    CLIENT_ID: '',  // Will be set from .env file
+    API_KEY: ''     // Will be set from .env file
+};
+
+// Load configuration from .env file
+fetch('/.env')
+    .then(response => response.text())
+    .then(data => {
+        const envVars = data.split('\n').reduce((acc, line) => {
+            const [key, value] = line.split('=');
+            if (key && value) {
+                acc[key.trim()] = value.trim();
+            }
+            return acc;
+        }, {});
+        
+        config.CLIENT_ID = envVars.GOOGLE_CLIENT_ID;
+        config.API_KEY = envVars.GOOGLE_CLIENT_SECRET;
+    })
+    .catch(error => console.error('Error loading .env file:', error));
+
 const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
 const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly';
 
@@ -25,7 +45,7 @@ class GoogleCalendarManager {
             
             // Initialize the token client
             this.tokenClient = google.accounts.oauth2.initTokenClient({
-                client_id: CLIENT_ID,
+                client_id: config.CLIENT_ID,
                 scope: SCOPES,
                 callback: (tokenResponse) => {
                     this.accessToken = tokenResponse.access_token;
@@ -52,7 +72,7 @@ class GoogleCalendarManager {
                 gapi.load('client', async () => {
                     try {
                         await gapi.client.init({
-                            apiKey: API_KEY,
+                            apiKey: config.API_KEY,
                             discoveryDocs: DISCOVERY_DOCS,
                         });
                         resolve();

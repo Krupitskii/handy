@@ -10,7 +10,7 @@ const START_HOUR = 10; // 10 AM
 const END_HOUR = 19.5; // 7:30 PM
 const SLOT_DURATION = 30; // 30 minutes
 
-export class Calendar {
+class Calendar {
     constructor() {
         this.date = new Date();
         this.selectedDate = null;
@@ -274,4 +274,7 @@ export class Calendar {
 // Initialize calendar when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.calendar = new Calendar();
-}); 
+});
+
+// Make Calendar available globally
+window.Calendar = Calendar; 

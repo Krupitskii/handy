@@ -1,4 +1,4 @@
-export const translations = {
+const translations = {
     en: {
         hero: {
             title: "📞 Missed Calls = Missed Money",
@@ -574,4 +574,7 @@ export const translations = {
             proTip: "Совет от профессионала: Поставьте себя на место вашего клиента и представьте, что это ваша бизнес-линия. Так будет звучать HandyBot, когда зазвонит ваш телефон."
         }
     }
-}; 
+};
+
+// Make translations available globally
+window.translations = translations; 

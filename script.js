@@ -1,10 +1,9 @@
 // Base JavaScript functionality will be added here
 console.log('Script loaded'); // Debug log
 
-// Import translations, Calendar and Firebase functions
-import { translations } from './translations.js';
-import { Calendar } from './calendar.js';
-import { submitFormData } from './firebase-config.js';
+// Remove imports and use global objects
+const { translations } = window;
+const { Calendar } = window;
 
 // Add error handler
 window.onerror = function(msg, url, lineNo, columnNo, error) {
