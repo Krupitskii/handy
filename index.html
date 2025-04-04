@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https:;">
+    <title>HandyBot - AI Phone Answering for Service Businesses</title>
+    <link rel="stylesheet" href="style.css?v=3">
+    <script type="module" src="script.js?v=3"></script>
+    <script type="module" src="calendar.js?v=3"></script>
+</head>
+<body>
+    <section class="hero">
+        <div class="container hero-content">
+            <div class="language-switcher">
+                <button class="language-btn active" data-lang="en">EN</button>
+                <button class="language-btn" data-lang="es">ES</button>
+                <button class="language-btn" data-lang="ru">RU</button>
+            </div>
+            <h1 data-translate="hero.title">📞 Missed Calls = Missed Money</h1>
+            <h2 data-translate="hero.subtitle">HandyBot books jobs into your calendar — even when you're on the roof.</h2>
+            <p data-translate="hero.description">Never lose work again. HandyBot answers calls 24/7 and books jobs for you automatically.</p>
+            <div class="hero-buttons">
+                <button class="cta-button" data-translate="hero.cta">Start Free 7-Day Trial</button>
+                <button class="secondary-button" data-translate="hero.secondaryCta">Hear HandyBot in Action</button>
+            </div>
+            <div class="hero-video">
+                <div class="video-container">
+                    <iframe 
+                        src="https://www.loom.com/embed/6741e113885d41fea90a663fbb7349ee?sid=d0dd52dc-b6ef-42f9-be72-25dbb8d6fa0d" 
+                        frameborder="0" 
+                        webkitallowfullscreen 
+                        mozallowfullscreen 
+                        allowfullscreen 
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+                        title="HandyBot Demo">
+                    </iframe>
+                </div>
+                <p class="video-caption" data-translate="hero.videoCaption">HandyBot does the admin. You do the work.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="calculator">
+        <div class="container calculator-content">
+            <h2 data-translate="calculator.title">💸 Every Missed Call = Lost Money. Here's What It Costs You.</h2>
+            <p class="calculator-subheading" data-translate="calculator.subtitle">Enter your average job value and missed calls. HandyBot will show you how much you're losing.</p>
+            
+            <div class="calculator-form">
+                <div class="input-group">
+                    <label for="jobValue" data-translate="calculator.jobValue">💰 Average job value</label>
+                    <div class="input-wrapper">
+                        <span class="dollar-sign">$</span>
+                        <input type="number" id="jobValue" placeholder="200" min="0" value="200">
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="missedCalls" data-translate="calculator.missedCalls">📞 Missed calls per week</label>
+                    <input type="number" id="missedCalls" placeholder="5" min="0" value="5">
+                </div>
+                
+                <button class="calculate-button" data-translate="calculator.calculate">Calculate My Losses</button>
+                <p class="helper-text" data-translate="calculator.helperText">Instant results. No card, no email — just numbers.</p>
+            </div>
+            
+            <div class="result-box">
+                <div class="result-item">
+                    <span class="result-label" data-translate="calculator.weeklyLoss">Weekly loss:</span>
+                    <span class="result-value" id="weeklyLoss">—</span>
+                </div>
+                
+                <div class="result-item">
+                    <span class="result-label" data-translate="calculator.monthlyLoss">Monthly loss:</span>
+                    <span class="result-value" id="monthlyLoss">—</span>
+                </div>
+            </div>
+            
+            <div class="calculator-note-box">
+                <p class="calculator-note" data-translate="calculator.note">📈 Even 1 saved job pays for HandyBot. Everything above that is pure profit.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container features-content">
+            <h2 data-translate="features.title">HandyBot Handles It All. So You Can Just Work.</h2>
+            <p class="features-subheading" data-translate="features.subheading">Here's what HandyBot does for you — automatically.</p>
+            
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-content">
+                        <span class="feature-icon">📞</span>
+                        <div class="feature-text">
+                            <h3 data-translate="features.feature1.title">Answers calls 24/7</h3>
+                            <p data-translate="features.feature1.description">Even when you're on the roof or in the middle of a job</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-content">
+                        <span class="feature-icon">📅</span>
+                        <div class="feature-text">
+                            <h3 data-translate="features.feature2.title">Books jobs into your calendar</h3>
+                            <p data-translate="features.feature2.description">Automatically schedules appointments when you're available</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-content">
+                        <span class="feature-icon">🔁</span>
+                        <div class="feature-text">
+                            <h3 data-translate="features.feature3.title">Handles customer follow-ups</h3>
+                            <p data-translate="features.feature3.description">Keeps your customers informed without you lifting a finger</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-content">
+                        <span class="feature-icon">🧠</span>
+                        <div class="feature-text">
+                            <h3 data-translate="features.feature4.title">Updates your CRM</h3>
+                            <p data-translate="features.feature4.description">No manual data entry needed — it's all automatic</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-content">
+                        <span class="feature-icon">🔔</span>
+                        <div class="feature-text">
+                            <h3 data-translate="features.feature5.title">Sends appointment reminders</h3>
+                            <p data-translate="features.feature5.description">Reduces no-shows and keeps your schedule running smoothly</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-content">
+                        <span class="feature-icon">🚫</span>
+                        <div class="feature-text">
+                            <h3 data-translate="features.feature6.title">Filters spam calls</h3>
+                            <p data-translate="features.feature6.description">Blocks unwanted calls so you only talk to real customers</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-content">
+                        <span class="feature-icon">❓</span>
+                        <div class="feature-text">
+                            <h3 data-translate="features.feature7.title">Handles common questions</h3>
+                            <p data-translate="features.feature7.description">Answers FAQs about your services and availability</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-content">
+                        <span class="feature-icon">⏱</span>
+                        <div class="feature-text">
+                            <h3 data-translate="features.feature8.title">Saves admin time</h3>
+                            <p data-translate="features.feature8.description">Gives you back hours every week to focus on your work</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="trust-line" data-translate="features.cta">🧠 It's like having a full-time receptionist — without the $3,000/month cost.</p>
+        </div>
+    </section>
+
+    <section class="offer">
+        <div class="container offer-content">
+            <h2 data-translate="offer.title">This Is a No-Brainer.</h2>
+            <p class="offer-subheading" data-translate="offer.subheading">HandyBot replaces a $4,800/month setup for just $199/month.</p>
+            
+            <div class="pricing-table">
+                <div class="table-row header">
+                    <div class="table-cell" data-translate="offer.tableHeader.normal">What You'd Normally Pay</div>
+                    <div class="table-cell" data-translate="offer.tableHeader.handybot">What HandyBot Gives You</div>
+                </div>
+                
+                <div class="table-row">
+                    <div class="table-cell" data-translate="offer.tableRows.receptionist.normal">👩‍💼 Receptionist: $3,000/mo</div>
+                    <div class="table-cell" data-translate="offer.tableRows.receptionist.handybot">📞 Answers calls 24/7</div>
+                </div>
+                
+                <div class="table-row">
+                    <div class="table-cell" data-translate="offer.tableRows.crm.normal">📊 CRM setup: $200/mo</div>
+                    <div class="table-cell" data-translate="offer.tableRows.crm.handybot">🤖 CRM auto-filled</div>
+                </div>
+                
+                <div class="table-row">
+                    <div class="table-cell" data-translate="offer.tableRows.booking.normal">📅 Booking assistant: $500/mo</div>
+                    <div class="table-cell" data-translate="offer.tableRows.booking.handybot">📅 Schedules jobs automatically</div>
+                </div>
+                
+                <div class="table-row">
+                    <div class="table-cell" data-translate="offer.tableRows.followup.normal">📝 Follow-up assistant: $300/mo</div>
+                    <div class="table-cell" data-translate="offer.tableRows.followup.handybot">🔔 Sends follow-ups & reminders</div>
+                </div>
+                
+                <div class="table-row">
+                    <div class="table-cell" data-translate="offer.tableRows.missedJobs.normal">🚫 Missed jobs: $1,000+/mo</div>
+                    <div class="table-cell" data-translate="offer.tableRows.missedJobs.handybot">✅ Zero missed jobs</div>
+                </div>
+            </div>
+            
+            <div class="offer-summary">
+                <p class="total-replaced" data-translate="offer.summary.total">💥 All replaced by HandyBot — for just <span class="highlight-price">$199/month</span></p>
+                <p class="value-justifier" data-translate="offer.summary.value">Try it free. No card. Cancel anytime. Setup included.</p>
+            </div>
+            
+            <div class="offer-cta">
+                <button class="cta-button" data-translate="offer.cta.button">Start Free 7-Day Trial</button>
+                <p class="guarantee" data-translate="offer.cta.guarantee">"Works or you pay nothing."</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <div class="container testimonials-content">
+            <h2 data-translate="testimonials.title">Real Handymen. Real Jobs. Real Results.</h2>
+            <p class="testimonials-subheading" data-translate="testimonials.subheading">These are not actors. Just hard-working pros who use HandyBot.</p>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <img src="images/testimonials/mike.jpg" alt="Mike D. - Drywall Pro" class="testimonial-photo">
+                    <div class="testimonial-info">
+                        <h3 data-translate="testimonials.testimonials.mike.name">Mike D.</h3>
+                        <p class="testimonial-location" data-translate="testimonials.testimonials.mike.location">Sacramento, CA · Drywall Pro</p>
+                        <blockquote class="testimonial-quote" data-translate="testimonials.testimonials.mike.quote">"Booked 3 jobs in one day while I was on the ladder. It's a no-brainer."</blockquote>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <img src="images/testimonials/sarah.jpg" alt="Sarah M. - Plumbing Expert" class="testimonial-photo">
+                    <div class="testimonial-info">
+                        <h3 data-translate="testimonials.testimonials.sarah.name">Sarah M.</h3>
+                        <p class="testimonial-location" data-translate="testimonials.testimonials.sarah.location">Miami, FL · Plumbing Expert</p>
+                        <blockquote class="testimonial-quote" data-translate="testimonials.testimonials.sarah.quote">"Used to miss 5–6 calls a week. Now I just show up — my calendar's full."</blockquote>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <img src="images/testimonials/james.jpg" alt="James R. - Electrical Contractor" class="testimonial-photo">
+                    <div class="testimonial-info">
+                        <h3 data-translate="testimonials.testimonials.james.name">James R.</h3>
+                        <p class="testimonial-location" data-translate="testimonials.testimonials.james.location">Austin, TX · Electrical Contractor</p>
+                        <blockquote class="testimonial-quote" data-translate="testimonials.testimonials.james.quote">"First time I feel like I actually run a business — not just hustle for work."</blockquote>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonials-cta">
+                <button class="cta-button" data-translate="testimonials.cta">See Why 100s of Handymen Use HandyBot</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq">
+        <div class="container faq-content">
+            <h2 data-translate="faq.title">Still Got Questions?</h2>
+            <p class="faq-subheading" data-translate="faq.subheading">We got answers — fast and simple.</p>
+            
+            <div class="faq-grid">
+                <div class="faq-card">
+                    <div class="faq-question">
+                        <span class="emoji">🤔</span>
+                        <h3 data-translate="faq.questions.tech.question">Do I need tech skills?</h3>
+                    </div>
+                    <p class="faq-answer" data-translate="faq.questions.tech.answer">Nope. We set it up for you. Just answer calls like normal — HandyBot does the rest.</p>
+                </div>
+                
+                <div class="faq-card">
+                    <div class="faq-question">
+                        <span class="emoji">📱</span>
+                        <h3 data-translate="faq.questions.how.question">How does it work?</h3>
+                    </div>
+                    <p class="faq-answer" data-translate="faq.questions.how.answer">HandyBot answers your calls 24/7, books jobs, and updates your calendar. You just show up.</p>
+                </div>
+                
+                <div class="faq-card">
+                    <div class="faq-question">
+                        <span class="emoji">❌</span>
+                        <h3 data-translate="faq.questions.cancel.question">What if I want to cancel?</h3>
+                    </div>
+                    <p class="faq-answer" data-translate="faq.questions.cancel.answer">No problem. Cancel anytime. No contracts. No BS.</p>
+                </div>
+                
+                <div class="faq-card">
+                    <div class="faq-question">
+                        <span class="emoji">💳</span>
+                        <h3 data-translate="faq.questions.card.question">Do I need a card for the trial?</h3>
+                    </div>
+                    <p class="faq-answer" data-translate="faq.questions.card.answer">Nope. Try it free. No card needed. No pressure.</p>
+                </div>
+            </div>
+            
+            <div class="faq-cta">
+                <button class="cta-button" data-translate="faq.cta">Try HandyBot Free for 7 Days</button>
+                <button class="secondary-button" data-translate="faq.secondaryCta">Hear HandyBot in Action</button>
+                <p class="guarantee" data-translate="faq.guarantee">"Works or you pay nothing."</p>
+            </div>
+            
+            <p class="mini-footer" data-translate="faq.footer">Built for U.S. Handymen — Trusted Nationwide</p>
+        </div>
+    </section>
+
+    <div class="dashboard-button-container">
+        <a href="dashboard.html" class="cta-button dashboard-button">Go to Dashboard →</a>
+    </div>
+
+    <footer class="footer">
+        <!-- Footer content -->
+    </footer>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="signup-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            
+            <div class="modal-header">
+                <div class="progress-indicator">
+                    <div class="step active" data-step="1">
+                        <span class="step-number" data-translate="modal.step1">Step 1:</span>
+                        <span class="step-label" data-translate="modal.step1Label">Your Info</span>
+                    </div>
+                    <div class="step" data-step="2">
+                        <span class="step-number" data-translate="modal.step2">Step 2:</span>
+                        <span class="step-label" data-translate="modal.step2Label">Book a Call</span>
+                    </div>
+                </div>
+            </div>
+
+            <form id="registrationForm" class="modal-form" onsubmit="return false;">
+                <div class="step-content active" data-step="1">
+                    <h3 class="modal-title" data-translate-title="modal.title" data-translate-subtitle="modal.subtitle"></h3>
+                    <div class="form-group">
+                        <label for="fullName" data-translate="modal.name">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" data-translate="modal.email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" data-translate="modal.phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+1 (555) 123-4567" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookingSystem" data-translate="modal.bookingSystem">Which booking system do you use?</label>
+                        <select id="bookingSystem" name="bookingSystem" required>
+                            <option value="">Select your booking system</option>
+                            <option value="calendly">Calendly</option>
+                            <option value="square">Square</option>
+                            <option value="acuity">Acuity</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <input type="text" id="otherBookingSystem" name="otherBookingSystem" class="other-input" placeholder="Please specify" style="display: none;">
+                    </div>
+                    <button type="button" class="cta-button" data-translate="modal.next">Next: Book My Call →</button>
+                    <p class="form-note">Takes 15 minutes. No payment needed.</p>
+                </div>
+
+                <div class="step-content" data-step="2">
+                    <div class="calendar-container">
+                        <div class="date-picker">
+                            <div class="month-navigation">
+                                <button class="prev-month" aria-label="Previous month"></button>
+                                <h4 class="current-month">March 2024</h4>
+                                <button class="next-month" aria-label="Next month"></button>
+                            </div>
+                            <div class="weekdays">
+                                <span>Sun</span>
+                                <span>Mon</span>
+                                <span>Tue</span>
+                                <span>Wed</span>
+                                <span>Thu</span>
+                                <span>Fri</span>
+                                <span>Sat</span>
+                            </div>
+                            <div class="days-grid">
+                                <!-- Days will be populated by JavaScript -->
+                            </div>
+                        </div>
+                        <div class="time-slots" style="display: none;">
+                            <h4>Available Time Slots</h4>
+                            <div class="slots-grid">
+                                <button class="time-slot">9:00 AM</button>
+                                <button class="time-slot">10:00 AM</button>
+                                <button class="time-slot">11:00 AM</button>
+                                <button class="time-slot">1:00 PM</button>
+                                <button class="time-slot">2:00 PM</button>
+                                <button class="time-slot">3:00 PM</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="cta-button confirm-booking" style="display: none;">Confirm Booking</button>
+                </div>
+
+                <div class="step-content" data-step="3">
+                    <h3>You're All Set!</h3>
+                    <div class="confirmation-content">
+                        <p>Your setup call is scheduled. Here's what to prepare:</p>
+                        <ul class="preparation-checklist">
+                            <li>Your booking system login details</li>
+                            <li>Your typical working hours</li>
+                            <li>Your service areas</li>
+                            <li>Your pricing structure</li>
+                        </ul>
+                    </div>
+                </div>
+            </form>
+
+            <div class="modal-footer">
+                <button class="watch-demo">← Watch Demo Again</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Demo Modal -->
+    <div class="modal" id="demoModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            
+            <div class="demo-step" id="demoStep1">
+                <h2 data-translate="demo.title">Want to hear how HandyBot answers for real businesses?</h2>
+                <p class="subtitle" data-translate="demo.subtitle">Call our demo line — but first, just tell us who you are.</p>
+                
+                <form id="demoForm" onsubmit="return false;">
+                    <div class="form-group">
+                        <label for="demoFirstName" data-translate="demo.firstName">First Name</label>
+                        <input type="text" id="demoFirstName" name="firstName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="demoPhone" data-translate="demo.phone">Phone Number</label>
+                        <input type="tel" id="demoPhone" name="phone" placeholder="+1 (555) 123-4567" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="demoTrade" data-translate="demo.trade">What type of work do you do? (Pick one)</label>
+                        <select id="demoTrade" name="trade" required>
+                            <option value="" data-translate="demo.selectTrade">Select your trade</option>
+                            <option value="handyman" data-translate="demo.trades.handyman">Handyman</option>
+                            <option value="plumber" data-translate="demo.trades.plumber">Plumber</option>
+                            <option value="electrician" data-translate="demo.trades.electrician">Electrician</option>
+                            <option value="roofer" data-translate="demo.trades.roofer">Roofer</option>
+                            <option value="hvac" data-translate="demo.trades.hvac">HVAC</option>
+                            <option value="painter" data-translate="demo.trades.painter">Painter</option>
+                            <option value="general-contractor" data-translate="demo.trades.generalContractor">General Contractor</option>
+                            <option value="flooring" data-translate="demo.trades.flooring">Flooring</option>
+                            <option value="drywall" data-translate="demo.trades.drywall">Drywall</option>
+                            <option value="landscaper" data-translate="demo.trades.landscaper">Landscaper</option>
+                            <option value="other" data-translate="demo.trades.other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="demoCompany" data-translate="demo.company">Company Name (optional)</label>
+                        <input type="text" id="demoCompany" name="company">
+                    </div>
+                    
+                    <button type="submit" class="cta-button" data-translate="demo.submitButton">Give Me the Demo Number →</button>
+                </form>
+            </div>
+            
+            <div class="demo-step" id="demoStep2" style="display: none;">
+                <h2 data-translate="demo.successTitle">You're in.</h2>
+                <p data-translate="demo.successMessage">Call this number right now to hear HandyBot answer like it's already working for you:</p>
+                <p class="demo-phone">📞 (747) 322-3142</p>
+                <p class="pro-tip" data-translate="demo.proTip">Pro tip: Put yourself in your customer's shoes and imagine this is your business line. This is what HandyBot will sound like when your phone rings.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="firebase-config.js" type="module"></script>
+    <script src="translations.js" type="module"></script>
+</body>
+</html> 

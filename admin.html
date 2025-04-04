@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HandyBot Admin - Form Submissions</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filters input,
+        .filters select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .filters button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .filters button:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .pagination button {
+            padding: 8px 16px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .pagination button:hover {
+            background-color: #f5f5f5;
+        }
+
+        .pagination button:disabled {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .filters {
+                flex-direction: column;
+            }
+            
+            .filters input,
+            .filters select,
+            .filters button {
+                width: 100%;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>HandyBot Form Submissions</h1>
+        
+        <div class="filters">
+            <input type="text" id="searchInput" placeholder="Search...">
+            <select id="formFilter">
+                <option value="">All Forms</option>
+            </select>
+            <select id="languageFilter">
+                <option value="">All Languages</option>
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+                <option value="ru">Russian</option>
+            </select>
+            <button onclick="exportData()">Export to CSV</button>
+        </div>
+        
+        <table id="submissionsTable">
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Form</th>
+                    <th>Language</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Company</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody id="submissionsBody">
+                <tr>
+                    <td colspan="8" class="loading">Loading submissions...</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="pagination">
+            <button id="prevPage" onclick="previousPage()" disabled>Previous</button>
+            <span id="pageInfo">Page 1</span>
+            <button id="nextPage" onclick="nextPage()">Next</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { getSubmissions } from './firebase-config.js';
+
+        let allSubmissions = [];
+        let currentPage = 1;
+        const itemsPerPage = 10;
+        let filteredSubmissions = [];
+
+        // Load and display submissions
+        async function loadSubmissions() {
+            try {
+                allSubmissions = await getSubmissions();
+                filteredSubmissions = [...allSubmissions];
+                updateFormFilter();
+                displaySubmissions();
+            } catch (error) {
+                console.error('Error loading submissions:', error);
+                document.getElementById('submissionsBody').innerHTML = `
+                    <tr>
+                        <td colspan="8" style="color: red; text-align: center;">
+                            Error loading submissions. Please try again later.
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Update form filter options
+        function updateFormFilter() {
+            const formFilter = document.getElementById('formFilter');
+            const forms = new Set(allSubmissions.map(sub => sub.formId));
+            
+            // Clear existing options except the first one
+            while (formFilter.options.length > 1) {
+                formFilter.remove(1);
+            }
+            
+            // Add new options
+            forms.forEach(formId => {
+                const option = document.createElement('option');
+                option.value = formId;
+                option.textContent = formId;
+                formFilter.appendChild(option);
+            });
+        }
+
+        // Filter submissions based on search and filters
+        function filterSubmissions() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const formFilter = document.getElementById('formFilter').value;
+            const languageFilter = document.getElementById('languageFilter').value;
+
+            filteredSubmissions = allSubmissions.filter(sub => {
+                const matchesSearch = !searchTerm || 
+                    Object.values(sub).some(value => 
+                        String(value).toLowerCase().includes(searchTerm)
+                    );
+                const matchesForm = !formFilter || sub.formId === formFilter;
+                const matchesLanguage = !languageFilter || sub.language === languageFilter;
+                
+                return matchesSearch && matchesForm && matchesLanguage;
+            });
+
+            currentPage = 1;
+            displaySubmissions();
+        }
+
+        // Display submissions for current page
+        function displaySubmissions() {
+            const tbody = document.getElementById('submissionsBody');
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageSubmissions = filteredSubmissions.slice(start, end);
+
+            if (pageSubmissions.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center;">
+                            No submissions found.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = pageSubmissions.map(sub => `
+                <tr>
+                    <td>${sub.timestamp.toDate().toLocaleString()}</td>
+                    <td>${sub.formId || '-'}</td>
+                    <td>${sub.language || '-'}</td>
+                    <td>${sub.name || '-'}</td>
+                    <td>${sub.email || '-'}</td>
+                    <td>${sub.phone || '-'}</td>
+                    <td>${sub.company || '-'}</td>
+                    <td>
+                        <button onclick='showDetails(${JSON.stringify(sub)})'>
+                            View Details
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+
+            // Update pagination
+            document.getElementById('prevPage').disabled = currentPage === 1;
+            document.getElementById('nextPage').disabled = end >= filteredSubmissions.length;
+            document.getElementById('pageInfo').textContent = `Page ${currentPage}`;
+        }
+
+        // Pagination functions
+        window.previousPage = function() {
+            if (currentPage > 1) {
+                currentPage--;
+                displaySubmissions();
+            }
+        };
+
+        window.nextPage = function() {
+            const maxPage = Math.ceil(filteredSubmissions.length / itemsPerPage);
+            if (currentPage < maxPage) {
+                currentPage++;
+                displaySubmissions();
+            }
+        };
+
+        // Export to CSV
+        window.exportData = function() {
+            const headers = ['Timestamp', 'Form', 'Language', 'Name', 'Email', 'Phone', 'Company'];
+            const csvContent = [
+                headers.join(','),
+                ...filteredSubmissions.map(sub => [
+                    sub.timestamp.toDate().toLocaleString(),
+                    sub.formId || '',
+                    sub.language || '',
+                    sub.name || '',
+                    sub.email || '',
+                    sub.phone || '',
+                    sub.company || ''
+                ].join(','))
+            ].join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `handybot-submissions-${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+        };
+
+        // Show submission details
+        window.showDetails = function(submission) {
+            const details = Object.entries(submission)
+                .filter(([key]) => !['id', 'timestamp'].includes(key))
+                .map(([key, value]) => `${key}: ${value}`)
+                .join('\n');
+            
+            alert(details);
+        };
+
+        // Add event listeners
+        document.getElementById('searchInput').addEventListener('input', filterSubmissions);
+        document.getElementById('formFilter').addEventListener('change', filterSubmissions);
+        document.getElementById('languageFilter').addEventListener('change', filterSubmissions);
+
+        // Load submissions when page loads
+        loadSubmissions();
+    </script>
+</body>
+</html> 
