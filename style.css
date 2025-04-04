@@ -1850,4 +1850,47 @@ body {
 
 .modal-watch-demo:hover {
     color: #f97316;
+}
+
+.language-switcher {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    z-index: 10;
+}
+
+.language-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.language-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.language-btn.active {
+    background: white;
+    color: #1a1a1a;
+    border-color: white;
+}
+
+@media (max-width: 768px) {
+    .language-switcher {
+        top: 0.5rem;
+        right: 0.5rem;
+    }
+    
+    .language-btn {
+        padding: 0.2rem 0.4rem;
+        font-size: 0.7rem;
+    }
 } 

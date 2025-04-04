@@ -5,7 +5,7 @@ class Calendar {
         this.selectedTime = null;
         
         // Find calendar elements in step 2
-        const step2 = document.querySelector('.step-content[data-step="2"]');
+        const step2 = document.getElementById('demoStep2');
         if (!step2) {
             console.error('Step 2 not found');
             return;

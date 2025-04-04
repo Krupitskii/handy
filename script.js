@@ -211,18 +211,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Initialize modals
-    const signupModal = document.getElementById('signupModal');
     const ctaModal = document.getElementById('ctaModal');
     const demoModal = document.getElementById('demoModal');
     
     console.log('Modals initialized:', {
-        signupModal: !!signupModal,
         ctaModal: !!ctaModal,
         demoModal: !!demoModal
     });
     
     // Initially hide modals
-    if (signupModal) signupModal.style.display = 'none';
     if (ctaModal) ctaModal.style.display = 'none';
     if (demoModal) demoModal.style.display = 'none';
     
@@ -264,107 +261,81 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-
-    // CTA Modal handlers
-    const ctaForm = document.getElementById('ctaForm');
-    const watchDemoLink = document.querySelector('.modal-watch-demo');
-    const closeButtons = document.querySelectorAll('.close');
-
+    
     // Close button handlers
-    closeButtons.forEach(button => {
+    document.querySelectorAll('.close-button').forEach(button => {
         button.addEventListener('click', () => {
             const modal = button.closest('.modal');
             if (modal) {
                 modal.style.display = 'none';
-                document.body.style.overflow = 'auto';
+                document.body.style.overflow = '';
             }
         });
     });
-
-    // CTA Form Submit
+    
+    // Handle form submissions
+    const ctaForm = document.getElementById('ctaForm');
     if (ctaForm) {
-        ctaForm.addEventListener('submit', function(e) {
+        ctaForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            console.log('CTA Form Submitted');
-            ctaModal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-            // Here you would typically send the form data to your server
+            console.log('CTA form submitted');
+            if (ctaModal) {
+                ctaModal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
         });
     }
-
-    // Watch Demo Link Click
+    
+    // Handle "Watch Demo" link in CTA modal
+    const watchDemoLink = document.querySelector('.modal-watch-demo');
     if (watchDemoLink) {
-        watchDemoLink.addEventListener('click', function(e) {
+        watchDemoLink.addEventListener('click', (e) => {
             e.preventDefault();
-            ctaModal.style.display = 'none';
-            document.body.style.overflow = 'auto';
+            if (ctaModal) {
+                ctaModal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+            // Scroll to hero section
             const heroSection = document.querySelector('.hero');
             if (heroSection) {
                 heroSection.scrollIntoView({ behavior: 'smooth' });
             }
         });
     }
-
-    // Demo Modal handlers
-    const demoForm = document.getElementById('demoForm');
+    
+    // Handle demo modal steps
     const demoStep1 = document.getElementById('demoStep1');
     const demoStep2 = document.getElementById('demoStep2');
-    const demoNextButton = document.getElementById('demoNextButton');
-
-    // Demo Next Button Click
+    const demoStep3 = document.getElementById('demoStep3');
+    const demoNextButton = document.querySelector('.modal-next-button');
+    const demoForm = document.getElementById('demoForm');
+    
     if (demoNextButton) {
-        demoNextButton.addEventListener('click', function() {
-            demoStep1.style.display = 'none';
-            demoStep2.style.display = 'block';
+        demoNextButton.addEventListener('click', () => {
+            if (demoStep1 && demoStep2) {
+                demoStep1.style.display = 'none';
+                demoStep2.style.display = 'block';
+            }
         });
     }
-
-    // Demo Form Submit
+    
     if (demoForm) {
-        demoForm.addEventListener('submit', function(e) {
+        demoForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const formData = new FormData(demoForm);
-            const data = Object.fromEntries(formData.entries());
+            const name = demoForm.querySelector('input[name="name"]').value;
+            const email = demoForm.querySelector('input[name="email"]').value;
+            const phone = demoForm.querySelector('input[name="phone"]').value;
+            const company = demoForm.querySelector('input[name="company"]').value;
             
-            // Validate all required fields
-            const requiredFields = ['name', 'email', 'phone', 'company'];
-            const missingFields = requiredFields.filter(field => !data[field]);
-            
-            if (missingFields.length > 0) {
-                alert('Please fill in all required fields');
-                return;
-            }
-
-            console.log('Demo Form Submitted:', data);
-            demoModal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-            // Here you would typically send the form data to your server
-        });
-    }
-
-    // Handle booking system selection
-    const bookingSystemSelect = document.getElementById('bookingSystem');
-    const otherSystemInput = document.getElementById('otherBookingSystem');
-    
-    console.log('Booking system elements:', {
-        bookingSystemSelect: !!bookingSystemSelect,
-        otherSystemInput: !!otherSystemInput
-    });
-    
-    if (bookingSystemSelect && otherSystemInput) {
-        bookingSystemSelect.addEventListener('change', () => {
-            console.log('Booking system changed:', bookingSystemSelect.value);
-            if (bookingSystemSelect.value === 'Other') {
-                otherSystemInput.style.display = 'block';
-            } else {
-                otherSystemInput.style.display = 'none';
+            if (name && email && phone && company) {
+                if (demoStep2 && demoStep3) {
+                    demoStep2.style.display = 'none';
+                    demoStep3.style.display = 'block';
+                }
             }
         });
     }
-    
-    // Initialize calendar
-    new Calendar();
-    
+
     // Language switcher functionality
     const languageButtons = document.querySelectorAll('.language-btn');
     console.log('Language buttons found:', languageButtons.length);
