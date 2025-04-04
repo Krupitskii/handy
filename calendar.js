@@ -1,248 +1,225 @@
 class Calendar {
     constructor() {
-        this.currentDate = new Date();
+        this.date = new Date();
         this.selectedDate = null;
         this.selectedTime = null;
+        this.availableSlots = [];
         
-        // Find calendar elements in CTA modal step 2
-        const step2 = document.getElementById('ctaStep2');
-        if (!step2) {
-            console.log('CTA Step 2 not found - calendar will not be initialized');
+        // Initialize elements
+        this.calendarContainer = document.querySelector('.calendar-container');
+        this.daysGrid = document.querySelector('.days-grid');
+        this.timeSlots = document.querySelector('.time-slots');
+        this.currentMonth = document.querySelector('.current-month');
+        this.prevMonth = document.querySelector('.prev-month');
+        this.nextMonth = document.querySelector('.next-month');
+        this.slotsGrid = document.querySelector('.slots-grid');
+        this.confirmButton = document.querySelector('.confirm-booking');
+        
+        if (!this.calendarContainer || !this.daysGrid || !this.timeSlots || 
+            !this.currentMonth || !this.prevMonth || !this.nextMonth || 
+            !this.slotsGrid || !this.confirmButton) {
+            console.error('Calendar elements not found');
             return;
         }
-        
-        this.calendarContainer = step2.querySelector('.calendar-container');
-        this.daysGrid = step2.querySelector('.days-grid');
-        this.timeSlots = step2.querySelector('.time-slots');
-        this.currentMonthEl = step2.querySelector('.current-month');
-        this.prevMonthBtn = step2.querySelector('.prev-month');
-        this.nextMonthBtn = step2.querySelector('.next-month');
-        this.slotsGrid = step2.querySelector('.slots-grid');
-        this.confirmButton = step2.querySelector('.confirm-booking');
-        
-        // Only initialize if all required elements are found
-        if (this.daysGrid && this.timeSlots) {
-            this.init();
-        } else {
-            console.log('Some calendar elements not found - calendar will not be initialized');
-        }
-    }
 
-    init() {
-        if (!this.daysGrid || !this.timeSlots) {
-            console.error('Required calendar elements not found');
-            return;
-        }
+        // Initialize Google Calendar
+        this.initGoogleCalendar();
         
-        this.renderCalendar();
+        // Add event listeners
         this.addEventListeners();
         
-        // Hide time slots initially
-        if (this.timeSlots) {
-            this.timeSlots.style.display = 'none';
-        }
-        
-        // Hide confirm button initially
-        if (this.confirmButton) {
-            this.confirmButton.style.display = 'none';
+        // Render initial calendar
+        this.render();
+    }
+
+    async initGoogleCalendar() {
+        try {
+            await window.googleCalendarManager.init();
+            console.log('Google Calendar initialized');
+        } catch (error) {
+            console.error('Failed to initialize Google Calendar:', error);
         }
     }
 
     addEventListeners() {
-        // Add month navigation handlers
-        if (this.prevMonthBtn) {
-            this.prevMonthBtn.addEventListener('click', () => {
-                this.currentDate.setMonth(this.currentDate.getMonth() - 1);
-                this.renderCalendar();
-                if (this.selectedDate) {
-                    this.highlightSelectedDate();
-                }
-            });
-        }
+        this.prevMonth.addEventListener('click', () => this.navigateMonth(-1));
+        this.nextMonth.addEventListener('click', () => this.navigateMonth(1));
+        this.daysGrid.addEventListener('click', (e) => this.handleDayClick(e));
+        this.slotsGrid.addEventListener('click', (e) => this.handleTimeSlotClick(e));
+        this.confirmButton.addEventListener('click', () => this.handleConfirm());
+    }
+
+    navigateMonth(delta) {
+        this.date.setMonth(this.date.getMonth() + delta);
+        this.render();
+    }
+
+    async handleDayClick(e) {
+        const dayElement = e.target.closest('.day');
+        if (!dayElement || dayElement.classList.contains('disabled')) return;
+
+        const day = parseInt(dayElement.textContent);
+        const newDate = new Date(this.date.getFullYear(), this.date.getMonth(), day);
         
-        if (this.nextMonthBtn) {
-            this.nextMonthBtn.addEventListener('click', () => {
-                this.currentDate.setMonth(this.currentDate.getMonth() + 1);
-                this.renderCalendar();
-                if (this.selectedDate) {
-                    this.highlightSelectedDate();
-                }
-            });
-        }
+        if (newDate < new Date().setHours(0, 0, 0, 0)) return;
+
+        this.selectedDate = newDate;
+        this.selectedTime = null;
         
-        // Add day selection handlers
-        if (this.daysGrid) {
-            this.daysGrid.addEventListener('click', (e) => {
-                const dayElement = e.target.closest('.day');
-                if (dayElement && !dayElement.classList.contains('disabled') && !dayElement.classList.contains('empty')) {
-                    const dateStr = dayElement.dataset.date;
-                    if (dateStr) {
-                        const date = new Date(dateStr);
-                        this.selectDate(date, dayElement);
-                    }
-                }
-            });
-        }
+        // Update UI
+        document.querySelectorAll('.day').forEach(d => d.classList.remove('selected'));
+        dayElement.classList.add('selected');
         
-        // Add time slot selection handlers
-        if (this.slotsGrid) {
-            this.slotsGrid.addEventListener('click', (e) => {
-                const timeSlot = e.target.closest('.time-slot');
-                if (timeSlot && !timeSlot.classList.contains('disabled')) {
-                    this.selectTime(timeSlot.textContent.trim(), timeSlot);
-                }
-            });
-        }
-        
-        // Add confirm button handler
-        if (this.confirmButton) {
-            this.confirmButton.addEventListener('click', () => {
-                if (this.selectedDate && this.selectedTime) {
-                    console.log('Booking confirmed:', {
-                        date: this.selectedDate,
-                        time: this.selectedTime
-                    });
-                    
-                    // Close the modal
-                    const modal = document.getElementById('ctaModal');
-                    if (modal) {
-                        modal.style.display = 'none';
-                        document.body.style.overflow = '';
-                        // Reset steps
-                        document.getElementById('ctaStep1').style.display = 'block';
-                        document.getElementById('ctaStep2').style.display = 'none';
-                    }
-                }
-            });
+        // Get available slots from Google Calendar
+        await this.updateAvailableSlots();
+    }
+
+    async updateAvailableSlots() {
+        if (!this.selectedDate) return;
+
+        try {
+            this.availableSlots = await window.googleCalendarManager.getAvailableSlots(this.selectedDate);
+            this.renderTimeSlots();
+        } catch (error) {
+            console.error('Failed to get available slots:', error);
         }
     }
 
-    renderCalendar() {
-        if (!this.daysGrid || !this.currentMonthEl) {
-            console.error('Required elements for rendering calendar not found');
-            return;
-        }
+    handleTimeSlotClick(e) {
+        const slotElement = e.target.closest('.time-slot');
+        if (!slotElement || slotElement.classList.contains('disabled')) return;
+
+        this.selectedTime = new Date(slotElement.dataset.time);
         
-        // Clear days grid
+        // Update UI
+        document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+        slotElement.classList.add('selected');
+        
+        // Enable confirm button
+        this.confirmButton.disabled = false;
+    }
+
+    async handleConfirm() {
+        if (!this.selectedDate || !this.selectedTime) return;
+
+        try {
+            // Create calendar event
+            const event = {
+                'summary': 'HandyBot Demo Call',
+                'start': {
+                    'dateTime': this.selectedTime.toISOString(),
+                    'timeZone': 'America/Los_Angeles'
+                },
+                'end': {
+                    'dateTime': new Date(this.selectedTime.getTime() + 30 * 60000).toISOString(),
+                    'timeZone': 'America/Los_Angeles'
+                }
+            };
+
+            await gapi.client.calendar.events.insert({
+                'calendarId': 'primary',
+                'resource': event
+            });
+
+            // Close modal and show success message
+            const modal = document.querySelector('.cta-modal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+
+            alert('Call scheduled successfully!');
+        } catch (error) {
+            console.error('Failed to schedule call:', error);
+            alert('Failed to schedule call. Please try again.');
+        }
+    }
+
+    render() {
+        const year = this.date.getFullYear();
+        const month = this.date.getMonth();
+        
+        // Update month display
+        this.currentMonth.textContent = new Date(year, month).toLocaleDateString('en-US', { 
+            month: 'long', 
+            year: 'numeric' 
+        });
+        
+        // Clear previous days
         this.daysGrid.innerHTML = '';
         
-        // Set current month and year
-        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        this.currentMonthEl.textContent = `${monthNames[this.currentDate.getMonth()]} ${this.currentDate.getFullYear()}`;
+        // Add day headers
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        days.forEach(day => {
+            const dayHeader = document.createElement('div');
+            dayHeader.className = 'day-header';
+            dayHeader.textContent = day;
+            this.daysGrid.appendChild(dayHeader);
+        });
         
-        // Get first day of month
-        const firstDay = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1);
-        const startingDay = firstDay.getDay(); // 0 = Sunday, 1 = Monday, etc.
-        
-        // Get number of days in month
-        const daysInMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, 0).getDate();
-        
-        // Get today's date for comparison
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+        // Get first day of month and total days
+        const firstDay = new Date(year, month, 1).getDay();
+        const totalDays = new Date(year, month + 1, 0).getDate();
         
         // Add empty cells for days before first day of month
-        for (let i = 0; i < startingDay; i++) {
+        for (let i = 0; i < firstDay; i++) {
             const emptyDay = document.createElement('div');
             emptyDay.className = 'day empty';
             this.daysGrid.appendChild(emptyDay);
         }
         
-        // Add month days
-        for (let i = 1; i <= daysInMonth; i++) {
+        // Add days of the month
+        const today = new Date();
+        for (let day = 1; day <= totalDays; day++) {
             const dayElement = document.createElement('div');
             dayElement.className = 'day';
-            dayElement.textContent = i;
+            dayElement.textContent = day;
             
-            // Create date for this day
-            const date = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), i);
-            dayElement.dataset.date = date.toISOString();
-            
-            // Only disable past dates (not including today)
-            const isToday = date.getTime() === today.getTime();
-            const isPast = date < today;
-            
-            if (isPast && !isToday) {
+            const currentDate = new Date(year, month, day);
+            if (currentDate < new Date(today.getFullYear(), today.getMonth(), today.getDate())) {
                 dayElement.classList.add('disabled');
+            }
+            
+            if (this.selectedDate && 
+                currentDate.getDate() === this.selectedDate.getDate() &&
+                currentDate.getMonth() === this.selectedDate.getMonth() &&
+                currentDate.getFullYear() === this.selectedDate.getFullYear()) {
+                dayElement.classList.add('selected');
             }
             
             this.daysGrid.appendChild(dayElement);
         }
         
-        // Highlight selected date if exists
+        // If we have a selected date, update available slots
         if (this.selectedDate) {
-            this.highlightSelectedDate();
+            this.updateAvailableSlots();
         }
     }
 
-    highlightSelectedDate() {
-        if (!this.selectedDate || !this.daysGrid) return;
+    renderTimeSlots() {
+        this.slotsGrid.innerHTML = '';
         
-        // Find all days in grid
-        const dayElements = this.daysGrid.querySelectorAll('.day:not(.empty)');
-        
-        // Remove selection from all days
-        dayElements.forEach(day => {
-            day.classList.remove('selected');
-        });
-        
-        // Find and highlight selected date
-        dayElements.forEach(day => {
-            const dateStr = day.dataset.date;
-            if (dateStr) {
-                const date = new Date(dateStr);
-                if (this.isSameDay(date, this.selectedDate)) {
-                    day.classList.add('selected');
-                }
+        this.availableSlots.forEach(slot => {
+            const slotElement = document.createElement('div');
+            slotElement.className = 'time-slot';
+            slotElement.textContent = slot.toLocaleTimeString('en-US', { 
+                hour: 'numeric', 
+                minute: '2-digit',
+                hour12: true 
+            });
+            slotElement.dataset.time = slot.toISOString();
+            
+            if (this.selectedTime && 
+                slot.getTime() === this.selectedTime.getTime()) {
+                slotElement.classList.add('selected');
             }
+            
+            this.slotsGrid.appendChild(slotElement);
         });
-    }
-
-    isSameDay(date1, date2) {
-        return date1.getFullYear() === date2.getFullYear() &&
-               date1.getMonth() === date2.getMonth() &&
-               date1.getDate() === date2.getDate();
-    }
-
-    selectDate(date, element) {
-        // Remove selection from all days
-        const dayElements = this.daysGrid.querySelectorAll('.day');
-        dayElements.forEach(day => day.classList.remove('selected'));
-        
-        // Add selection to clicked day
-        element.classList.add('selected');
-        this.selectedDate = date;
-        
-        // Show time slots
-        if (this.timeSlots) {
-            this.timeSlots.style.display = 'block';
-        }
-        
-        // Enable confirm button if time is already selected
-        if (this.confirmButton) {
-            this.confirmButton.disabled = !this.selectedTime;
-        }
-    }
-
-    selectTime(time, element) {
-        // Remove selection from all time slots
-        const timeElements = this.slotsGrid.querySelectorAll('.time-slot');
-        timeElements.forEach(slot => slot.classList.remove('selected'));
-        
-        // Add selection to clicked time slot
-        element.classList.add('selected');
-        this.selectedTime = time;
-        
-        // Enable confirm button
-        if (this.confirmButton) {
-            this.confirmButton.disabled = false;
-        }
     }
 }
 
 // Initialize calendar when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    new Calendar();
-});
-
-export { Calendar }; 
+    window.calendar = new Calendar();
+}); 
