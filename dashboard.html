@@ -189,22 +189,33 @@
 
         .calendar-nav {
             display: flex;
-            gap: 0.25rem;
+            gap: 0.5rem;
         }
 
         .calendar-btn {
-            padding: 0.25rem 0.5rem;
+            padding: 0.5rem 0.75rem;
             border: none;
             border-radius: var(--border-radius);
             background: var(--light-gray);
             cursor: pointer;
             font-weight: 500;
             font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .calendar-btn:hover {
+            background: #e5e7eb;
         }
 
         .calendar-btn.active {
             background: var(--primary-color);
             color: white;
+        }
+
+        .calendar-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
 
         .calendar-view-toggle {
@@ -226,10 +237,6 @@
 
         .time-column {
             background: white;
-            padding: 0.25rem;
-            text-align: right;
-            font-size: 0.75rem;
-            color: #666;
             border-right: 1px solid var(--light-gray);
         }
 
@@ -238,17 +245,36 @@
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            padding-right: 0.5rem;
+            padding: 0 0.75rem;
+            font-size: 0.75rem;
+            color: #666;
             border-bottom: 1px solid var(--light-gray);
+            background: #f8f9fa;
+        }
+
+        .time-slot::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: var(--light-gray);
         }
 
         .day-header {
             background: white;
-            padding: 0.25rem;
+            padding: 0.5rem;
             text-align: center;
             font-weight: 500;
             font-size: 0.75rem;
             border-bottom: 1px solid var(--light-gray);
+        }
+
+        .day-date {
+            font-size: 0.7rem;
+            color: #666;
+            margin-top: 0.25rem;
         }
 
         .calendar-cell {
@@ -257,6 +283,7 @@
             position: relative;
             border-bottom: 1px solid var(--light-gray);
             border-right: 1px solid var(--light-gray);
+            padding: 0.25rem;
         }
 
         .calendar-event {
@@ -265,11 +292,14 @@
             right: 2px;
             background: var(--primary-color);
             color: white;
-            padding: 0.25rem;
+            padding: 0.5rem;
             border-radius: var(--border-radius);
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             cursor: pointer;
             transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
         }
 
         .calendar-event:hover {
@@ -279,28 +309,43 @@
         .event-time {
             font-weight: bold;
             font-size: 0.7rem;
-            margin-bottom: 0.1rem;
         }
 
         .event-service {
             font-size: 0.7rem;
-            margin-bottom: 0.1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .event-client {
             font-size: 0.7rem;
             opacity: 0.9;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .add-job-btn {
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 0.75rem;
             background: var(--primary-color);
             color: white;
             border: none;
             border-radius: var(--border-radius);
             cursor: pointer;
             font-weight: 500;
-            margin-left: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .add-job-btn:hover {
+            background: #ea580c;
+        }
+
+        .add-job-btn i {
+            font-size: 0.875rem;
         }
 
         /* Event Modal */
@@ -515,10 +560,15 @@
             
             .time-slot {
                 height: 35px;
+                padding: 0 0.5rem;
             }
             
             .calendar-cell {
                 min-height: 35px;
+            }
+            
+            .calendar-event {
+                padding: 0.375rem;
             }
         }
 
@@ -586,10 +636,12 @@
             .time-slot {
                 height: 30px;
                 font-size: 0.7rem;
+                padding: 0 0.5rem;
             }
 
             .calendar-cell {
                 min-height: 30px;
+                padding: 0.25rem;
             }
 
             .day-header {
@@ -600,7 +652,7 @@
                 display: block;
                 grid-column: 2;
                 border-bottom: 1px solid var(--light-gray);
-                padding: 0.25rem;
+                padding: 0.5rem;
                 text-align: center;
                 font-weight: 500;
             }
@@ -608,6 +660,7 @@
             .calendar-event {
                 position: relative;
                 margin-bottom: 0.25rem;
+                padding: 0.375rem;
             }
 
             .calendar-view-toggle {
@@ -630,6 +683,10 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
+            }
+            
+            .add-job-btn i {
+                font-size: 1rem;
             }
         }
     </style>
@@ -920,6 +977,10 @@
                     document.querySelectorAll('.calendar-view-toggle .calendar-btn').forEach(btn => {
                         btn.addEventListener('click', () => {
                             this.view = btn.textContent.toLowerCase();
+                            document.querySelectorAll('.calendar-view-toggle .calendar-btn').forEach(b => {
+                                b.classList.remove('active');
+                            });
+                            btn.classList.add('active');
                             this.updateCalendarView();
                         });
                     });
@@ -1049,8 +1110,23 @@
                         client: 'John Smith',
                         phone: '+1 (555) 123-4567',
                         notes: 'Emergency repair - leaking pipe under kitchen sink'
+                    },
+                    {
+                        start: new Date(2024, 2, 31, 14, 0),
+                        end: new Date(2024, 2, 31, 16, 0),
+                        service: 'HVAC Maintenance',
+                        client: 'Sarah Johnson',
+                        phone: '+1 (555) 234-5678',
+                        notes: 'Regular maintenance check'
+                    },
+                    {
+                        start: new Date(2024, 3, 1, 10, 0),
+                        end: new Date(2024, 3, 1, 12, 0),
+                        service: 'Electrical Installation',
+                        client: 'Mike Brown',
+                        phone: '+1 (555) 345-6789',
+                        notes: 'New circuit installation'
                     }
-                    // Add more events as needed
                 ];
                 this.renderEvents();
             },
