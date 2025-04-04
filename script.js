@@ -194,6 +194,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById('demoStep2').style.display = 'none';
                     demoModal.style.display = 'flex';
                     document.body.style.overflow = 'hidden';
+                    // Update language for modal content
+                    updateLanguage(currentLanguage);
                 }
             });
         }
@@ -209,6 +211,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (leadCaptureModal) {
                     leadCaptureModal.style.display = 'flex';
                     document.body.style.overflow = 'hidden';
+                    // Update language for modal content
+                    updateLanguage(currentLanguage);
                 }
             });
         }
