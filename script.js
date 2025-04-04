@@ -1,9 +1,10 @@
 // Base JavaScript functionality will be added here
 console.log('Script loaded'); // Debug log
 
-// Remove imports and use global objects
-const { translations } = window;
+// Import translations, Calendar and Firebase functions
+import { translations } from './translations.js';
 import { Calendar } from './calendar.js';
+import { submitFormData } from './firebase-config.js';
 
 // Add error handler
 window.onerror = function(msg, url, lineNo, columnNo, error) {
@@ -17,9 +18,6 @@ let calendarApiInitialized = false;
 
 // Language switching functionality
 let currentLanguage = 'en';
-
-// Initialize phone input
-let phoneInput;
 
 // Function to calculate and display losses
 function calculateLosses() {
@@ -256,12 +254,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Initialize calendar if not already initialized
                 if (!calendarApiInitialized) {
-                    try {
-                        const calendar = new Calendar();
-                        calendarApiInitialized = true;
-                    } catch (error) {
-                        console.error('Failed to initialize calendar:', error);
-                    }
+                    const calendar = new Calendar();
+                    calendarApiInitialized = true;
                 }
             }
         });
@@ -359,59 +353,5 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateLanguage(lang);
             }
         });
-    });
-
-    // Initialize phone input with US formatting
-    phoneInput = window.intlTelInput(document.querySelector("#phone"), {
-        preferredCountries: ['us'],
-        separateDialCode: true,
-        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-    });
-
-    // Handle CTA button click
-    document.querySelector('.cta-button').addEventListener('click', function() {
-        document.getElementById('leadCaptureModal').style.display = 'block';
-    });
-
-    // Handle form submission
-    document.getElementById('leadCaptureForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Validate phone number
-        if (!phoneInput.isValidNumber()) {
-            alert('Please enter a valid phone number');
-            return;
-        }
-
-        // Get form data
-        const formData = {
-            fullName: document.getElementById('fullName').value,
-            email: document.getElementById('email').value,
-            phone: phoneInput.getNumber(),
-            trade: document.getElementById('trade').value,
-            companyName: document.getElementById('companyName').value,
-            jobsPerWeek: document.getElementById('jobsPerWeek').value
-        };
-
-        // TODO: Send form data to your backend
-        console.log('Form data:', formData);
-
-        // Hide lead capture modal and show success modal
-        document.getElementById('leadCaptureModal').style.display = 'none';
-        document.getElementById('successModal').style.display = 'block';
-    });
-
-    // Handle modal close buttons
-    document.querySelectorAll('.close-modal').forEach(button => {
-        button.addEventListener('click', function() {
-            this.closest('.modal').style.display = 'none';
-        });
-    });
-
-    // Close modals when clicking outside
-    window.addEventListener('click', function(e) {
-        if (e.target.classList.contains('modal')) {
-            e.target.style.display = 'none';
-        }
     });
 });
