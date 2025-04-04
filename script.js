@@ -298,7 +298,10 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             ctaModal.style.display = 'none';
             document.body.style.overflow = 'auto';
-            window.location.href = '#hero';
+            const heroSection = document.querySelector('.hero');
+            if (heroSection) {
+                heroSection.scrollIntoView({ behavior: 'smooth' });
+            }
         });
     }
 
