@@ -4,7 +4,7 @@ function gtag(){dataLayer.push(arguments);}
 
 // Initialize Google Analytics
 gtag('js', new Date());
-gtag('config', '10488682600'); // Stream ID for Google Analytics 4
+gtag('config', 'G-WE2Q1TD6LW');
 
 // Track page views
 function trackPageView(page) {
