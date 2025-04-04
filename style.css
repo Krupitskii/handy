@@ -1177,679 +1177,117 @@ body {
     }
 }
 
-/* Modal Styles */
-.signup-modal {
+/* Modal styles */
+.modal {
     display: none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     z-index: 1000;
-    display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
 }
 
 .modal-content {
-    background: white;
-    max-width: 600px;
-    width: 100%;
-    margin: 2rem auto;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 90%;
     position: relative;
-    padding: 1.5rem;
-    max-height: calc(100vh - 4rem);
+    max-height: 90vh;
     overflow-y: auto;
 }
 
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    padding: 0 0.5rem;
-    position: relative;
-    min-height: 3rem;
-}
-
-.progress-indicator {
-    display: flex;
-    gap: 2rem;
-    margin-bottom: 0;
-    align-items: center;
+.close-button {
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: auto;
-    top: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.25rem;
-    color: #6B7280;
-    font-size: 0.875rem;
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    padding-bottom: 0.5rem;
-    position: relative;
-    min-width: 140px;
-    text-align: center;
-    opacity: 0.5;
-    transition: opacity 0.3s ease;
-}
-
-.step.active {
-    color: #f97316;
-    opacity: 1;
-}
-
-.step.active::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80%;
-    height: 2px;
-    background-color: #f97316;
-}
-
-.step-number {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-}
-
-.step-label {
-    font-size: 0.875rem;
-    font-weight: 500;
-    white-space: nowrap;
-}
-
-.close-modal {
+    right: 1rem;
+    top: 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
     background: none;
     border: none;
-    font-size: 1.5rem;
-    color: #6B7280;
-    cursor: pointer;
     padding: 0.5rem;
-    position: absolute;
-    left: 0.5rem;
-    top: 0.5rem;
-    z-index: 1;
 }
 
-.step-content {
+.close-button:hover {
+    color: #666;
+}
+
+.modal.show {
+    display: flex;
+}
+
+/* Demo steps */
+.demo-step {
     display: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    padding: 0;
-    margin: 0;
 }
 
-.step-content.active {
+.demo-step.active {
     display: block;
-    opacity: 1;
 }
 
-.step-content h3 {
-    font-size: 1.5rem;
-    color: #1F2937;
-    margin-bottom: 1rem;
-    text-align: center;
-    line-height: 1.4;
-    white-space: pre-line;
-}
-
-.step-description {
-    color: #4B5563;
-    margin-bottom: 1rem;
-    text-align: center;
-    padding: 0 1rem;
-}
-
-.signup-form {
+/* Form styles */
+.modal form {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
-    margin: 0 0 1.5rem;
-    padding: 0 1rem;
+    gap: 1rem;
+    margin: 1.5rem 0;
 }
 
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-.form-group label {
-    font-weight: 600;
-    color: #1F2937;
-}
-
-.form-group input,
-.form-group select {
+.modal input {
     padding: 0.75rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
     font-size: 1rem;
-    transition: all 0.2s ease;
-    width: 100%;
 }
 
-.form-group input:focus,
-.form-group select:focus {
-    outline: none;
-    border-color: #f97316;
-    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
-}
-
-.other-input {
-    margin-top: 0.5rem;
-}
-
-.form-note {
-    color: #6B7280;
-    font-size: 0.875rem;
-    text-align: center;
-    margin-top: 1rem;
-    padding: 0 1rem;
-}
-
-.step-content .cta-button {
-    margin-top: 1.5rem;
-    width: 100%;
+.modal button {
+    background-color: #007bff;
+    color: white;
     padding: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
     font-size: 1rem;
-    font-weight: 600;
-    max-width: 100%;
+    font-weight: bold;
+}
+
+.modal button:hover {
+    background-color: #0056b3;
 }
 
 .modal-footer {
-    margin-top: auto;
-    text-align: center;
-    padding: 1.5rem 1rem 0;
-    border-top: 1px solid #e2e8f0;
-}
-
-.watch-demo {
-    background: none;
-    border: none;
-    color: #6B7280;
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.watch-demo:hover {
-    color: #f97316;
-}
-
-/* Mobile adjustments */
-@media (max-width: 768px) {
-    .signup-modal {
-        padding: 0.5rem;
-    }
-    
-    .modal-content {
-        margin: 0.5rem auto;
-        padding: 1rem;
-        max-height: calc(100vh - 1rem);
-    }
-    
-    .modal-header {
-        margin-bottom: 1rem;
-        min-height: 2.5rem;
-    }
-
-    .progress-indicator {
-        gap: 1.5rem;
-    }
-
-    .step {
-        min-width: 120px;
-    }
-
-    .step-content h3 {
-        font-size: 1.25rem;
-        margin-bottom: 0.75rem;
-    }
-
-    .step-description {
-        margin-bottom: 1rem;
-    }
-
-    .signup-form {
-        gap: 1rem;
-        margin-bottom: 1rem;
-    }
-
-    .form-group {
-        gap: 0.375rem;
-    }
-
-    .form-group input,
-    .form-group select {
-        padding: 0.625rem;
-    }
-
-    .modal-footer {
-        padding: 1rem 0.5rem 0;
-    }
-}
-
-/* Demo Modal Styles */
-#demoModal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#demoModal .modal-content {
-    max-width: 600px;
-    width: 100%;
-    margin: 2rem auto;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    position: relative;
-    max-height: calc(100vh - 4rem);
-    overflow-y: auto;
-}
-
-#demoModal h2 {
-    font-size: 32px;
-    font-weight: 700;
-    margin-bottom: 16px;
-    color: #1F2937;
-    line-height: 1.2;
-}
-
-#demoModal .subtitle {
-    font-size: 18px;
-    color: #4B5563;
-    margin-bottom: 32px;
-}
-
-#demoModal .form-group {
-    margin-bottom: 24px;
-}
-
-#demoModal label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-    color: #374151;
-}
-
-#demoModal input,
-#demoModal select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #D1D5DB;
-    border-radius: 6px;
-    font-size: 16px;
-    transition: border-color 0.2s ease;
-}
-
-#demoModal input:focus,
-#demoModal select:focus {
-    border-color: #f97316;
-    outline: none;
-}
-
-#demoModal .cta-button {
-    width: 100%;
-    padding: 14px;
-    background: #f97316;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 18px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-#demoModal .cta-button:hover {
-    background: #ea580c;
-}
-
-#demoModal .demo-phone {
-    font-size: 24px;
-    font-weight: 600;
-    color: #f97316;
-    text-align: center;
-    margin: 2rem 0;
-}
-
-#demoModal .pro-tip {
-    font-size: 14px;
-    color: #6B7280;
     text-align: center;
     margin-top: 1rem;
-    font-style: italic;
-}
-
-/* Mobile Responsive Styles for Demo Modal */
-@media (max-width: 768px) {
-    #demoModal .modal-content {
-        padding: 24px;
-    }
-    
-    #demoModal h2 {
-        font-size: 24px;
-        margin-top: 20px;
-        padding-right: 30px;
-    }
-    
-    #demoModal .subtitle {
-        font-size: 16px;
-    }
-    
-    #demoModal .close-modal {
-        top: 15px;
-        right: 15px;
-        left: auto;
-    }
-}
-
-/* Demo Modal Close Button */
-#demoModal .close-modal {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    left: auto;
-    font-size: 24px;
-    color: #6B7280;
-    cursor: pointer;
-    z-index: 10;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: none;
-    padding: 0;
-}
-
-/* Form Messages */
-.success-message,
-.error-message {
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 4px;
-    text-align: center;
-    font-weight: 500;
-    animation: fadeIn 0.3s ease-in-out;
-}
-
-.success-message {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-}
-
-.error-message {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Modal Button Styles */
-.modal-next-button,
-.modal-demo-submit {
-    background: #f97316;
-    color: white;
-    border: none;
-    padding: 14px;
-    border-radius: 6px;
-    font-size: 18px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s ease;
-    width: 100%;
-    margin-top: 1.5rem;
-}
-
-.modal-next-button:hover,
-.modal-demo-submit:hover {
-    background: #ea580c;
 }
 
 .modal-watch-demo {
-    background: none;
-    border: none;
-    color: #6B7280;
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
+    color: #007bff;
+    text-decoration: none;
 }
 
 .modal-watch-demo:hover {
-    color: #f97316;
+    text-decoration: underline;
 }
 
-/* Demo Modal Styles */
-#demoModal .modal-content {
-    max-width: 600px;
-    padding: 40px;
-}
-
-#demoModal h2 {
-    font-size: 32px;
-    font-weight: 700;
-    margin-bottom: 16px;
-    color: #1F2937;
-    line-height: 1.2;
-}
-
-#demoModal .subtitle {
-    font-size: 18px;
-    color: #4B5563;
-    margin-bottom: 32px;
-}
-
-#demoModal .form-group {
-    margin-bottom: 24px;
-}
-
-#demoModal label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-    color: #374151;
-}
-
-#demoModal input,
-#demoModal select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #D1D5DB;
-    border-radius: 6px;
-    font-size: 16px;
-    transition: border-color 0.2s ease;
-}
-
-#demoModal input:focus,
-#demoModal select:focus {
-    border-color: #f97316;
-    outline: none;
-}
-
-#demoModal .cta-button {
-    width: 100%;
-    padding: 14px;
-    background: #f97316;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 18px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-#demoModal .cta-button:hover {
-    background: #ea580c;
-}
-
-#demoModal .demo-phone {
-    font-size: 24px;
-    font-weight: 600;
-    color: #f97316;
+/* Demo phone number */
+.demo-phone {
+    font-size: 1.5rem;
     text-align: center;
     margin: 2rem 0;
+    font-weight: bold;
 }
 
-#demoModal .pro-tip {
-    font-size: 14px;
-    color: #6B7280;
-    text-align: center;
+.pro-tip {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 5px;
     margin-top: 1rem;
     font-style: italic;
-}
-
-/* Mobile Responsive Styles for Demo Modal */
-@media (max-width: 768px) {
-    #demoModal .modal-content {
-        padding: 24px;
-    }
-    
-    #demoModal h2 {
-        font-size: 24px;
-        margin-top: 20px;
-        padding-right: 30px;
-    }
-    
-    #demoModal .subtitle {
-        font-size: 16px;
-    }
-    
-    #demoModal .close-modal {
-        top: 15px;
-        right: 15px;
-        left: auto;
-    }
-}
-
-/* Demo Modal Close Button */
-#demoModal .close-modal {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    left: auto;
-    font-size: 24px;
-    color: #6B7280;
-    cursor: pointer;
-    z-index: 10;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: none;
-    padding: 0;
-}
-
-/* Form Messages */
-.success-message,
-.error-message {
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 4px;
-    text-align: center;
-    font-weight: 500;
-    animation: fadeIn 0.3s ease-in-out;
-}
-
-.success-message {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-}
-
-.error-message {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Modal Button Styles */
-.modal-next-button,
-.modal-demo-submit {
-    background: #f97316;
-    color: white;
-    border: none;
-    padding: 14px;
-    border-radius: 6px;
-    font-size: 18px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s ease;
-    width: 100%;
-    margin-top: 1.5rem;
-}
-
-.modal-next-button:hover,
-.modal-demo-submit:hover {
-    background: #ea580c;
-}
-
-.modal-watch-demo {
-    background: none;
-    border: none;
-    color: #6B7280;
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.modal-watch-demo:hover {
-    color: #f97316;
 }
 
 .language-switcher {
